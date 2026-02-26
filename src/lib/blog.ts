@@ -34,9 +34,10 @@ export function getAuthor(id: string | undefined): Author | null {
 
 const getBase = () =>
   typeof window !== "undefined" ? window.location.origin : "";
+const getBasePath = () => import.meta.env.BASE_URL;
 
 export async function getAllPosts(): Promise<BlogPostMeta[]> {
-  const res = await fetch(`${getBase()}/blog/posts.json`, { cache: "no-store" });
+  const res = await fetch(`${getBase()}${getBasePath()}blog/posts.json`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch blog posts");
   const posts: BlogPostMeta[] = await res.json();
   return posts.sort(
@@ -49,7 +50,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const key = slug?.trim();
   if (!key) return null;
 
-  const url = `/blog/posts/${key}.md`;
+  const url = `${getBase()}${getBasePath()}blog/posts/${key}.md`;
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) return null;
 

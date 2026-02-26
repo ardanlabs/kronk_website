@@ -13,7 +13,16 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [
+    react(),
+    mode === "development" && componentTagger(),
+    {
+      name: "html-transform",
+      transformIndexHtml(html) {
+        return html.replace(/%BASE_URL%/g, "/kronk_website/");
+      },
+    },
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

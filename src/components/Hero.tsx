@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { assetPath } from "@/lib/utils";
 import { Copy, Check, BookOpen } from "lucide-react";
 import { useState } from "react";
 
@@ -38,7 +39,7 @@ export const Hero = () => {
           </h1>
           
           <img
-            src="/images/kronk-banner.jpg"
+            src={assetPath("images/kronk-banner.jpg")}
             alt="Kronk"
             className="mx-auto mb-4 max-w-3xl w-full rounded-lg object-cover shadow-lg"
           />

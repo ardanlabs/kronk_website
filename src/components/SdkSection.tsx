@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { assetPath } from "@/lib/utils";
 
 export const SdkSection = () => {
   return (
@@ -19,12 +20,12 @@ export const SdkSection = () => {
           </p>
           <div className="rounded-xl overflow-hidden border border-border bg-card relative">
             <img
-              src="/blog/images/sdk-diagram-light-mode.svg"
+              src={assetPath("blog/images/sdk-diagram-light-mode.svg")}
               alt="Kronk SDK architecture diagram"
               className="w-3/4 mx-auto h-auto block dark:hidden"
             />
             <img
-              src="/blog/images/sdk-diagram-dark-mode.svg"
+              src={assetPath("blog/images/sdk-diagram-dark-mode.svg")}
               alt="Kronk SDK architecture diagram"
               className="w-3/4 mx-auto h-auto hidden dark:block"
             />

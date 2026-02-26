@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { assetPath } from "@/lib/utils";
 import { MessageSquare, Image, Mic, Hash, Search, ArrowUpRight, FileJson, Reply } from "lucide-react";
 
 const code = `package main
@@ -64,7 +65,7 @@ export const ExamplesList = () => {
       <div className="container mx-auto px-6">
         <div className="mb-16 text-center">
         <img
-            src="/images/ready-to-run.png"
+            src={assetPath("images/ready-to-run.png")}
             alt="Kronk"
             className="mx-auto mb-4 w-[275px]"
           />

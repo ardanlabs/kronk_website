@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { assetPath } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -89,7 +90,7 @@ const BlogPost = () => {
           {post.banner && (
             <div className="mb-10 -mx-6 sm:mx-0 sm:rounded-xl overflow-hidden">
               <img
-                src={encodeURI(post.banner)}
+                src={assetPath(encodeURI(post.banner.replace(/^\//, "")))}
                 alt=""
                 className="w-full h-48 sm:h-64 object-cover"
               />
@@ -102,7 +103,7 @@ const BlogPost = () => {
               {author && (
                 <div className="flex items-center gap-3">
                   <Avatar className="h-14 w-14">
-                    <AvatarImage src={author.avatar} alt="" />
+                    <AvatarImage src={assetPath(author.avatar.replace(/^\//, ""))} alt="" />
                     <AvatarFallback>
                       {author.name.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
@@ -127,7 +128,7 @@ const BlogPost = () => {
                 img: ({ src, alt, ...props }) => (
                   <span className="block my-6 w-full max-w-3xl mx-auto">
                     <img
-                      src={src}
+                      src={src ? assetPath(src.startsWith("/") ? src.slice(1) : src) : undefined}
                       alt={alt ?? ""}
                       className="rounded-xl shadow-md w-full border border-border"
                       {...props}
@@ -161,7 +162,7 @@ const BlogPost = () => {
               className="group flex flex-col sm:flex-row sm:items-center gap-4 p-5 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/20 transition-colors"
             >
               <img
-                src="/images/ardan-labs-badge.svg"
+                src={assetPath("images/ardan-labs-badge.svg")}
                 alt="Ardan Labs"
                 className="h-28 w-auto shrink-0"
               />
