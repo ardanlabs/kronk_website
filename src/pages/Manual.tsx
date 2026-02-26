@@ -7,37 +7,37 @@ import { Loader2 } from "lucide-react";
 import { extractToc, stripTocFromContent, type TocEntry } from "@/lib/manual";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const MANUAL_BASE =
-  "https://raw.githubusercontent.com/ardanlabs/kronk/main/.manual";
+const MANUAL_API =
+  "https://api.github.com/repos/ardanlabs/kronk/contents/.manual?ref=main";
 
-const CHAPTERS = [
-  "chapter-01-introduction.md",
-  "chapter-02-installation.md",
-  "chapter-03-model-configuration.md",
-  "chapter-04-batch-processing.md",
-  "chapter-05-message-caching.md",
-  "chapter-06-yarn-extended-context.md",
-  "chapter-07-model-server.md",
-  "chapter-08-api-endpoints.md",
-  "chapter-09-request-parameters.md",
-  "chapter-10-multi-modal-models.md",
-  "chapter-11-security-authentication.md",
-  "chapter-12-browser-ui.md",
-  "chapter-13-client-integration.md",
-  "chapter-14-observability.md",
-  "chapter-15-mcp-service.md",
-  "chapter-16-troubleshooting.md",
-  "chapter-17-developer-guide.md",
-];
-
+/**
+ * Fetches the manual from the kronk repo's .manual directory.
+ * The manual was moved into separate chapter files - we discover all .md files,
+ * fetch each one, and combine them into a single document in order.
+ */
 const fetchManual = async (): Promise<string> => {
+  // 1. Get directory listing from GitHub API
+  const dirRes = await fetch(MANUAL_API);
+  if (!dirRes.ok) throw new Error("Failed to fetch manual directory");
+  const entries = (await dirRes.json()) as Array<{ name: string; type: string; download_url: string | null }>;
+
+  // 2. Filter for .md files and sort by name (preserves chapter order)
+  const mdFiles = entries
+    .filter((e) => e.type === "file" && e.name.endsWith(".md"))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  if (mdFiles.length === 0) throw new Error("No manual chapters found");
+
+  // 3. Fetch each file and combine into single document
   const results = await Promise.all(
-    CHAPTERS.map(async (name) => {
-      const res = await fetch(`${MANUAL_BASE}/${name}`);
-      if (!res.ok) throw new Error(`Failed to fetch ${name}`);
+    mdFiles.map(async (file) => {
+      const url = file.download_url ?? `https://raw.githubusercontent.com/ardanlabs/kronk/main/.manual/${file.name}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to fetch ${file.name}`);
       return res.text();
     })
   );
+
   return results.join("\n\n");
 };
 
