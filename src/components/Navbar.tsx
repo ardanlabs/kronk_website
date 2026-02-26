@@ -27,7 +27,7 @@ export const Navbar = () => {
       const element = document.getElementById(targetId);
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "start" });
-        window.history.pushState(null, "", href);
+        window.history.pushState(null, "", window.location.pathname + "#" + targetId);
       }
     } else if (targetId && location.pathname !== "/") {
       e.preventDefault();

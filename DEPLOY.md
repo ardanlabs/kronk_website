@@ -91,6 +91,8 @@ Then:
 - **Temporary URL**: `https://ardanlabs.github.io/kronk_website/` (until custom domain propagates)
 - **Custom domain**: `https://www.kronkai.com` (after DNS propagates, often 5–60 minutes)
 
+> **Note:** The app is built with `base: '/kronk_website/'` for the default GitHub Pages URL. When you configure the custom domain (www.kronkai.com), you'll need to change `vite.config.ts` to `base: '/'` and `App.tsx` to `basename="/"` (or remove basename), then push to trigger a new deploy.
+
 ---
 
 ## Troubleshooting
