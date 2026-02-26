@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/kronk_website/",
+  base: "/",
   server: {
     host: "::",
     port: 8080,
@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => ({
     {
       name: "html-transform",
       transformIndexHtml(html) {
-        return html.replace(/%BASE_URL%/g, "/kronk_website/");
+        return html.replace(/%BASE_URL%/g, "/");
       },
     },
   ].filter(Boolean),
