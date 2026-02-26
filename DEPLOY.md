@@ -6,13 +6,13 @@ This guide walks you through publishing the Kronk site to GitHub Pages with the 
 
 - **GitHub Actions workflow** (`.github/workflows/deploy-pages.yml`) — Builds the site and deploys on every push to `main`
 - **SPA routing** — `index.html` is copied to `404.html` so client-side routes (e.g. `/blog`, `/manual`) work correctly
-- **Custom domain** — `CNAME` file with `kronkai.com` is included in the deploy
+- **Custom domain** — `CNAME` file with `www.kronkai.com` is included in the deploy
 
 ---
 
 ## Step 1: Enable GitHub Pages
 
-1. Go to your repo: **https://github.com/ardan-erick/kronkai** (or your org/repo)
+1. Go to your repo: **https://github.com/ardanlabs/kronk_website**
 2. Click **Settings** → **Pages** (under "Code and automation")
 3. Under **Build and deployment**:
    - **Source**: Select **GitHub Actions**
@@ -24,7 +24,7 @@ That's it. The workflow will run on the next push to `main`.
 ## Step 2: Configure Custom Domain in GitHub
 
 1. In **Settings** → **Pages**, find **Custom domain**
-2. Enter: `kronkai.com`
+2. Enter: `www.kronkai.com`
 3. Click **Save**
 4. GitHub will show DNS instructions — keep this tab open for Step 3
 
@@ -51,9 +51,9 @@ Add a **CNAME record**:
 
 | Type | Name | Value |
 |------|------|-------|
-| CNAME | `www` | `ardan-erick.github.io` |
+| CNAME | `www` | `ardanlabs.github.io` |
 
-*(Replace `ardan-erick` with your GitHub username or org name.)*
+*(Use `ardanlabs` for org repos, or your GitHub username for user repos.)*
 
 ### Option C: Both apex and www
 
@@ -88,8 +88,8 @@ Then:
 
 ## Verify
 
-- **Temporary URL**: `https://ardan-erick.github.io/kronkai/` (until custom domain propagates)
-- **Custom domain**: `https://kronkai.com` (after DNS propagates, often 5–60 minutes)
+- **Temporary URL**: `https://ardanlabs.github.io/kronk_website/` (until custom domain propagates)
+- **Custom domain**: `https://www.kronkai.com` (after DNS propagates, often 5–60 minutes)
 
 ---
 
@@ -111,7 +111,7 @@ Then:
 In GitHub **Settings → Pages → Custom domain**, enter **only one** of:
 
 - `kronkai.com` (apex) — requires A records
-- `www.kronkai.com` (www) — requires CNAME record
+- `www.kronkai.com` (www) — requires CNAME record *(recommended for this repo)*
 
 Do not add both until one works.
 
@@ -138,9 +138,9 @@ Turn off the proxy so GitHub can see your DNS:
 
 | Type | Name | Value | TTL |
 |------|------|-------|-----|
-| CNAME | `www` | `ardan-erick.github.io` | 3600 |
+| CNAME | `www` | `ardanlabs.github.io` | 3600 |
 
-The CNAME target must be exactly `ardan-erick.github.io` (no `https://`, no path, no repo name).
+The CNAME target must be exactly `ardanlabs.github.io` (no `https://`, no path, no repo name).
 
 ### 4. Verify DNS
 
