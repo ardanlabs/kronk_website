@@ -9,13 +9,30 @@ export interface TocEntry {
 /**
  * Extract headings from markdown and build a table of contents.
  * Uses github-slugger to match rehype-slug's ID generation.
+ * Skips lines inside fenced code blocks (```) so shell comments like
+ * "# 1. Install Kronk" are not mistaken for headings.
  */
 export function extractToc(markdown: string): TocEntry[] {
   const slugger = new GithubSlugger();
   const headings: TocEntry[] = [];
   const lines = markdown.split("\n");
+  let inCodeBlock = false;
+  let codeFence = "";
 
   for (const line of lines) {
+    // Track fenced code blocks (``` or ```shell, etc.)
+    const openFence = line.match(/^(`{3,})(\w*)/);
+    if (openFence) {
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        codeFence = openFence[1];
+      } else if (line.startsWith(codeFence)) {
+        inCodeBlock = false;
+      }
+      continue;
+    }
+    if (inCodeBlock) continue;
+
     const match = line.match(/^(#{1,6})\s+(.+)$/);
     if (match) {
       const depth = match[1].length;
