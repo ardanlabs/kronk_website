@@ -91,6 +91,39 @@ export function blogMetaPlugin(): Plugin {
         mkdirSync(dirname(outPath), { recursive: true });
         writeFileSync(outPath, customHtml);
       }
+
+      // Generate manual.html with custom og:image
+      const manualOgImage = toAbsoluteUrl("/images/kronk-user-manual.jpg");
+      const manualHtml = indexHtml
+        .replace(
+          /<meta property="og:title" content="[^"]*" \/>/,
+          `<meta property="og:title" content="Kronk User Manual" />`
+        )
+        .replace(
+          /<meta property="og:description" content="[^"]*" \/>/,
+          `<meta property="og:description" content="Complete guide to running models with the Kronk SDK and model server." />`
+        )
+        .replace(
+          /<meta property="og:image" content="[^"]*" \/>/,
+          `<meta property="og:image" content="${manualOgImage}" />`
+        )
+        .replace(
+          /<meta property="og:url" content="[^"]*" \/>/,
+          `<meta property="og:url" content="${SITE_URL}/manual" />`
+        )
+        .replace(
+          /<meta name="twitter:image" content="[^"]*" \/>/,
+          `<meta name="twitter:image" content="${manualOgImage}" />`
+        )
+        .replace(
+          /<meta name="twitter:image:alt" content="[^"]*" \/>/,
+          `<meta name="twitter:image:alt" content="Kronk User Manual" />`
+        )
+        .replace(
+          /<title>[^<]*<\/title>/,
+          `<title>Kronk User Manual — Kronk</title>`
+        );
+      writeFileSync(join(distDir, "manual.html"), manualHtml);
     },
   };
 }
