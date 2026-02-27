@@ -6,6 +6,31 @@ export interface TocEntry {
   depth: number;
 }
 
+export interface TocChapter {
+  heading: TocEntry;
+  children: TocEntry[];
+}
+
+/**
+ * Group TOC entries by top-level headings (depth 1).
+ * Each chapter has a heading and its child sections.
+ */
+export function groupTocByChapter(toc: TocEntry[]): TocChapter[] {
+  const chapters: TocChapter[] = [];
+  let current: TocChapter | null = null;
+
+  for (const entry of toc) {
+    if (entry.depth === 1) {
+      current = { heading: entry, children: [] };
+      chapters.push(current);
+    } else if (current) {
+      current.children.push(entry);
+    }
+  }
+
+  return chapters;
+}
+
 /**
  * Extract headings from markdown and build a table of contents.
  * Uses github-slugger to match rehype-slug's ID generation.
