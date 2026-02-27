@@ -7,11 +7,11 @@ author: "bill-kennedy"
 banner: "/blog/images/post1_banner.jpg"
 ---
 
-At Ardan we have been hard at work over the past 3 months building [Kronk](https://github.com/ardanlabs/kronk). Kronk is two projects merged into one. First, it’s an extensive Go SDK that will allow you to use Go for hardware accelerated local inference with llama.cpp directly integrated into your Go applications via the [yzma](https://github.com/hybridgroup/yzma) module. Kronk also provides a model server (built with the SDK) designed and optimized to be your personal engine for running open source models locally. Especially agentic workloads.
+At Ardan we have been hard at work over the past 3 months building [Kronk](https://github.com/ardanlabs/kronk). Kronk is two projects merged into one. First, it’s an extensive Go SDK that will allow you to use Go for hardware-accelerated local inference with llama.cpp directly integrated into your Go applications via the [yzma](https://github.com/hybridgroup/yzma) module. Kronk also provides a model server (built with the SDK) designed and optimized to be your personal engine for running open source models locally, especially agentic workloads.
 
-One of the hardest things to figure out when you’re just starting, is to know which open source models are the best to use for your use case. We need to use models that are in the GGUF (GPT-Generated Unified Format) format because this is the format that llama.cpp developed and uses. It was introduced in August 2023 by llama.cpp as a direct replacement and improvement over their previous GGML format.
+One of the hardest things to figure out when you’re just starting is to know which open source models are the best to use for your use case. We need to use models that are in the GGUF (GPT-Generated Unified Format) format because this is the format that llama.cpp developed and uses. It was introduced in August 2023 by llama.cpp as a direct replacement and improvement over their previous GGML format.
 
-There are currently over 147k GGUF models in Hugging Face (HF) to date, so how can you identify which of these models are best for the work you want to accomplish? To make things more complicated, not all these models are the same and not all of them will run on your hardware. This is going to be one of the most frustrating aspects of the entire process. Eventually, you will figure out what you can and can’t run, and which model types work the best for you.
+There are currently over 147k GGUF models in Hugging Face (HF), so how can you identify which of these models are best for the work you want to accomplish? To make things more complicated, not all these models are the same and not all of them will run on your hardware. This is going to be one of the most frustrating aspects of the entire process. Eventually, you will figure out what you can and can’t run, and which model types work the best for you.
 
 In this post, I’m going to help you navigate this world of models that you will see on HF. I will decipher the most important acronyms and labels you will see on the site and in the model names. I’ll point you to the best provider of GGUF models in HF (Unsloth) that will give you the best chance to succeed.
 
@@ -45,7 +45,7 @@ Models like gpt-oss, Mixtral 8x7B, and DeepSeek-V3/V2 all use MoE architectures.
 
 ### Hybrid Models
 
-Hybrid models represent a third architectural approach, combining traditional attention layers with recurrent layers (such as [DeltaNet](https://sustcsonglin.github.io/blog/2024/deltanet-1/) or [SSM/Mamba](https://huggingface.co/docs/transformers/en/model_doc/mamba). Unlike MoE models, hybrid models are dense so every parameter participates in every token. The difference is that different layers use different mechanisms: some use [attention](<https://en.wikipedia.org/wiki/Attention_(machine_learning)>) while others use [recurrence](https://en.wikipedia.org/wiki/Recurrent_neural_network).
+Hybrid models represent a third architectural approach, combining traditional attention layers with recurrent layers (such as [DeltaNet](https://sustcsonglin.github.io/blog/2024/deltanet-1/) or [SSM/Mamba](https://huggingface.co/docs/transformers/en/model_doc/mamba)). Unlike MoE models, hybrid models are dense so every parameter participates in every token. The difference is that different layers use different mechanisms: some use [attention](<https://en.wikipedia.org/wiki/Attention_(machine_learning)>) while others use [recurrence](https://en.wikipedia.org/wiki/Recurrent_neural_network).
 
 Kronk automatically detects hybrid models at load time and applies special handling:
 
@@ -123,13 +123,13 @@ So when you are on this page, it’s good to start looking at the label in tiny 
 
 ![Qwen3.5 page](/blog/images/post1_image3.png)
 
-This is a `Image-Text-to-Text` model which means we can use this for chat apps, agents, and we can submit and ask questions about images. When an AI model is listed as "35B", it means the model has 35 billion parameters.
+This is an `Image-Text-to-Text` model which means we can use this for chat apps, agents, and we can submit and ask questions about images. When an AI model is listed as "35B", it means the model has 35 billion parameters.
 
-What are these parameters? The parameters are the learnable weights and biases in a neural network that the model acquires during training. Think of them as the "knobs and dials" that the model adjusts to learn patterns from data. The more knobs and dials, the more accurate the model will behave (in theory). However the larger the model is, the more memory we need to run the model.
+What are these parameters? The parameters are the learnable weights and biases in a neural network that the model acquires during training. Think of them as the "knobs and dials" that the model adjusts to learn patterns from data. The more knobs and dials, the more accurately the model will behave (in theory). However the larger the model is, the more memory we need to run the model.
 
-I just saw an announcement recently for a 340b model, which is going to be amazing to run, but there is no way I could ever afford the hardware required to run it. Even a model that has 80b parameters is way too big for my M4 which has 128 GB of memory. A Dense 80b model would probably need well over 160 GB on the low end to run.
+I just saw an announcement recently for a 340B model, which is going to be amazing to run, but there is no way I could ever afford the hardware required to run it. Even a model that has 80B parameters is way too big for my M4 which has 128 GB of memory. A Dense 80B model would probably need well over 160 GB on the low end to run.
 
-That being said, I want to run the Qwen3.5-35B-A3B model because I know it will work great with the Cline coding agent. BTW, I am currently running a version of this model right now and it’s helping me write this post.
+That being said, I want to run the Qwen3.5-35B-A3B model because I know it will work great with the Cline coding agent. BTW, I am currently running a version of this model and it’s helping me write this post.
 
 Let’s look at all the options we have from Unsloth for this model.
 
@@ -219,7 +219,7 @@ If you want to go deeper into these quantization strategies, here it is:
 
 When using an Unsloth model, we can get this option as well:
 
-**UD- Prefix (Ultra-Dense / Unified Dense)**
+**UD- Prefix (Unsloth Dynamic)**
 
 - More aggressive quantization that further compresses weights
 - UD-Q8_K_XL uses K-quant but with additional compression
