@@ -1,10 +1,10 @@
 .PHONY: run install build
 
-run:
+build:
+	npm run build
+
+run: build
 	npm run dev
 
 install:
 	npm install
-
-build:
-	npm run build

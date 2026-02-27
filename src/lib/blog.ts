@@ -16,6 +16,7 @@ export const AUTHORS: Record<string, Author> = {
 
 export interface BlogPostMeta {
   slug: string;
+  file?: string;
   title: string;
   date: string;
   excerpt: string;
@@ -50,7 +51,11 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const key = slug?.trim();
   if (!key) return null;
 
-  const url = `${getBase()}${getBasePath()}blog/posts/${key}.md`;
+  const posts = await getAllPosts();
+  const meta = posts.find((p) => p.slug === key);
+  const filename = meta?.file || key;
+
+  const url = `${getBase()}${getBasePath()}blog/posts/${filename}.md`;
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) return null;
 
