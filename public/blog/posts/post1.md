@@ -11,6 +11,8 @@ At Ardan we have been hard at work over the past 3 months building [Kronk](https
 
 One of the hardest things to figure out when you’re just starting is to know which open source models are the best to use for your use case. We need to use models that are in the GGUF (GPT-Generated Unified Format) format because this is the format that llama.cpp developed and uses. It was introduced in August 2023 by llama.cpp as a direct replacement and improvement over their previous GGML format.
 
+_Note: GGUF (GPT-Generated Unified Format)": This expansion is disputed. GGUF was created by Georgi Gerganov (whose initials are "GG"), and "GGML" stands for "Georgi Gerganov Machine Learning." The "GG" in GGUF more likely refers to his initials, not "GPT-Generated." Some community sources do use "GPT-Generated" but it doesn't appear in the official llama.cpp spec._
+
 There are currently over 147k GGUF models in Hugging Face (HF), so how can you identify which of these models are best for the work you want to accomplish? To make things more complicated, not all these models are the same and not all of them will run on your hardware. This is going to be one of the most frustrating aspects of the entire process. Eventually, you will figure out what you can and can’t run, and which model types work the best for you.
 
 In this post, I’m going to help you navigate this world of models that you will see on HF. I will decipher the most important acronyms and labels you will see on the site and in the model names. I’ll point you to the best provider of GGUF models in HF (Unsloth) that will give you the best chance to succeed.
@@ -59,7 +61,7 @@ Hybrid models offer excellent quality per token with efficient sequential memory
 
 _Note: Hybrid architectures could theoretically be extended to VLMs, though this is less common since vision models typically rely on attention mechanisms for processing visual tokens._
 
-Models like Qwen3.5 and GLM-4.6V use Hybrid architectures.
+Models like Qwen3.5 and LFM2 use Hybrid architectures.
 
 ### How These Architectures Apply Across Model Types
 
@@ -202,20 +204,20 @@ If you want to go deeper into these quantization strategies, here it is:
 
 **Q8_0 (Original 8-bit Quantization)**
 
-- Method: Simple per-tensor (whole tensor) quantization
-- Approach: Uses a single scale factor for the entire tensor
-- Drawback: Less efficient distribution of precision across weights
-- File suffix: Q8_0 - the "0" indicates the original GGML quantization method
+- Method: Simple per-block quantization
+- Approach: Splits tensors into blocks of 256 weights, each with its own scale factor
+- Drawback: Less efficient distribution of precision across weights compared to K-quants
+- File suffix: Q8_0 - the "0" indicates the original legacy quantization method
 
-**Q8_K (K-quant / KoboldAI Quantization)**
+**Q8_K (K-quant Quantization)**
 
-- Method: Advanced block-based quantization
-- Approach: Splits tensors into blocks (e.g., 32 or 64 elements) with separate scale factors per block
+- Method: Advanced multi-level block-based quantization
+- Approach: Uses a two-level scheme with small blocks grouped into super-blocks, each with their own scale factors for better precision
 - Advantages:
   - Better precision distribution across weight ranges
   - More efficient use of bits
   - Generally better quality at same bit width
-  - File suffix: Q8_K, Q6_K - the "K" indicates KoboldAI's K-quant method
+  - File suffix: Q8_K, Q6_K - the "K" indicates the K-quant method developed by the llama.cpp project
 
 When using an Unsloth model, we can get this option as well:
 
