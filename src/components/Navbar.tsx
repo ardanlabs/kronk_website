@@ -8,8 +8,8 @@ const navLinks = [
   { label: "Features", href: "/#features" },
   { label: "SDK", href: "/#sdk" },
   { label: "Install", href: "/#install" },
-  { label: "Examples", href: "/#examples" },
   { label: "Platform", href: "/#platform" },
+  { label: "Examples", href: "/#examples" },
 ];
 
 export const Navbar = () => {
