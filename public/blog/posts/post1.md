@@ -5,7 +5,7 @@ slug: "navigating-hugging-face-for-kronk"
 excerpt: "Learn how to find the right GGUF models on Hugging Face and decipher the acronyms—from Q8_K to UD-Q6_K_XL—so you can run the best models for your hardware."
 author: "bill-kennedy"
 banner: "/blog/images/post1_banner.jpg"
-ogImage: "/blog/images/navigating-hugging face-for-kronk-twitter.jpg"
+ogImage: "/blog/images/navigating-hugging-face-for-kronk-twitter.jpg"
 ---
 
 At Ardan we have been hard at work over the past 3 months building [Kronk](https://github.com/ardanlabs/kronk). Kronk is two projects merged into one. First, it’s an extensive Go SDK that will allow you to use Go for hardware-accelerated local inference with llama.cpp directly integrated into your Go applications via the [yzma](https://github.com/hybridgroup/yzma) module. Kronk also provides a model server (built with the SDK) designed and optimized to be your personal engine for running open source models locally, especially agentic workloads.
