@@ -1,6 +1,15 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/utils";
-import { MessageSquare, Image, Mic, Hash, Search, ArrowUpRight, FileJson, Reply } from "lucide-react";
+import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, ExternalLink } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+const GITHUB_RAW = "https://raw.githubusercontent.com/ardanlabs/kronk/main/examples";
 
 const code = `package main
 
@@ -53,13 +62,34 @@ const examples = [
   { icon: MessageSquare, name: "Chat", desc: "Interactive chat with chat-completion API", cmd: "make example-chat" },
   { icon: Search, name: "Embedding", desc: "Perform embedding operations", cmd: "make example-embedding" },
   { icon: FileJson, name: "Grammar", desc: "Constrain output with GBNF grammars", cmd: "make example-grammar" },
-  { icon: Hash, name: "Question", desc: "Ask a simple question with streaming", cmd: "make example-question" },
+  { icon: HelpCircle, name: "Question", desc: "Ask a simple question with streaming", cmd: "make example-question" },
   { icon: ArrowUpRight, name: "Rerank", desc: "Use a rerank model", cmd: "make example-rerank" },
   { icon: Reply, name: "Response", desc: "Chat with the response API", cmd: "make example-response" },
   { icon: Image, name: "Vision", desc: "Prompt against a vision model", cmd: "make example-vision" },
 ];
 
 export const ExamplesList = () => {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<typeof examples[0] | null>(null);
+  const [modalCode, setModalCode] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleOpen = async (ex: typeof examples[0]) => {
+    setSelected(ex);
+    setOpen(true);
+    setModalCode(null);
+    setLoading(true);
+    try {
+      const res = await fetch(`${GITHUB_RAW}/${ex.name.toLowerCase()}/main.go`);
+      const text = await res.text();
+      setModalCode(res.ok ? text : "Failed to load code.");
+    } catch {
+      setModalCode("Failed to load code.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section id="examples" className="py-12 scroll-mt-24">
       <div className="container mx-auto px-6">
@@ -94,12 +124,11 @@ export const ExamplesList = () => {
           className="mx-auto grid max-w-3xl gap-3 sm:grid-cols-2"
         >
           {examples.map((ex) => (
-            <a
+            <button
               key={ex.name}
-              href={`https://github.com/ardanlabs/kronk/tree/main/examples/${ex.name.toLowerCase()}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-start gap-4 rounded-lg border border-border p-4 transition-colors hover:border-primary/30"
+              type="button"
+              onClick={() => handleOpen(ex)}
+              className="group flex w-full items-start gap-4 rounded-lg border border-border p-4 text-left transition-colors hover:border-primary/30"
             >
               <ex.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <div className="min-w-0">
@@ -110,9 +139,49 @@ export const ExamplesList = () => {
                 <p className="text-xs text-muted-foreground">{ex.desc}</p>
                 <code className="mt-1 block font-mono text-xs text-primary/70">{ex.cmd}</code>
               </div>
-            </a>
+            </button>
           ))}
         </motion.div>
+
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="max-w-4xl max-h-[85vh] flex flex-col p-0">
+            <DialogHeader className="px-6 pt-6 pb-2 pr-12">
+              <DialogTitle className="flex items-center justify-between">
+                {selected ? (
+                  <>
+                    <span>{selected.name} — main.go</span>
+                    <a
+                      href={`https://github.com/ardanlabs/kronk/blob/main/examples/${selected.name.toLowerCase()}/main.go`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-sm font-normal text-primary hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      View on GitHub
+                      <ExternalLink className="h-3.5 w-3.5" />
+                    </a>
+                  </>
+                ) : null}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="flex-1 min-h-0 overflow-auto px-6 pb-6">
+              {loading ? (
+                <div className="flex items-center justify-center py-16">
+                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : modalCode ? (
+                <div className="code-block glow-primary overflow-hidden">
+                  <div className="code-header">{selected?.name.toLowerCase()}/main.go</div>
+                  <div className="overflow-x-auto p-4">
+                    <pre className="text-[13px] leading-relaxed">
+                      <code>{modalCode}</code>
+                    </pre>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </DialogContent>
+        </Dialog>
 
         <div className="mt-20 mb-16 text-center">
           <h3 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl">
