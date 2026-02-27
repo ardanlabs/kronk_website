@@ -1,6 +1,6 @@
 ---
 title: "Navigating Hugging Face for Kronk"
-date: "2025-02-23"
+date: "2025-02-27"
 slug: "navigating-hugging-face-for-kronk"
 excerpt: "Learn how to find the right GGUF models on Hugging Face and decipher the acronyms—from Q8_K to UD-Q6_K_XL—so you can run the best models for your hardware."
 author: "bill-kennedy"
