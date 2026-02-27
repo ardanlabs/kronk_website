@@ -246,4 +246,4 @@ In the next post, I will talk about model configuration and then introduce the V
 
 If you can’t wait, we wrote an extensive manual about Kronk and running models using the Kronk SDK and model server.
 
-https://github.com/ardanlabs/kronk/blob/main/MANUAL.md
+[Read The Manual](https://www.kronkai.com/manual)
