@@ -123,7 +123,7 @@ https://huggingface.co/collections/unsloth/qwen3-coder
 
 So when you are on this page, it’s good to start looking at the label in tiny text underneath the Model family.
 
-![Qwen3.5 page](/blog/images/post1_image3.png)
+![Qwen3.5 page](/blog/images/post1_image4.png)
 
 This is an `Image-Text-to-Text` model which means we can use this for chat apps, agents, and we can submit and ask questions about images. When an AI model is listed as "35B", it means the model has 35 billion parameters.
 
@@ -137,7 +137,7 @@ Let’s look at all the options we have from Unsloth for this model.
 
 https://huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF
 
-![Qwen3.5- options](/blog/images/post1_image4.png)
+![Qwen3.5- options](/blog/images/post1_image3.png)
 
 You can see the largest option is the BF16 version at 69.4 GB. The size of the model can give you a very quick understanding of how much memory you need at the very least to run the model. There is also memory that is needed beyond the size of the model, but that depends on the model settings you use. We will need to talk about that in another post.
 
