@@ -1,8 +1,22 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
+
+const useKronkVersion = () => {
+  const [version, setVersion] = useState<string | null>(null);
+  useEffect(() => {
+    fetch("https://raw.githubusercontent.com/ardanlabs/kronk/main/sdk/kronk/kronk.go")
+      .then((res) => res.ok ? res.text() : Promise.reject())
+      .then((text) => {
+        const match = text.match(/const\s+Version\s*=\s*"([^"]+)"/);
+        if (match) setVersion(match[1]);
+      })
+      .catch(() => {});
+  }, []);
+  return version;
+};
 import {
   Tooltip,
   TooltipContent,
@@ -22,6 +36,7 @@ export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+  const version = useKronkVersion();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -59,6 +74,9 @@ export const Navbar = () => {
           }}
         >
           kronk
+          {version && (
+            <span className="text-sm font-normal text-muted-foreground">v{version}</span>
+          )}
         </Link>
 
         <TooltipProvider>
