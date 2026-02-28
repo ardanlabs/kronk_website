@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Github, Menu, X, Sun, Moon, BookOpen, FileText } from "lucide-react";
+import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -103,6 +103,30 @@ export const Navbar = () => {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
+                <Link
+                  to="/sponsors"
+                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Heart className="h-5 w-5" />
+                  Sponsors
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Organizations that support Kronk</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/contributors"
+                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Users className="h-5 w-5" />
+                  Contributors
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>People who build Kronk</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
                 <a
                   href="https://github.com/ardanlabs/kronk"
                   target="_blank"
@@ -172,6 +196,20 @@ export const Navbar = () => {
                 onClick={() => setMobileOpen(false)}
               >
                 <BookOpen className="h-4 w-4" /> Manual
+              </Link>
+              <Link
+                to="/sponsors"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                <Heart className="h-4 w-4" /> Sponsors
+              </Link>
+              <Link
+                to="/contributors"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                <Users className="h-4 w-4" /> Contributors
               </Link>
               <a
                 href="https://github.com/ardanlabs/kronk"
