@@ -93,7 +93,11 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 
 export function formatDate(dateStr: string): string {
   if (!dateStr?.trim()) return "";
-  const d = new Date(dateStr.trim());
+  const parts = dateStr.trim().split("-");
+  if (parts.length !== 3) return "";
+  const [year, month, day] = parts.map(Number);
+  if (!year || !month || !day) return "";
+  const d = new Date(year, month - 1, day);
   if (isNaN(d.getTime())) return "";
   return d.toLocaleDateString("en-US", {
     year: "numeric",
