@@ -75,12 +75,12 @@ Model Type: Text Generation
      Dense:      Qwen3-8B-Q8_0
      MoE:        cerebras_Qwen3-Coder-REAP-25B-A3B-Q8_0
      Hybrid:     LFM2-700M-GGUF
-     Hybrid/MoE: Qwen3-Coder-Next-Q6_K
+     Hybrid/MoE: Qwen3-Coder-Next-Q4_0
 
 Model Type: Vision (VLM)
      Dense:      gemma-3-4b-it-q4_0
      MoE:        Qwen3-VL-30B-A3B-Instruct-Q8_0
-     Hybrid:     LFM2.5-VL-1.6B-UD-Q8_K_XL
+     Hybrid:     LFM2.5-VL-1.6B-Q8_0
      Hybrid/MoE: Qwen3.5-35B-A3B-Q8_0
 
 Model Type: Embedding
@@ -237,9 +237,13 @@ Here is a quick summary table of these options:
 | UD-Q6_K_XL | 6-bit     | K-quant + Dense | 30.3 GB | Medium  | Resource-constrained       |
 | Q6_K       | 6-bit     | K-quant         | 28.6 GB | Medium  | Balanced approach          |
 
-It’s been my experience that if I use the K_XL version of a model at the highest Q value, I will get the best experience using my Cline agent. Today I am running the Qwen3.5-35B-A3B-UD-Q8_K_XL model and it’s been awesome.
+At Q8 bit depth, the quality difference between UD and uniform quantization is essentially negligible. UD's advantage (assigning different precision per layer) shines at lower bit rates (Q4, Q5) where it can preserve quality in sensitive layers while compressing tolerant ones. At Q8 (~8.5 bits/weight), you're already near full precision, so there's very little room for UD's smarter allocation to improve anything. The real value of UD shows up in formats like UD-Q4_K_XL vs Q4_K_M.
 
 ## Conclusion
+
+In general, I will stay away from the `UD` versions of models if there is a `_0` option available. Especially at the `Q8` level. There are times when I want to use the largest version of a model possible and there is no `_0` option so I will go with `_K_XL` if I'm looking at Unsloth's options. The [bartowski](https://huggingface.co/bartowski) models are always a great second choice.
+
+As of writing this, I am using `Qwen3-Coder-Next-Q8_0` for both [Cline](https://cline.bot/) and [Kilo](https://kilo.ai/) as my coding model. They are large models (~84 GB) but they work flawlessly. The `Qwen_Qwen3.5-35B-A3B-Q8_0` is very good and at ~37 GB it's accessible to a lot more machines. It also supports images so you can use them with your agent. Native tool calling can be a problem at times and you may need to apply a tool calling grammar which Kronk can provide. Cline doesn't use native tool calling so it's a perfect model for Cline.
 
 There is obviously much more to cover when it comes to the configuration of these models. The model configuration directly affects how much actual memory we need to run the model. For now, looking at the size of the model is a good place to start and HF is good at listing the models in order of size and quality.
 
