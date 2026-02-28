@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/utils";
-import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, ExternalLink } from "lucide-react";
+import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const GITHUB_RAW = "https://raw.githubusercontent.com/ardanlabs/kronk/main/examples";
 
@@ -73,6 +79,14 @@ export const ExamplesList = () => {
   const [selected, setSelected] = useState<typeof examples[0] | null>(null);
   const [modalCode, setModalCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!modalCode) return;
+    navigator.clipboard.writeText(modalCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleOpen = async (ex: typeof examples[0]) => {
     setSelected(ex);
@@ -150,16 +164,38 @@ export const ExamplesList = () => {
                 {selected ? (
                   <>
                     <span>{selected.name} — main.go</span>
-                    <a
-                      href={`https://github.com/ardanlabs/kronk/blob/main/examples/${selected.name.toLowerCase()}/main.go`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-sm font-normal text-primary hover:underline"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View on GitHub
-                      <ExternalLink className="h-3.5 w-3.5" />
-                    </a>
+                    <TooltipProvider delayDuration={500} skipDelayDuration={0}>
+                      <div className="flex items-center gap-4">
+                        <Tooltip disableHoverableContent>
+                          <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
+                            <a
+                              href={`https://github.com/ardanlabs/kronk/blob/main/examples/${selected.name.toLowerCase()}/main.go`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-muted-foreground hover:text-primary transition-colors"
+                              onClick={(e) => e.stopPropagation()}
+                              tabIndex={-1}
+                            >
+                              <Github className="h-5 w-5" />
+                            </a>
+                          </TooltipTrigger>
+                          <TooltipContent>View on GitHub</TooltipContent>
+                        </Tooltip>
+                        <Tooltip disableHoverableContent>
+                          <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
+                            <button
+                              type="button"
+                              onClick={handleCopy}
+                              className="text-muted-foreground hover:text-primary transition-colors"
+                              tabIndex={-1}
+                            >
+                              {copied ? <Check className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5" />}
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>{copied ? "Copied!" : "Copy code"}</TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </TooltipProvider>
                   </>
                 ) : null}
               </DialogTitle>

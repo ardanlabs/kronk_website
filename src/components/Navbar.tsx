@@ -3,13 +3,19 @@ import { Github, Menu, X, Sun, Moon, BookOpen, FileText } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const navLinks = [
-  { label: "Features", href: "/#features" },
-  { label: "SDK", href: "/#sdk" },
-  { label: "Install", href: "/#install" },
-  { label: "Platform", href: "/#platform" },
-  { label: "Examples", href: "/#examples" },
+  { label: "Features", href: "/#features", tip: "See what makes Kronk powerful" },
+  { label: "SDK", href: "/#sdk", tip: "Explore the Go SDK for local inference" },
+  { label: "Install", href: "/#install", tip: "Get Kronk up and running" },
+  { label: "Platform", href: "/#platform", tip: "Supported hardware and operating systems" },
+  { label: "Examples", href: "/#examples", tip: "Ready-to-run code examples" },
 ];
 
 export const Navbar = () => {
@@ -42,51 +48,86 @@ export const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2 font-mono text-xl font-bold text-primary">
+        <Link
+          to="/"
+          className="flex items-center gap-2 font-mono text-xl font-bold text-primary"
+          onClick={(e) => {
+            if (location.pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+        >
           kronk
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              onClick={(e) => handleSectionClick(e, link.href)}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            to="/blog"
-            className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <FileText className="h-5 w-5" />
-            Blog
-          </Link>
-          <Link
-            to="/manual"
-            className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <BookOpen className="h-5 w-5" />
-            Manual
-          </Link>
-          <a
-            href="https://github.com/ardanlabs/kronk"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Github className="h-5 w-5" />
-          </a>
-          <button
-            onClick={toggleTheme}
-            className="text-muted-foreground transition-colors hover:text-foreground"
-            aria-label="Toggle theme"
-          >
-            {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </button>
-        </div>
+        <TooltipProvider>
+          <div className="hidden items-center gap-8 md:flex">
+            {navLinks.map((link) => (
+              <Tooltip key={link.href}>
+                <TooltipTrigger asChild>
+                  <Link
+                    to={link.href}
+                    onClick={(e) => handleSectionClick(e, link.href)}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>{link.tip}</TooltipContent>
+              </Tooltip>
+            ))}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/blog"
+                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <FileText className="h-5 w-5" />
+                  Blog
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Articles and tutorials about Kronk</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/manual"
+                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <BookOpen className="h-5 w-5" />
+                  Manual
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Full documentation and reference guide</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href="https://github.com/ardanlabs/kronk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Github className="h-5 w-5" />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent>View the source code on GitHub</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={toggleTheme}
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label="Toggle theme"
+                >
+                  {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>{isDark ? "Switch to light mode" : "Switch to dark mode"}</TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
 
         <button
           className="text-muted-foreground md:hidden"
