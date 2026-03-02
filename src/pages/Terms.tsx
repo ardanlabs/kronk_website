@@ -74,7 +74,7 @@ const Terms = () => {
 
           <h2>3. Disclaimer</h2>
           <p>
-            The materials on KronkAI&rsquo; website are provided on an
+            The materials on the KronkAI website are provided on an
             &lsquo;as is&rsquo; basis. KronkAI makes no warranties, expressed
             or implied, and hereby disclaims and negates all other warranties
             including, without limitation, implied warranties or conditions of
@@ -95,7 +95,7 @@ const Terms = () => {
             damages (including, without limitation, damages for loss of data or
             profit, or due to business interruption) arising out of the use or
             inability to use the materials on KronkAI&rsquo; website, even if
-            KronkAI or an KronkAI authorized representative has been
+            KronkAI or a KronkAI authorized representative has been
             notified orally or in writing of the possibility of such damage.
             Because some jurisdictions do not allow limitations on implied
             warranties, or limitations of liability for consequential or
