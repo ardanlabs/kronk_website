@@ -12,6 +12,8 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Manual = lazy(() => import("./pages/Manual"));
 const Sponsors = lazy(() => import("./pages/Sponsors"));
 const Contributors = lazy(() => import("./pages/Contributors"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/manual" element={<Manual />} />
           <Route path="/sponsors" element={<Sponsors />} />
           <Route path="/contributors" element={<Contributors />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

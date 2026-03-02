@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Github } from "lucide-react";
 
 export const Footer = () => {
@@ -11,6 +12,18 @@ export const Footer = () => {
           </span>
         </div>
         <div className="flex items-center gap-6">
+          <Link
+            to="/privacy"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            to="/terms"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Terms of Service
+          </Link>
           <a
             href="https://pkg.go.dev/github.com/ardanlabs/kronk"
             target="_blank"
