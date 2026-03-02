@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { assetPath } from "@/lib/utils";
 import { Copy, Check, BookOpen } from "lucide-react";
+import { KronkBanner } from "@/components/KronkBanner";
 import { useState } from "react";
 
 export const Hero = () => {
@@ -38,11 +38,7 @@ export const Hero = () => {
             <span className="text-gradient-primary">Kronk</span>
           </h1>
           
-          <img
-            src={assetPath("images/kronk-banner.jpg")}
-            alt="Kronk"
-            className="mx-auto mb-4 max-w-3xl w-full rounded-lg object-cover shadow-lg"
-          />
+          <KronkBanner />
           <p className="mx-auto mb-3 font-bold text-xl leading-relaxed text-foreground sm:text-2xl">
             Your personal engine for running open source models locally. 
           </p>

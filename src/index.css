@@ -135,3 +135,19 @@
     @apply px-4 py-2 rounded-t-lg text-muted-foreground text-xs font-mono;
   }
 }
+
+/* Kronk banner SVG animations - target groups by id */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.kronk-banner #sun {
+  transform-origin: center;
+  animation: spin 20s linear infinite;
+}
+
+.kronk-banner #foreground {
+  transform: scale(1.01);
+  transform-origin: center;
+}
