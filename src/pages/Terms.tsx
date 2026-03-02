@@ -15,18 +15,18 @@ const Terms = () => {
         </Link>
         <article className="legal-content prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-12 prose-h2:mb-4 prose-h2:text-xl prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Ardan Labs Terms of Service
+            KronkAI Terms of Service
           </h1>
 
           <h2>1. Terms</h2>
           <p>
             By accessing the website at{" "}
             <a
-              href="https://www.ardanlabs.com/"
+              href="https://kronkai.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              ardanlabs.com
+              kronkai.com
             </a>
             , you are agreeing to be bound by these terms of service, all
             applicable laws and regulations, and agree that you are responsible
