@@ -15,7 +15,7 @@ const Privacy = () => {
         </Link>
         <article className="legal-content prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-12 prose-h2:mb-4 prose-h2:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-lg prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Ardan Labs Privacy Policy
+            KronkAI Privacy Policy
           </h1>
           <p className="text-muted-foreground mb-8">
             This privacy policy has been compiled to better serve those who are
