@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="flex items-center gap-4">
           <span className="font-mono text-lg font-bold text-primary">kronk</span>
           <span className="text-sm text-muted-foreground">
-            © 2025 Ardan Labs. Apache-2.0 License.
+            © 2025-2026 Ardan Labs. Apache-2.0 License.
           </span>
         </div>
         <div className="flex items-center gap-6">

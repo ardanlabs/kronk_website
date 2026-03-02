@@ -10,6 +10,8 @@ const Index = lazy(() => import("./pages/Index"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Manual = lazy(() => import("./pages/Manual"));
+const Sponsors = lazy(() => import("./pages/Sponsors"));
+const Contributors = lazy(() => import("./pages/Contributors"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/blog/posts/:slug" element={<BlogPost />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/manual" element={<Manual />} />
+          <Route path="/sponsors" element={<Sponsors />} />
+          <Route path="/contributors" element={<Contributors />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

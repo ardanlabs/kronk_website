@@ -33,7 +33,7 @@ export const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="mb-4 font-mono text-sm text-primary">by Ardan Labs</p>
+          
           <h1 className="mb-2 text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl">
             <span className="text-gradient-primary">Kronk</span>
           </h1>
