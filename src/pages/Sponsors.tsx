@@ -6,7 +6,7 @@ const sponsors = [
     name: "Ardan Labs",
     logo: "/images/ardan-labs-badge.svg",
     url: "https://www.ardanlabs.com/",
-    logoBg: "bg-slate-800 rounded-lg p-3",
+    logoBg: "h-32",
     description:
       "Ardan Labs is a software engineering firm delivering expert training, consulting, staff augmentation, and AI implementation services. With deep technical roots in Go, Rust, and Kubernetes, Ardan Labs has helped over 1,800 companies worldwide and trained more than 50,000 engineers to build performant, production-grade systems.",
   },

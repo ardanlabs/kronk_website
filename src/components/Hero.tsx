@@ -27,7 +27,7 @@ export const Hero = () => {
       {/* Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[800px] rounded-full bg-primary/5 blur-[120px]" />
 
-      <div className="container relative z-10 mx-auto px-6 text-center">
+      <div className="container relative z-10 mx-auto px-6 py-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
