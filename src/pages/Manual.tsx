@@ -162,7 +162,7 @@ const Manual = () => {
             </aside>
 
             {/* Right: Content */}
-            <article className="min-w-0 flex-1 order-last lg:order-none prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-32 lg:prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-pre:text-slate-800 prose-pre:[&>code]:text-slate-800 dark:prose-pre:text-slate-200 dark:prose-pre:[&>code]:text-slate-200 prose-code:text-slate-800 dark:prose-code:text-slate-200 prose-img:rounded-lg">
+            <article className="min-w-0 flex-1 order-last lg:order-none prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-32 lg:prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-img:rounded-lg">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeSlug]}

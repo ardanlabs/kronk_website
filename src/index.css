@@ -39,6 +39,7 @@
     --code-bg: 225 15% 94%;
     --code-border: 225 10% 85%;
     --code-header: 225 10% 90%;
+    --code-text: 215 25% 27%;
 
     --glow-primary: 36 95% 45%;
 
@@ -85,6 +86,7 @@
     --code-bg: 224 22% 5%;
     --code-border: 224 20% 14%;
     --code-header: 224 20% 10%;
+    --code-text: 213 31% 82%;
 
     --glow-primary: 30 100% 60%;
 
@@ -126,7 +128,14 @@
   .code-block {
     background: hsl(var(--code-bg));
     border: 1px solid hsl(var(--code-border));
+    color: hsl(var(--code-text));
     @apply rounded-lg font-mono text-sm;
+  }
+
+  .prose pre,
+  .prose pre code,
+  .prose code {
+    color: hsl(var(--code-text));
   }
 
   .code-header {
