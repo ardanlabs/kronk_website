@@ -2,9 +2,17 @@
   {
     "slug": "navigating-hugging-face-kronk",
     "file": "post1",
-    "title": "Navigating Hugging Face for Kronk",
+    "title": "Navigating Hugging Face For Kronk",
     "date": "2026-02-27",
     "excerpt": "Learn how to find the right GGUF models on Hugging Face and decipher the acronyms—from Q8_K to UD-Q6_K_XL—so you can run the best models for your hardware.",
+    "author": "bill-kennedy"
+  },
+  {
+    "slug": "using-the-vram-calculator-in-kronk",
+    "file": "post2",
+    "title": "Using The VRAM Calculator",
+    "date": "2026-03-04",
+    "excerpt": "Learn how to use the VRAM calculator to know exactly how much memory you need to run a model in Kronk.",
     "author": "bill-kennedy"
   }
 ]
