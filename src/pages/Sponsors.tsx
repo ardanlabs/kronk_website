@@ -1,3 +1,4 @@
+import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
 import { ExternalLink } from "lucide-react";
 
@@ -30,6 +31,11 @@ const sponsors = [
 const Sponsors = () => {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Sponsors — Kronk"
+        description="Kronk is made possible thanks to the generous support from these organizations."
+        path="/sponsors"
+      />
       <Navbar />
       <main className="container mx-auto px-6 pt-24 pb-16">
         <h1 className="text-4xl font-bold text-foreground mb-4">Sponsors</h1>

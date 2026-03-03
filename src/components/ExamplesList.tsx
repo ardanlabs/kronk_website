@@ -110,7 +110,7 @@ export const ExamplesList = () => {
         <div className="mb-16 text-center">
         <img
             src={assetPath("images/ready-to-run.png")}
-            alt="Kronk"
+            alt="Ready-to-run Kronk examples"
             className="mx-auto mb-4 w-[275px]"
           />
           <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">

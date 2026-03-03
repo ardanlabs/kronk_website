@@ -1,3 +1,4 @@
+import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
 import { Github } from "lucide-react";
 
@@ -37,6 +38,11 @@ const contributors = [
 const Contributors = () => {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Contributors — Kronk"
+        description="The people behind Kronk."
+        path="/contributors"
+      />
       <Navbar />
       <main className="container mx-auto px-6 pt-24 pb-16">
         <h1 className="text-4xl font-bold text-foreground mb-4">Contributors</h1>

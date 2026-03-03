@@ -79,7 +79,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 224 20% 16%;
+    --border: 224 20% 22%;
     --input: 224 20% 16%;
     --ring: 30 100% 60%;
 
@@ -159,4 +159,65 @@
 .kronk-banner #foreground {
   transform: scale(1.01);
   transform-origin: center;
+}
+
+/* Hero animated blurred blobs - JetBrains-style color cycling */
+@keyframes hero-blob-float {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    opacity: 0.7;
+    transform: translate(5%, -5%) scale(1.05);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-3%, 3%) scale(0.98);
+  }
+  75% {
+    opacity: 0.6;
+    transform: translate(4%, 2%) scale(1.02);
+  }
+}
+
+.hero-blobs {
+  pointer-events: none;
+}
+
+.hero-blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(100px);
+  animation: hero-blob-float 12s ease-in-out infinite;
+}
+
+.hero-blob-1 {
+  top: 10%;
+  left: 10%;
+  background: hsl(var(--primary) / 0.35);
+}
+
+.hero-blob-2 {
+  top: 30%;
+  right: 5%;
+  /* Cyan accent - distinct from primary in both themes */
+  background: hsl(199 75% 62% / 0.3);
+  animation-delay: -3s;
+}
+
+.hero-blob-3 {
+  bottom: 20%;
+  left: 20%;
+  background: hsl(var(--primary) / 0.25);
+  animation-delay: -6s;
+}
+
+.hero-blob-4 {
+  bottom: 10%;
+  right: 15%;
+  background: hsl(199 75% 62% / 0.25);
+  animation-delay: -9s;
 }

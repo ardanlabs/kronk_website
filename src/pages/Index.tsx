@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Features } from "@/components/Features";
@@ -23,7 +24,12 @@ const Index = () => {
   }, [hash]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-hidden">
+      <PageMeta
+        title="Kronk — Hardware Accelerated LLM Inference for Go"
+        description="Kronk is a Go library for hardware accelerated local LLM inference with llama.cpp. OpenAI-compatible API."
+        path="/"
+      />
       <Navbar />
       <Hero />
       <Features />

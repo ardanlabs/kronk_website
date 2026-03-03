@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
 import { Loader2 } from "lucide-react";
 import { extractToc, stripTocFromContent, groupTocByChapter, type TocEntry } from "@/lib/manual";
@@ -87,6 +88,13 @@ const Manual = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Kronk User Manual — Kronk"
+        description="Complete guide to running models with the Kronk SDK and model server."
+        path="/manual"
+        ogImage="/images/kronk-user-manual.jpg"
+        ogImageAlt="Kronk User Manual"
+      />
       <Navbar />
       <main className="w-full lg:container mx-auto px-6 pt-12 lg:pt-24 pb-16">
         {isLoading && (

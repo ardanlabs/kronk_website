@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
+import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 const Terms = () => {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Terms of Service — Kronk"
+        description="Kronk terms of service for using our website and services."
+        path="/terms"
+      />
       <Navbar />
       <main className="container mx-auto px-6 pt-24 pb-16 max-w-3xl">
         <Link
@@ -15,14 +21,14 @@ const Terms = () => {
         </Link>
         <article className="legal-content prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-12 prose-h2:mb-4 prose-h2:text-xl prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            KronkAI Terms of Service
+            Kronk Terms of Service
           </h1>
 
           <h2>1. Terms</h2>
           <p>
             By accessing the website at{" "}
             <a
-              href="https://kronkai.com/"
+              href="https://www.kronkai.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -39,7 +45,7 @@ const Terms = () => {
           <h2>2. Use License</h2>
           <p>
             Permission is granted to temporarily download one copy of the
-            materials (information or software) on KronkAI&rsquo; website for
+            materials (information or software) on Kronk&rsquo;s website for
             personal, non-commercial transitory viewing only. This is the grant
             of a license, not a transfer of title, and under this license you
             may not:
@@ -52,7 +58,7 @@ const Terms = () => {
             </li>
             <li>
               attempt to decompile or reverse engineer any software contained on
-              KronkAI&rsquo; website;
+              Kronk&rsquo;s website;
             </li>
             <li>
               remove any copyright or other proprietary notations from the
@@ -65,7 +71,7 @@ const Terms = () => {
           </ul>
           <p>
             This license shall automatically terminate if you violate any of
-            these restrictions and may be terminated by KronkAI at any time.
+            these restrictions and may be terminated by Kronk at any time.
             Upon terminating your viewing of these materials or upon the
             termination of this license, you must destroy any downloaded
             materials in your possession whether in electronic or printed
@@ -74,8 +80,8 @@ const Terms = () => {
 
           <h2>3. Disclaimer</h2>
           <p>
-            The materials on the KronkAI website are provided on an
-            &lsquo;as is&rsquo; basis. KronkAI makes no warranties, expressed
+            The materials on Kronk&rsquo;s website are provided on an
+            &lsquo;as is&rsquo; basis. Kronk makes no warranties, expressed
             or implied, and hereby disclaims and negates all other warranties
             including, without limitation, implied warranties or conditions of
             merchantability, fitness for a particular purpose, or
@@ -83,7 +89,7 @@ const Terms = () => {
             rights.
           </p>
           <p>
-            Further, KronkAI does not warrant or make any representations
+            Further, Kronk does not warrant or make any representations
             concerning the accuracy, likely results, or reliability of the use of
             the materials on its website or otherwise relating to such materials
             or on any sites linked to this site.
@@ -91,11 +97,11 @@ const Terms = () => {
 
           <h2>4. Limitations</h2>
           <p>
-            In no event shall KronkAI or its suppliers be liable for any
+            In no event shall Kronk or its suppliers be liable for any
             damages (including, without limitation, damages for loss of data or
             profit, or due to business interruption) arising out of the use or
-            inability to use the materials on KronkAI&rsquo; website, even if
-            KronkAI or a KronkAI authorized representative has been
+            inability to use the materials on Kronk&rsquo;s website, even if
+            Kronk or a Kronk authorized representative has been
             notified orally or in writing of the possibility of such damage.
             Because some jurisdictions do not allow limitations on implied
             warranties, or limitations of liability for consequential or
@@ -104,26 +110,26 @@ const Terms = () => {
 
           <h2>5. Accuracy of materials</h2>
           <p>
-            The materials appearing on KronkAI website could include
-            technical, typographical, or photographic errors. KronkAI does not
+            The materials appearing on Kronk website could include
+            technical, typographical, or photographic errors. Kronk does not
             warrant that any of the materials on its website are accurate,
-            complete or current. KronkAI may make changes to the materials
+            complete or current. Kronk may make changes to the materials
             contained on its website at any time without notice, however;
-            KronkAI does not make any commitment to update the materials.
+            Kronk does not make any commitment to update the materials.
           </p>
 
           <h2>6. Links</h2>
           <p>
-            KronkAI has not reviewed all of the sites linked to its website
+            Kronk has not reviewed all of the sites linked to its website
             and is not responsible for the contents of any such linked site. The
-            inclusion of any link does not imply endorsement by KronkAI of
+            inclusion of any link does not imply endorsement by Kronk of
             the site. Use of any such linked website is at the user&rsquo;s own
             risk.
           </p>
 
           <h2>7. Modifications</h2>
           <p>
-            KronkAI may revise these terms of service for its website at any
+            Kronk may revise these terms of service for its website at any
             time without notice. By using this website you are agreeing to be
             bound by the then current version of these terms of service.
           </p>

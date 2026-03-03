@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
 import { getAllPosts, formatDate, getAuthor } from "@/lib/blog";
 import { Calendar, Loader2 } from "lucide-react";
@@ -13,6 +14,11 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Blog — Kronk"
+        description="News, guides, and updates about Kronk."
+        path="/blog"
+      />
       <Navbar />
       <main className="container mx-auto px-6 pt-24 pb-16">
         <div className="max-w-3xl mx-auto">

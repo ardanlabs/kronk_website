@@ -22,6 +22,7 @@ export interface BlogPostMeta {
   excerpt: string;
   author?: string;
   banner?: string;
+  ogImage?: string;
 }
 
 export interface BlogPost extends BlogPostMeta {
@@ -87,6 +88,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     excerpt: (data.excerpt as string) || "",
     author: (data.author as string) || undefined,
     banner: (data.banner as string) || undefined,
+    ogImage: (data.ogImage as string) || undefined,
     content,
   };
 }

@@ -15,17 +15,14 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden pt-16">
-      {/* Subtle pattern background */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 670 670' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff' d='M312.56,65.75v67.31h44.88v-67.31h-44.88ZM160.5,128.77l-31.73,31.73,47.59,47.59,31.73-31.73-47.59-47.59ZM509.5,128.77l-47.59,47.59,31.73,31.73,47.59-47.59-31.73-31.73ZM335,177.94c-86.48,0-157.06,70.59-157.06,157.06s70.59,157.06,157.06,157.06,157.06-70.59,157.06-157.06-70.59-157.06-157.06-157.06ZM335,222.81c62.23,0,112.19,49.96,112.19,112.19s-49.96,112.19-112.19,112.19-112.19-49.96-112.19-112.19,49.96-112.19,112.19-112.19ZM65.75,312.56v44.88h67.31v-44.88h-67.31ZM536.94,312.56v44.88h67.31v-44.88h-67.31ZM176.36,461.91l-47.59,47.59,31.73,31.73,47.59-47.59-31.73-31.73ZM493.64,461.91l-31.73,31.73,47.59,47.59,31.73-31.73-47.59-47.59ZM312.56,536.94v67.31h44.88v-67.31h-44.88Z'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[800px] rounded-full bg-primary/5 blur-[120px]" />
+    <section className="relative flex min-h-[85vh] items-center justify-center pt-16">
+      {/* Animated blurred blobs - color cycling effect */}
+      <div className="hero-blobs absolute inset-0 scale-50 lg:scale-100 opacity-50">
+        <div className="hero-blob hero-blob-1" />
+        <div className="hero-blob hero-blob-2" />
+        <div className="hero-blob hero-blob-3" />
+        <div className="hero-blob hero-blob-4" />
+      </div>
 
       <div className="container relative z-10 mx-auto px-6 py-6 text-center">
         <motion.div

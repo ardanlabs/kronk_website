@@ -1,5 +1,7 @@
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { assetPath } from "@/lib/utils";
+import { PageMeta } from "@/components/PageMeta";
 import { useQuery } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -73,9 +75,40 @@ const BlogPost = () => {
   }
 
   const author = getAuthor(post.author);
+  const ogImage = (post.ogImage || post.banner)?.replace(/^\//, "") || "images/kronkai-twitter.png";
+  const articleUrl = `https://www.kronkai.com/blog/${post.slug}`;
+  const bannerUrl = post.banner
+    ? `https://www.kronkai.com${post.banner.startsWith("/") ? post.banner : `/${post.banner}`}`
+    : undefined;
 
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title={`${post.title} — Kronk`}
+        description={post.excerpt || post.title}
+        path={`/blog/${post.slug}`}
+        ogImage={`/${ogImage}`}
+        ogImageAlt={post.title}
+      />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: post.title,
+            description: post.excerpt || post.title,
+            datePublished: post.date,
+            url: articleUrl,
+            ...(bannerUrl && { image: bannerUrl }),
+            ...(author && {
+              author: {
+                "@type": "Person",
+                name: author.name,
+              },
+            }),
+          })}
+        </script>
+      </Helmet>
       <Navbar />
       <main className="container mx-auto px-6 pt-24 pb-16">
         <div className="max-w-3xl mx-auto">
@@ -91,7 +124,7 @@ const BlogPost = () => {
             <div className="mb-10 -mx-6 sm:mx-0 sm:rounded-xl overflow-hidden">
               <img
                 src={assetPath(encodeURI(post.banner.replace(/^\//, "")))}
-                alt=""
+                alt={post.title}
                 className="w-full h-48 sm:h-64 object-cover"
               />
             </div>
