@@ -1,162 +1,238 @@
 ---
-title: "Using The VRAM Calculator"
+title: "Understanding the Kronk VRAM Calculator"
 date: "2026-03-04"
-slug: "using-the-vram-calculator-in-kronk"
+slug: "understanding-the-kronk-vram-calculator"
 excerpt: "Learn how to use the VRAM calculator to know exactly how much memory you need to run a model in Kronk."
 author: "bill-kennedy"
 banner: "/blog/images/post2_banner.jpg"
 ogImage: "/blog/images/post2_twitter.jpg"
 ---
 
-In the first post "Navigating Hugging Face For Kronk", I discussed how model architectures and model types affect how a model will run on the hardware you have. The three different architectures Dense, Mixture of Experts (MoE), and Hybrid, plus model types like Q8_0 vs Q8_K_XL all behave differently and are tuned in different ways. Memory is going to be your first big obstacle. You basically won't be able to use a model that is larger than 80% of the total memory you have on the machine if you are using Apple Silicon (unified memory). For systems that have separate CPU and GPU memory, you are free to use all of the GPU memory, but if some of the model will run on CPU, I like the 80% rule again.
+## Introduction
 
-In this post, I'm going to talk about the VRAM calculator which will tell you exactly how much memory you need to fit a model entirely inside your GPU. When your GPU and CPU memory are separated, I'll share with you some settings that will let you run some layers of the model (MoE base models) on the CPU to allow you to run larger models. Dense models have to fit 100% in your GPU memory. When you are using a Hybrid model, you need to know if it's Dense or MoE to know what options you have.
+One of the biggest problems you will run into when trying to run an LLM on your local machine is not having enough memory. Finding out the model won’t run after waiting 20 minutes to download the model and spending another 20 minutes fighting through settings that will never work is highly frustrating.
 
-## VRAM Algorithm
+This is why we wrote the VRAM (Video RAM) calculator. The VRAM calculator will give you guidance about models you find on Hugging Face and if they will run on your machine. It does this by pulling information from the Model’s GGUF metadata and asking you a few questions.
 
-Let's start with the algorithm and then I will show you how to get all the values you need to use the algorithm.
+In this post, we will walk you through the VRAM calculator so you can understand all the values and questions you will be presented with. Hopefully after this post, you won’t waste your time trying to download a model that will never run on your hardware to begin with.
 
-Here is the most basic form of the algorithm:
+## The VRAM Formula At A Glance
 
-`Total VRAM = Model Weights + KV Cache`
-
-The `Model Weights` in the algorithm represent the learnable numerical parameter values that the model has acquired through training to understand language patterns, relationships, and knowledge. In LLMs, these weights are stored inside the model file and represent the connections between neurons across all layers of the model's neural network. The model weights essentially encode the model's "memory" and intelligence, which allows it to determine how input tokens are processed and transformed into meaningful outputs.
-
-All these weights in a Dense and some Hybrid models need to be loaded into the GPU's memory. In MoE models, only certain layers need to be loaded at any given time. This is why the size of the model is important to know, since it represents the size of the model weights.
-
-The `KV Cache` in the algorithm represents the amount of memory to be used for processing inference through the model. This parameter in the algorithm is completely configurable by you and is made up of 4 parts:
-
-- **Context window size**: Larger context = larger KV cache (linear relationship)
-
-- **KV cache quantization**: Options like `f16` (16-bit) vs `q8_0` (8-bit) reduce memory usage
-
-- **Number of concurrent sequences**: More parallel requests = more KV caches
-
-- **Batch sizes**: Affects how much cache is allocated per request
-
-## Slots and Sequences
-
-Slots and sequences are at the core of everything that happens in Kronk to perform inference. However, different model servers handle the concept of slots and sequences differently. How they use them are diffrent depending on the optimization they want to provide or the amount of parallelism they want to support. This is no different in Kronk, so before I start to explain this, I need to provide a bit of a disclaimer.
-
-### Disclaimer
-
-Slots and sequences are llama.cpp specific terms, though the underlying concepts have equivalents in other serving systems.
-
-When using Kronk this is what slots and sequences are:
-
-- **Slot** - A persistent slot that holds state (prompt, KV cache) for a sequence
-- **Sequence** - A batch of tokens being processed within a slot
-
-For other serving systems these are equivalant terms:
-
-- **vLLM**: Uses "Request" or "RequestPool" - each request has its own sequence with its own KV cache
-- **_sglang_**: Uses "Request" - manages multiple requests with their own KV caches
-- **TGI (Text Generation Inference)**: Uses "Request" or "Batch"
-
-The core concept (each request needs its own KV cache storage) is universal across all LLM serving systems - it's just the naming that differs. vLLM and sglang achieve better batch efficiency through continuous batching (paged attention), while llama.cpp uses a simpler fixed-slot approach.
-
-_Note: That doesn't mean this calculator is only useful when running models in Kronk, it just means you might need more information to make an accurate calculation for another system._
-
-### Kronk's Use of Slots and Sequences
-
-A slot is a processing unit that handles one request at a time. Each slot is assigned a unique sequence ID that maps to an isolated partition in the shared KV cache. The mapping is always 1 to 1 in Kronk.
-
-DIAGRAM HERE
-Slot 0 → Sequence 0 → KV cache partition 0
-Slot 1 → Sequence 1 → KV cache partition 1
-Slot 2 → Sequence 2 → KV cache partition 2
-Slot 3 → Sequence 3 → KV cache partition 3
-
-NSeqMax controls how many slots (and sequences) are created. In the diagram above, NSeqMax is set to 4 so Kronk will create 4 slots each with their own sequence to a KV cache partition. More slots means more concurrent requests, but each slot reserves its own KV cache partition in VRAM whether or not it's actively used.
-
-### What Affects KV Cache Memory Per Sequence
-
-Each sequence's KV cache partition size is determined these factors:
-
-**1. Context Window (n_ctx)**  
-The maximum number of tokens the sequence can hold. Larger context windows linearly increase memory. 32K context uses 4× the memory of 8K context.
-
-**2. Number of Layers (block_count)**  
-Every transformer layer stores its own key and value tensors per token. More layers means more memory per token. A 70B model with 80 layers uses ~2.5× more per-token memory than a 7B model with 32 layers.
-
-**3. KV Cache Precision (bytes_per_element)**  
-This represents the data type used to store cached keys and values. There are several.
-
-- f16 = 2 bytes per element (default, best quality)
-- q8_0 = 1 byte per element (50% VRAM savings, good quality)
-
-**4. Head Geometry**  
-This refers to the structural parameters that define how attention heads organize their key-value vectors.
-
-- head_count_kv - Number of key-value attention heads (often less than query heads in grouped-query attention)
-- key_length - Dimension of each key vector (typically the same as `head_count_kv / head_count_query`)
-- value_length - Dimension of each value vector (usually equal to `key_length`)
+Before I can show you the calculator, I want to start by presenting the VRAM formula and breaking it down into its different components. The total VRAM required to run 100% of the model on the GPU is the sum of these three components:
 
 ```
-Notes:
-
-This is called "geometry" because it describes the **shape/structure** of the attention mechanism - how many heads there are and how the key/value vectors are partitioned across them. It's a fixed property of the model architecture that's baked into the neural network's design.
-
-For example, in Llama 3 with Grouped-Query Attention (GQA):
-
-- The model might have 32 query heads but only 8 KV heads
-- Each KV head "shares" its key/value vectors across multiple query heads
-- This geometry determines how the KV cache is organized in memory
-
-Because these values are derived from the model's architecture, they're embedded in the GGUF file header and cannot be changed without retraining the model.
+Total VRAM = Model_Weights + KV_Cache + Compute_Buffer
 ```
 
-The KV_Per_Sequence is the per-token per layer value multiplied by the context window and number of layers:
+| Component          | What It Is                               | Typical Size  | User Control                       |
+| ------------------ | ---------------------------------------- | ------------- | ---------------------------------- |
+| **Model Weights**  | The model's trained parameters           | 2GB - 100+ GB | Quantization choice (Q4, Q8, etc.) |
+| **KV Cache**       | Context storage for conversation history | 1GB - 50+ GB  | Context window size, batch slots   |
+| **Compute Buffer** | GPU working memory for inference         | 256MB - 1GB+  | Auto-calculated (heuristic)        |
+
+## Component 1: Model Weights
+
+Model weights are the actual learned parameters of the model’s neural network. They're stored in the model file and represent everything the model "knows" after training. I like thinking of these learned parameters as knobs that are hardcoded to a specific setting.
+
+![knobs](image1.png)
+
+The image above is what I see in my head when I think about a model file. In a 30 billion parameter model there are 30 billion of these knobs set in some fixed position just like the image above. There are also layers of knobs like you see in the picture. That 30 billion model might have up to 40 layers of knobs.
+
+### How We Calculate the Value for Model Weights
+
+If your goal is to put 100% of the model's knobs in the GPU, then the size of the model file in bytes represents the Model_Weights value.
 
 ```
-KV_Per_Token_Per_Layer = head_count_kv × (key_length + value_length) × bytes_per_element
-KV_Per_Sequence        = n_ctx × n_layers × KV_Per_Token_Per_Layer
+Model_Weights = modelFileSizeInBytes
 ```
 
-The total Slot Memory is the number of slots multiplied by the KV_Per_Sequence. Then the total VRAM is the size of the model (model weights) plus the amount of Slot Memory.
+That is the best way to go, but not always possible. Sometimes the model is too large to fit entirely in the GPU's VRAM. When this is the situation, there are two ways to reduce the Model_Weights value on the GPU: layer offloading and expert offloading. They work very differently, and it’s important to understand the distinction.
+
+### Layer Offloading (Dense and MoE)
+
+Layer offloading moves entire layers of the model to run on the CPU. Understand, when you do this every token we process and generate pays a penalty. This is because every token the model generates must pass through every layer, one after the other. When a layer lives on the CPU, processing stalls while that layer does its work in slower system memory.
+
+Here is a representation of loading the first 20 layers of the model in VRAM and the remaining 12 layers in system memory.
 
 ```
-Slot_Memory = NSeqMax × KV_Per_Sequence
-Total_VRAM  = Model_Weights + Slot_Memory
+        GPU VRAM                 CPU SYSTEM MEMORY
+┌───────────────────────┐    ┌───────────────────────┐
+│  Layer 0  (fast)      │    │  Layer 20 (slow)      │
+│  Layer 1  (fast)      │    │  Layer 21 (slow)      │
+│  ...                  │    │  ...                  │
+│  Layer 19 (fast)      │    │  Layer 31 (slow)      │
+└───────────────────────┘    └───────────────────────┘
+         Token must pass through ALL layers →→→
 ```
 
-## Real Model Calculation Example
+For Dense models, every knob in every layer participates in every token, so the performance hit is severe. You’re bottlenecked by the slowest layer. For MoE models, the hit is less painful because only the always-active knobs and a few selected expert knobs in that layer need to do the work — the remaining expert knobs sit idle.
 
-Here is an example using the `Qwen3-Coder-30B-A3B-Instruct-UD-Q8_K_XL` model.
-
-```
-Model                   : Qwen3-Coder-30B-A3B-Instruct-UD-Q8_K_XL
-Model Weights           : 36.0 GB
-Context Window (n_ctx)  : 131,072 (128K)
-Bytes Per Element       : 1 (q8_0)
-block_count (n_layers)  : 48
-attention.head_count_kv : 4
-attention.key_length    : 128
-attention.value_length  : 128
-```
-
-Step 1 — Per-token-per-layer cost:
+In this scenario, the VRAM calculator splits the model weights value into two variables:
 
 ```
-KV_Per_Token_Per_Layer = 4 × (128 + 128) × 1 = 1,024 bytes
+Model_Weights_GPU = Sum of all weights in GPU layers
+Model_Weights_CPU = Sum of all weights in CPU layers
 ```
 
-Step 2 — Per-sequence cost:
+### Expert Offloading (MoE Only)
+
+MoE models open up a second, smarter offloading strategy called expert offloading. To understand it, you need to know how MoE layers are structured.
+
+In an MoE model, each layer contains two distinct types of knobs:
+
+**Always Active Weights**:  
+These are knobs that participate in every single token generated, regardless of the input. This includes things like the attention knobs, normalization knobs, embeddings, and the output head.
+
+_Note: Embeddings (also called the input embedding layer) is the very first thing that happens when a token enters the model. Each token starts as an integer ID (e.g., the word "hello" might be token 15339). The embedding layer is a giant lookup table that converts that integer into a dense vector of numbers — for example, a vector of 4096 floating-point values. That vector is what actually flows through the rest of the model's layers. The table has one row per vocabulary entry, so a model with a 150k token vocabulary and 4096-dimensional embeddings has a 150k × 4096 matrix._
+
+_Output head (often called lm_head) is the mirror image at the very end. After the token has passed through all the transformer layers, the model has a final hidden-state vector. The output head projects that vector back to vocabulary size — producing a probability score (logit) for every possible next token. The model then samples from those probabilities to pick the next token._
+
+_Both are always-active because every token must enter through the embedding layer and exit through the output head, no matter what happens in between._
+
+**Expert Weights**:  
+These are knobs that are dynamically selected at runtime to participate in token generation. Each layer contains multiple expert knobs, but only a few are activated for any given token. For example, a model might have 8 expert knobs per layer but only use 2 of those knobs per token.
+
+Here is a representation of a layer of 8 knobs where 2 expert knobs are activated.
 
 ```
-KV_Per_Sequence = 131,072 × 48 × 1,024 = ~6.4 GB
+          MoE Layer (inside one layer)
+┌──────────────────────────────────────────────┐
+│   Always Active: attention, norms (small)    │
+├──────────────────────────────────────────────┤
+│ Expert 1  │ Expert 2  │ Expert 3  │ Expert 4 │
+│ (unused)  │ (ACTIVE)  │ (unused)  │ (unused) │
+│           │           │           │          │
+│ Expert 5  │ Expert 6  │ Expert 7  │ Expert 8 │
+│ (unused)  │ (unused)  │ (ACTIVE)  │ (unused) │
+└──────────────────────────────────────────────┘
+    Only 2 of 8 experts activate per token
 ```
 
-Step 3 — Total KV cache (NSeqMax = 2):
+The expert weights make up the bulk of the model’s size. The always-active weights are relatively small by comparison. Expert offloading takes advantage of this: the always-active weights stay on the GPU, while the expert weights from selected layers move to the CPU.
 
 ```
-Slot_Memory = 2 × 6.4 GB = ~12.8 GB
+        GPU VRAM                CPU System Memory
+┌───────────────────────┐    ┌───────────────────────┐
+│ Always Active Weights │    │ Expert weights from   │
+│ (all layers, on GPU)  │    │ bottom layers         │
+│                       │    │                       │
+├───────────────────────┤    │                       │
+│ Expert weights from   │    │ (only hit when an     │
+│ top N layers          │    │  expert routes there) │
+└───────────────────────┘    └───────────────────────┘
 ```
 
-Step 4 — Total VRAM:
+This is less painful than layer offloading because the always-active computation still runs at full GPU speed for every token. Only the expert lookups for offloaded layers hit the CPU, and since only a fraction of experts activate per token, most of that CPU memory sits idle on any given token.
+
+In this scenario, the VRAM calculator caluclates model weights like this:
 
 ```
-Total_VRAM = 36.0 GB + 12.8 GB = ~48.8 GB
+Model_Weights_GPU = alwaysActiveWeights + expertWeightsOnGPU
+Model_Weights_CPU = expertWeightsOnCPU
 ```
 
-## VRAM Calculator In Action
+### Where To Find The Model Weights Value
+
+How you determine the Model_Weights value depends on which scenario you’re in.
+
+**All Layers on GPU**: The model file size in bytes is your Model_Weights value. You can find this by checking the file size on disk after downloading, or by looking at the file size on the Hugging Face model page before you download.
+
+**Example:** A `Qwen3-8B-Q4_K_M.gguf` file is ~5.5GB on disk, so Model_Weights = ~5.5GB.
+
+**Layer Offloading**: You need to know how many total layers the model has and how many you’re keeping on the GPU. The model’s layer count is stored in the GGUF metadata under `llama.block_count`. Since layers are roughly equal in size, you can estimate:
+
+```
+Model_Weights_GPU = (gpuLayers / totalLayers) × modelFileSize
+Model_Weights_CPU = (cpuLayers / totalLayers) × modelFileSize
+```
+
+**Example:** A 5.5GB model with 32 layers and 20 layers on the GPU: Model_Weights_GPU ≈ (20/32) × 5.5GB ≈ 3.4GB.
+
+**Expert Offloading**: You need to know the size of the always-active weights and the expert weights separately. These aren’t values you can easily calculate by hand — the VRAM calculator reads the individual tensors from the GGUF file and categorizes them automatically. The calculator will show you the split and let you choose how many layers of expert weights to keep on the GPU.
+
+## Component 2: KV Cache (The Hidden Beast)
+
+During token generation the model needs to remember previous tokens so it doesn't have to reprocess the entire conversation for every new token it generates. The KV cache acts as the model's short-term memory. Each token that passes through the model produces two vectors per layer that get stored in the KV cache:
+
+- **K (Key)**: Used to match against other tokens during attention
+- **V (Value)**: The information that gets pulled from a token when it's matched
+
+The size of the KV Cache is set by you by specifying the total number of tokens you want to store. This can be as small as 1k tokens and as large as 256k tokens or more. The model has a maximum number of tokens it can handle at any given time, so the value can't be larger than that number.
+
+The KV Cache is pre-allocated at a fixed size when the model loads. At the beginning of an interaction, the KV Cache is empty and then as the conversation continues, input messages are tokenized and processed through the model, with the resulting KV vectors stored in the cache. Output tokens follow the same path. Depending on how the server is configured, those cached vectors might persist across requests or get cleared between them.
+
+The KV_Cache component of the formula is broken into these three parts:
+
+```
+KVPerTokenPerLayer = head_count_kv × (key_length + value_length) × bytes_per_element
+KVPerSlot          = context_window × block_count × KVPerTokenPerLayer
+KV_Cache           = slots × KVPerSlot
+```
+
+### Key Variables Explained
+
+Let's break down each variable:
+
+| Variable              | Meaning                      | Typical Value           | Where To Find In GGUF           |
+| --------------------- | ---------------------------- | ----------------------- | ------------------------------- |
+| **head_count_kv**     | Number of KV attention heads | 8, 16, 32+              | `llama.attention.head_count_kv` |
+| **key_length**        | K dimension per head         | 128                     | `llama.attention.key_length`    |
+| **value_length**      | V dimension per head         | 128                     | `llama.attention.value_length`  |
+| **bytes_per_element** | Cache quantization size      | 1 (Q8_0), 2 (F16)       | User choice (cache type)        |
+| **context_window**    | Max tokens to remember       | 8K, 32K, 128K+          | Model capability / user config  |
+| **block_count**       | Number of transformer layers | 32 (small), 80+ (large) | `llama.block_count`             |
+| **slots**             | Concurrent conversations     | 1-5                     | User choice                     |
+
+Let's calculate for a typical Llama-3.2-3B model with common settings:
+
+```
+head_count_kv     = 8      (from metadata)
+key_length        = 128    (from metadata)
+value_length      = 128    (from metadata)
+bytes_per_element = 1      (Q8_0 cache quantization)
+context_window    = 32768  (32K tokens)
+block_count       = 32     (32 layers)
+slots             = 4      (4 concurrent users)
+```
+
+**Step-by-step:**
+
+```
+KVPerTokenPerLayer = 8 × (128 + 128) × 1 = 2,048 bytes
+KVPerSlot          = 32,768 × 32 × 2,048 = 2,147,483,648 bytes (2 GB per slot)
+KV_Cache           = 4 × 2,097,152 KB = 8,589,934,592 bytes (8 GB total)
+```
+
+**Result:** For this configuration, KV cache requires **8 GB of VRAM**!
+
+You do have control over the size of each element that is stored in the KV Cache by choosing the cache type.
+
+Notice the `bytes_per_element` field in the algorithm, this is your biggest lever for affecting the size of the KV Cache.
+
+| Cache Type | Bytes Per Element | VRAM Impact           | Quality Impact |
+| ---------- | ----------------- | --------------------- | -------------- |
+| **Q8_0**   | 1 byte            | **50% less** than F16 | Minimal        |
+| **F16**    | 2 bytes           | Baseline              | None           |
+
+If you want to maintain up to 32k tokens in the KV Cache, you will need ~8GB of memory if you set the cache type to Q8_0 or ~16GB if you set the cache type to F16.
+
+If you're the only one using your model then you can change the slots value to 1.
+
+```
+slots = 1  // instead of 4
+```
+
+This reduces the KV cache from ~8GB to ~2GB in the example.
+
+Here is a chart
+
+| Context Window | Slots | Cache Type | KV Cache (per slot) |
+| -------------- | ----- | ---------- | ------------------- |
+| 8K             | 1     | Q8_0       | ~500 MB             |
+| 8K             | 1     | F16        | ~1 GB               |
+| 32K            | 1     | Q8_0       | ~2 GB               |
+| 32K            | 1     | F16        | ~4 GB               |
+| 64K            | 1     | Q8_0       | ~4 GB               |
+| 64K            | 1     | F16        | ~8 GB               |
+| 128K           | 1     | Q8_0       | ~8 GB               |
+| 128K           | 1     | F16        | ~16 GB              |

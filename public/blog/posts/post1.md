@@ -245,6 +245,8 @@ In general, I will stay away from the `UD` versions of models if there is a `_0`
 
 As of writing this, I am using `Qwen3-Coder-Next-Q8_0` for both [Cline](https://cline.bot/) and [Kilo](https://kilo.ai/) as my coding model. They are large models (~84 GB) but they work flawlessly. The `Qwen_Qwen3.5-35B-A3B-Q8_0` is very good and at ~37 GB it's accessible to a lot more machines. It also supports images so you can use them with your agent. Native tool calling can be a problem at times and you may need to apply a tool calling grammar which Kronk can provide. Cline doesn't use native tool calling so it's a perfect model for Cline.
 
+_Note (2026-03-03): I have the Unsloth `Qwen3.5-35B-A3B-UD-Q8_K_XL` model working and it's doing MUCH MUCH better than the bartowski `Qwen_Qwen3.5-35B-A3B-Q8_0` model and `Qwen3-Coder-Next-Q8_0` model. Significant difference. So on Apple Silicon the `UD-Q8_K_XL` option should be considered. So as of this date my new coding model for both Cline and Kilo is `Qwen3.5-35B-A3B-UD-Q8_K_XL`._
+
 There is obviously much more to cover when it comes to the configuration of these models. The model configuration directly affects how much actual memory we need to run the model. For now, looking at the size of the model is a good place to start and HF is good at listing the models in order of size and quality.
 
 In the next post, I will talk about model configuration and then introduce the VRAM Calculator that Kronk provides so you can get an accurate view of the amount of memory you need to run a given model at a given configuration.
