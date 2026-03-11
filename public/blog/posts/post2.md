@@ -157,9 +157,9 @@ During token generation the model needs to remember previous tokens so it doesn'
 - **K (Key)**: Used to match against other tokens during attention
 - **V (Value)**: The information that gets pulled from a token when it's matched
 
-The size of the KV Cache is set by you by specifying the total number of tokens you want to store. This can be as small as 1k tokens and as large as 256k tokens or more. The model has a maximum number of tokens it can handle at any given time, so the value can't be larger than that number.
+The size of the KV Cache is set by you specifying the maximum number of tokens you want to store. This can be as small as 1k tokens and as large as 256k tokens or more. The model has a maximum number of tokens it can handle at any given time, so the value can't be larger than that number.
 
-The KV Cache is pre-allocated at a fixed size when the model loads. At the beginning of an interaction, the KV Cache is empty and then as the conversation continues, input messages are tokenized and processed through the model, with the resulting KV vectors stored in the cache. Output tokens follow the same path. Depending on how the server is configured, those cached vectors might persist across requests or get cleared between them.
+The KV cache is pre-allocated at a fixed size when the model loads based on the maximum number of tokens you want to store. At the beginning of a model interaction, the KV cache is empty and then as the conversation continues, input messages are tokenized/decoded and processed through the model, with the resulting KV vectors stored in the cache. Output tokens follow the same path. Depending on how the server is configured, those cached vectors might persist across requests or the KV cache will be cleared.
 
 The KV_Cache component of the formula is broken into these three parts:
 
@@ -236,3 +236,94 @@ Here is a chart
 | 64K            | 1     | F16        | ~8 GB               |
 | 128K           | 1     | Q8_0       | ~8 GB               |
 | 128K           | 1     | F16        | ~16 GB              |
+
+## Component 3: Compute Buffer
+
+The computer buffer is the working VRAM the GPU needs during inference. There are three components to this?
+
+- Temporary tensor calculations
+- Attention mechanism intermediate results
+- Activation storage
+
+### How We Estimate It
+
+The calculator uses a heuristic based on model size:
+
+```go
+if modelSize < 50GB:
+   baseBuffer = 256 MB
+else:
+   baseBuffer = 512 MB
+
+// Add embedding component for certain models
+embeddingComponent = 8 × 512 × embedding_length × 4
+
+// Plus 10% safety margin
+total = (baseBuffer + embeddingComponent) × 1.1
+```
+
+Typical, you need 256MB - 512MB of computer buffer for most models.
+
+## Complete Forumla Example
+
+Let's walk through a complete example of the formula using the `Llama-3.2-3B-Instruct-Q4_K_M.gguf` model on a 8GB laptop.
+
+- GPU: 8GB VRAM
+- Running single user (slots = 1)
+- Want 32K context window
+
+**Step 1: Get model size from file**
+
+```
+Model Weights: 2.0 GB (Q4 quantization, ~3B params)
+```
+
+**Step 2: Extract Metadata**
+
+You can read GGUF metadata without downloading by using Range requests:
+
+```bash
+curl -I "https://huggingface.co/NousResearch/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf"
+```
+
+Look for GGUF metadata keys in the file:
+
+```
+llama.block_count = 32
+llama.attention.head_count_kv = 8
+llama.attention.key_length = 128
+llama.attention.value_length = 128
+```
+
+**Step 3: Choose cache configuration**
+
+- bytes_per_element = 1 (Q8_0)
+- slots = 1 (single user)
+
+**Step 4: Calculate**
+
+```
+KVPerTokenPerLayer = 8 × (128 + 128) × 1 = 2,048 bytes
+
+KVPerSlot = 32,768 × 32 × 2,048 = 2 GB
+
+SlotMemory = 1 × 2 GB = 2 GB
+
+Compute Buffer ≈ 400 MB (heuristic)
+```
+
+**Step 5: Total**
+
+```
+Model Weights:     2.0 GB
+KV Cache:          2.0 GB
+Compute Buffer:    0.4 GB
+─────────────────────────
+Total VRAM:        4.4 GB
+```
+
+On your 8GB laptop you can run this model comfortably with room for OS using `Q8_0` for the KV cache type and using 1 slot.
+
+## Tour of the VRAM Calculator
+
+Now that we understand the formula and the different components of the formula, I can show you how to use the VRAM calculator to validate the settings you need to run a particular model on your machine.
