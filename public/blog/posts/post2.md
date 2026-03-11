@@ -40,11 +40,22 @@ The image above is what I see in my head when I think about a model file. In a 3
 
 ### How We Calculate the Value for Model Weights
 
-If your goal is to put 100% of the model's knobs in the GPU, then the size of the model file in bytes represents the Model_Weights value.
+If your goal is to put 100% of the model's knobs in the GPU's VRAM, then the size of the GGUF model file you download is the Model_Weights value.
 
 ```
 Model_Weights = modelFileSizeInBytes
 ```
+
+The GGUF file already has the quantization baked in. A Q4 file is smaller than a Q8 file, while an FP16 file is even larger. Whatever file you download, its size on disk is the amount of VRAM you need for the weights.
+
+Here's how different quantization levels affect the file size and memory needed for a 30B parameter model:
+
+| Quantization | Bytes Per Parameter | GGUF File Size ≈ Model Weights |
+| ------------ | ------------------- | ------------------------------ |
+| Q4_K_M       | ~0.5                | ~15 GB                         |
+| Q6_K         | ~0.75               | ~22.5 GB                       |
+| Q8_0         | ~1.0                | ~30 GB                         |
+| FP16         | 2.0                 | ~60 GB                         |
 
 That is the best way to go, but not always possible. Sometimes the model is too large to fit entirely in the GPU's VRAM. When this is the situation, there are two ways to reduce the Model_Weights value on the GPU: layer offloading and expert offloading. They work very differently, and it’s important to understand the distinction.
 
