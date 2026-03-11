@@ -34,7 +34,7 @@ Total VRAM = Model_Weights + KV_Cache + Compute_Buffer
 
 Model weights are the actual learned parameters of the model’s neural network. They're stored in the model file and represent everything the model "knows" after training. I like thinking of these learned parameters as knobs that are hardcoded to a specific setting.
 
-![knobs](image1.png)
+![knobs](/blog/images/post2_image1.png)
 
 The image above is what I see in my head when I think about a model file. In a 30 billion parameter model there are 30 billion of these knobs set in some fixed position just like the image above. There are also layers of knobs like you see in the picture. That 30 billion model might have up to 40 layers of knobs.
 
