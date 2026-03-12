@@ -8,10 +8,10 @@
     "author": "bill-kennedy"
   },
   {
-    "slug": "using-the-vram-calculator-in-kronk",
+    "slug": "understanding-the-kronk-vram-calculator",
     "file": "post2",
-    "title": "Using The VRAM Calculator",
-    "date": "2026-03-04",
+    "title": "Understanding the Kronk VRAM Calculator",
+    "date": "2026-03-12",
     "excerpt": "Learn how to use the VRAM calculator to know exactly how much memory you need to run a model in Kronk.",
     "author": "bill-kennedy"
   }
