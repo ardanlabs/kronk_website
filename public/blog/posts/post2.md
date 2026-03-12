@@ -226,10 +226,10 @@ For this model configuration the KV cache requirements would be 8GB of VRAM.
 
 One of the variables you have control over is the `bytes_per_element` value. This represents the size of each element that is stored in the KV Cache. You control this by choosing the KV cache type.
 
-| Cache Type | Bytes Per Element | VRAM Impact           | Quality Impact |
-| ---------- | ----------------- | --------------------- | -------------- |
-| **Q8_0**   | 1 byte            | **50% less** than F16 | Minimal        |
-| **F16**    | 2 bytes           | Baseline              | None           |
+| Cache Type | Bytes Per Element | VRAM Impact       | Quality Impact |
+| ---------- | ----------------- | ----------------- | -------------- |
+| **Q8_0**   | 1 byte            | 50% less than F16 | Minimal        |
+| **F16**    | 2 bytes           | Baseline          | None           |
 
 For example, if you want to maintain up to 32k tokens in the KV Cache, you would need ~8GB of memory if you set the cache type to Q8_0 or ~16GB of memory if you set the cache type to F16.
 
@@ -249,17 +249,17 @@ Here is a chart that compares using 1 slot versus using 4.
 | 8K                                               | 1     | F16        | ~1 GB    |
 | 8K                                               | 4     | Q8_0       | ~2 GB    |
 | 8K                                               | 4     | F16        | ~4 GB    |
-| ------------------------------------------------ |
+| ------------------------------------------------ | ----- | ---------- | -------- |
 | 32K                                              | 1     | Q8_0       | ~2 GB    |
 | 32K                                              | 1     | F16        | ~4 GB    |
 | 32K                                              | 4     | Q8_0       | ~8 GB    |
 | 32K                                              | 4     | F16        | ~16 GB   |
-| ------------------------------------------------ |
+| ------------------------------------------------ | ----- | ---------- | -------- |
 | 64K                                              | 1     | Q8_0       | ~4 GB    |
 | 64K                                              | 1     | F16        | ~8 GB    |
 | 64K                                              | 4     | Q8_0       | ~16 GB   |
 | 64K                                              | 4     | F16        | ~32 GB   |
-| ------------------------------------------------ |
+| ------------------------------------------------ | ----- | ---------- | -------- |
 | 128K                                             | 1     | Q8_0       | ~8 GB    |
 | 128K                                             | 1     | F16        | ~16 GB   |
 | 128K                                             | 4     | Q8_0       | ~32 GB   |
