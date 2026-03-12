@@ -12,7 +12,7 @@ ogImage: "/blog/images/post2_twitter.jpg"
 
 One of the biggest problems you will run into when trying to run an LLM on your local machine is not having enough memory. Finding out the model won’t run after waiting 20 minutes to download the model and spending another 20 minutes fighting through settings that will never work is highly frustrating.
 
-That's why we built the Kronk VRAM (Video RAM)calculator. It analyzes GGUF model files by reading their metadata. You answer a few questions about your system's memory and preferences, and then the calculator runs a formula that will show whether a model will fit — and allows you to tune settings if it doesn't.
+That's why we built the Kronk VRAM (Video RAM) calculator. It analyzes GGUF model files by reading their metadata. You answer a few questions about your system's memory and preferences, and then the calculator runs a formula that will show whether a model will fit — and allows you to tune settings if it doesn't.
 
 In this post, we will walk you through the VRAM calculator so you can understand all the values and questions you will be presented with. After this post, you won’t waste your time trying to download a model that will never run on your hardware to begin with. At a bare minimum, you will find settings that will let it run, even if it’s not going to be the most efficient.
 
