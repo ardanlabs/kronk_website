@@ -48,7 +48,7 @@ Model_Weights = modelFileSizeInBytes
 
 The GGUF file already has the quantization baked in. A Q4 file is smaller than a Q8 file, while an FP16 file is even larger. Whatever file you download, its size on disk is the amount of VRAM you need for the weights.
 
-Here's how different quantization levels cpould affect the file size and memory needed for a model:
+Here's how different quantization levels could affect the file size and memory needed for a model:
 
 | Quantization | Bytes Per Parameter | GGUF File Size ≈ Model Weights |
 | ------------ | ------------------- | ------------------------------ |
@@ -135,7 +135,7 @@ The expert knobs make up the bulk of the model’s size. The always-active knobs
 
 This is less painful than layer offloading because the always-active computation still runs at full GPU speed for every token. Only the expert lookups for offloaded layers hit the CPU, and since only a fraction of experts activate per token, most of that CPU memory sits idle on any given token.
 
-In this scenario, the VRAM calculator caluclates model weights like this:
+In this scenario, the VRAM calculator calculates model weights like this:
 
 ```
 Model_Weights_GPU = alwaysActiveWeights + expertWeightsOnGPU
@@ -227,7 +227,7 @@ One of the variables you have control over is the `bytes_per_element` value. Thi
 
 For example, if you want to maintain up to 32k tokens in the KV Cache, you would need ~8GB of memory if you set the cache type to Q8_0 or ~16GB if you set the cache type to F16.
 
-The other varaible you have control over is the number of slots. This represents the number of parallel requests you want to batch in the GPU for processing. If you're the only one using the model, then you can use a slots value of 1.
+The other variable you have control over is the number of slots. This represents the number of parallel requests you want to batch in the GPU for processing. If you're the only one using the model, then you can use a slots value of 1.
 
 ```
 slots = 1  // instead of 4
@@ -265,7 +265,7 @@ Here is a chart that compares using 1 slot versus using 4.
 
 ## Component 3: Compute Buffer
 
-The computer buffer is the working VRAM the GPU needs during inference. There are three components to this.
+The compute buffer is the working VRAM the GPU needs during inference. There are three components to this.
 
 - Temporary tensor calculations
 - Attention mechanism intermediate results
@@ -288,9 +288,9 @@ embeddingComponent = 8 × 512 × embedding_length × 4
 total = (baseBuffer + embeddingComponent) × 1.1
 ```
 
-Typically, you need 256MB - 512MB of computer buffer for most models.
+Typically, you need 256MB - 512MB of compute buffer for most models.
 
-## Complete Forumla Example
+## Complete Formula Example
 
 Let's walk through a complete example of the formula using the `Qwen3.5-35B-A3B-UD-Q8_K_XL.gguf` model on a 64GB Mac.
 
@@ -353,3 +353,31 @@ On your 64GB Mac you can run this MoE model comfortably with room for the OS usi
 ## Tour of the VRAM Calculator
 
 Now that we understand the formula and the different components of the formula, I can show you how to use the VRAM calculator to validate the settings you need to run a particular model on your machine.
+
+You need to start the Kronk Model server and then navigate your browser to localhost:8080. Read the manual about installing the Kronk [CLI tooling](https://www.kronkai.com/manual#22-installing-the-cli) and to learn how to run the model server.
+
+Let's use the same model we just used, the `Qwen3.5-35B-A3B-UD-Q8_K_XL` model.
+
+![screen 1](/blog/images/post2_image2.png)
+
+To start using the calculator, you will provide the download link for the model you want to check. Then you can use the defaults or adjust the parameters we talked about that you control. Then finally hit the `Calculate VRAM` button to get your answer.
+
+You can see on the screen for the same model we used in the previous section, when we put all the layers of the model in VRAM we get 46.89GB of VRAM required.
+
+All models give you the ability to offload layers to the CPU. The slider gives you an opportunity to see how many layers you might need to offload to allow some layers to run on the GPU. If you are using a MoE model, then the expert offloading option is available.
+
+Below the total VRAM calculation is metadata to help you see more of the details.
+
+![screen 2](/blog/images/post2_image3.png)
+
+## Conclusion
+
+Running LLMs locally is incredibly rewarding, but it comes with a real constraint: memory. Unlike cloud-hosted models where someone else worries about hardware, local inference means you need to understand exactly what your machine can handle before you commit to downloading and configuring a model. That's the problem the VRAM calculator was built to solve.
+
+In this post, we broke down the three components of the VRAM formula — Model Weights, KV Cache, and Compute Buffer — and showed how each one contributes to the total memory footprint. We walked through how quantization affects model weight size, how context window length and slot count can cause the KV cache to balloon, and how the compute buffer is estimated using a simple heuristic. We also covered the two offloading strategies — layer offloading and expert offloading — and why MoE models give you more flexibility when your GPU can't fit the entire model.
+
+The key takeaway is that VRAM usage isn't a single number you look up — it's a calculation that depends on choices you make: which quantization you download, how large you set the context window, what cache type you use, and how many concurrent users you want to support. Small adjustments to these settings can make the difference between a model that runs smoothly and one that won't load at all.
+
+The Kronk VRAM calculator automates this entire process. Instead of doing the math by hand or guessing, you paste a Hugging Face download link, set your preferences, and get an immediate answer. It reads the GGUF metadata for you, categorizes the tensors, and shows you exactly how the memory breaks down. If the model doesn't fit, the offloading sliders let you explore trade-offs in real time.
+
+Before you spend time downloading your next model, run it through the calculator first. It takes seconds and will save you from the frustration of discovering — after a long download and a lot of configuration — that the model was never going to fit on your hardware to begin with.
