@@ -52,7 +52,7 @@ If your goal is to put 100% of the model's knobs in VRAM, then the size of the G
  Model_Weights = modelFileSizeInBytes
 ```
 
-The GGUF file already has the [quantization](https://en.wikipedia.org/wiki/Large_language_model#Quantization) baked in. A Q4 file is smaller than a Q8 file, while an FP16 file is even larger. Whatever file you download, its size on disk is the amount of VRAM you need for the `Model_Weights` parameter when wanting to load 100% of the knobs in VRAM.
+The GGUF file already has the [quantization](https://en.wikipedia.org/wiki/Large_language_model#Quantization) baked in. A Q4 file is smaller than a Q8 file, while an FP16 file is even larger. Whatever file you download, its size on disk is the amount of VRAM you need for the `Model_Weights` parameter when you want to load 100% of the knobs in VRAM.
 
 Here's how different quantization levels could affect the file size and VRAM needed for a `30B` model:
 
