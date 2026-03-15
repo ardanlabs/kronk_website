@@ -1,4 +1,4 @@
-.PHONY: run install build
+.PHONY: run install build update-deps
 
 build:
 	npm run build
@@ -8,3 +8,7 @@ run: build
 
 install:
 	npm install
+
+update-deps:
+	npm update
+	npx update-browserslist-db@latest
