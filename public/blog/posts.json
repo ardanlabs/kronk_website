@@ -14,5 +14,13 @@
     "date": "2026-03-12",
     "excerpt": "Learn how to use the VRAM calculator to know exactly how much memory you need to run a model in Kronk.",
     "author": "bill-kennedy"
+  },
+  {
+    "slug": "concurrent-model-inference-request-processing-in-kronk",
+    "file": "post3",
+    "title": "Concurrent Model Inference Request Processing In Kronk",
+    "date": "2026-03-30",
+    "excerpt": "Learn how concurrent model inference works in Kronk.",
+    "author": "bill-kennedy"
   }
 ]
