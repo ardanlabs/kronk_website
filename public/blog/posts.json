@@ -23,12 +23,20 @@
     "excerpt": "Learn how concurrent model inference works in Kronk.",
     "author": "bill-kennedy"
   },
-    {
+  {
     "slug": "understanding-the-kronk-caching-systems",
     "file": "post4",
     "title": "Understanding the Kronk Caching Systems",
     "date": "2026-04-06",
     "excerpt": "Learn how the different caching systems in Kronk work and when to use one over the other.",
+    "author": "bill-kennedy"
+  },
+  {
+    "slug": "understanding-the-kronk-template-systems",
+    "file": "post5",
+    "title": "Understanding the Kronk Template Systems",
+    "date": "2026-04-15",
+    "excerpt": "In this post, we are going to discuss what these Jinja templates are and how Kronk uses them to interact with your model of choice.",
     "author": "bill-kennedy"
   }
 ]
