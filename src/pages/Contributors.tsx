@@ -19,11 +19,6 @@ const contributors = [
     avatar: "https://avatars.githubusercontent.com/u/5520?v=4",
   },
   {
-    name: "Nikola Lohinski",
-    github: "NikolaLohinski",
-    avatar: "https://avatars.githubusercontent.com/u/18406374?v=4",
-  },
-  {
     name: "Ramon Reichert",
     github: "ramon-reichert",
     avatar: "https://avatars.githubusercontent.com/u/95890275?v=4",
