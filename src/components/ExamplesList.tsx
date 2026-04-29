@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/utils";
-import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check } from "lucide-react";
+import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -68,6 +68,7 @@ const examples = [
   { icon: MessageSquare, name: "Chat", desc: "Interactive chat with chat-completion API", cmd: "make example-chat" },
   { icon: Search, name: "Embedding", desc: "Perform embedding operations", cmd: "make example-embedding" },
   { icon: FileJson, name: "Grammar", desc: "Constrain output with GBNF grammars", cmd: "make example-grammar" },
+  { icon: Layers, name: "Pool", desc: "Manage multiple models with TTL eviction", cmd: "make example-pool" },
   { icon: HelpCircle, name: "Question", desc: "Ask a simple question with streaming", cmd: "make example-question" },
   { icon: ArrowUpRight, name: "Rerank", desc: "Use a rerank model", cmd: "make example-rerank" },
   { icon: Reply, name: "Response", desc: "Chat with the response API", cmd: "make example-response" },
