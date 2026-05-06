@@ -6,10 +6,10 @@ import { useState } from "react";
 
 export const Hero = () => {
   const [copied, setCopied] = useState(false);
-  const installCmd = "go install github.com/ardanlabs/kronk/cmd/kronk@latest";
+  const installCmds = ["brew tap ardanlabs/kronk", "brew install kronk"];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(installCmd);
+    navigator.clipboard.writeText(installCmds.join("\n"));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -63,10 +63,18 @@ export const Hero = () => {
             </div>
             <div className="px-4 py-3">
               <code className="text-sm text-foreground text-left">
-                <p><span className="text-primary">$</span> {installCmd}</p>
+                {installCmds.map((cmd, i) => (
+                  <p key={i}><span className="text-primary">$</span> {cmd}</p>
+                ))}
               </code>
             </div>
           </div>
+          <p className="mt-3 text-xs text-muted-foreground text-center">
+            Prefer Go?{" "}
+            <a href="#install" className="text-primary underline hover:no-underline">
+              go install github.com/ardanlabs/kronk/cmd/kronk@latest
+            </a>
+          </p>
         </motion.div>
 
         <motion.div

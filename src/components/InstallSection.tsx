@@ -60,7 +60,33 @@ export const InstallSection = () => {
           </h2>
 
           <p className="mb-4 text-muted-foreground leading-relaxed">
-            To install the Kronk tool run the following command:
+            The recommended way to install Kronk on macOS or Linux is with{" "}
+            <a
+              href="https://brew.sh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline hover:no-underline"
+            >
+              Homebrew
+            </a>
+            :
+          </p>
+
+          <div className="mb-8">
+            <CodeBlock>{`brew tap ardanlabs/kronk
+brew install kronk`}</CodeBlock>
+          </div>
+
+          <p className="mb-4 text-muted-foreground leading-relaxed">
+            To upgrade later:
+          </p>
+
+          <div className="mb-8">
+            <CodeBlock>brew upgrade kronk</CodeBlock>
+          </div>
+
+          <p className="mb-4 text-muted-foreground leading-relaxed">
+            You can also install Kronk via Go on any supported platform:
           </p>
 
           <div className="mb-8">
@@ -81,12 +107,11 @@ make website`}</CodeBlock>
           </div>
 
           <p className="mb-4 text-muted-foreground leading-relaxed">
-            You can also install Kronk, run the Kronk Model Server, and open the browser to localhost:8080
+            You can also start the Kronk Model Server and open the browser to localhost:8080
           </p>
 
           <div className="mb-8">
-            <CodeBlock>{`go install github.com/ardanlabs/kronk/cmd/kronk@latest
-kronk server start`}</CodeBlock>
+            <CodeBlock>kronk server start</CodeBlock>
           </div>
 
           <p className="text-muted-foreground leading-relaxed">
