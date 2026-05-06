@@ -69,9 +69,9 @@ export const Hero = () => {
               </code>
             </div>
           </div>
-          <p className="mt-3 text-xs text-muted-foreground text-center">
+          <p className="mt-4 text-base text-muted-foreground text-center">
             Prefer Go?{" "}
-            <a href="#install" className="text-primary underline hover:no-underline">
+            <a href="#install" className="font-mono text-primary underline hover:no-underline">
               go install github.com/ardanlabs/kronk/cmd/kronk@latest
             </a>
           </p>
