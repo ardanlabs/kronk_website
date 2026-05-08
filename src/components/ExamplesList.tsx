@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/utils";
-import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers } from "lucide-react";
+import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers, Workflow } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -22,8 +22,6 @@ const code = `package main
 import (
     "context"
     "fmt"
-    "os"
-    "time"
 
     "github.com/ardanlabs/kronk/sdk/kronk"
     "github.com/ardanlabs/kronk/sdk/kronk/model"
@@ -32,33 +30,43 @@ import (
     "github.com/ardanlabs/kronk/sdk/tools/models"
 )
 
-const modelURL = "https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q8_0.gguf"
+const modelSource = "unsloth/Qwen3-0.6B-Q8_0"
 
 func main() {
+    ctx := context.Background()
+
     // Download libraries and model
     l, _ := libs.New(libs.WithVersion(defaults.LibVersion("")))
-    l.Download(context.Background(), kronk.FmtLogger)
+    l.Download(ctx, kronk.FmtLogger)
 
     mdls, _ := models.New()
-    mp, _ := mdls.Download(context.Background(), kronk.FmtLogger, modelURL, "")
+    mp, _ := mdls.Download(ctx, kronk.FmtLogger, modelSource)
 
     // Initialize Kronk
     kronk.Init()
-    krn, _ := kronk.New(model.Config{ModelFiles: mp.ModelFiles})
-    defer krn.Unload(context.Background())
+    krn, _ := kronk.New(model.WithModelFiles(mp.ModelFiles))
+    defer krn.Unload(ctx)
 
     // Ask a question
     d := model.D{
         "messages": model.DocumentArray(
             model.TextMessage(model.RoleUser, "What is Go?"),
         ),
-        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p":       0.9,
+        "top_k":       40,
+        "max_tokens":  2048,
     }
 
-    ch, _ := krn.ChatStreaming(context.Background(), d)
+    ch, _ := krn.ChatStreaming(ctx, d)
     for resp := range ch {
-        if len(resp.Choice) > 0 {
-            fmt.Print(resp.Choice[0].Delta.Content)
+        switch resp.Choices[0].FinishReason() {
+        case model.FinishReasonError:
+            return
+        case model.FinishReasonStop:
+            return
+        default:
+            fmt.Print(resp.Choices[0].Delta.Content)
         }
     }
 }`;
@@ -66,6 +74,7 @@ func main() {
 const examples = [
   { icon: Mic, name: "Audio", desc: "Prompt against an audio model", cmd: "make example-audio" },
   { icon: MessageSquare, name: "Chat", desc: "Interactive chat with chat-completion API", cmd: "make example-chat" },
+  { icon: Workflow, name: "Concurrency", desc: "Batch process concurrent inference requests", cmd: "make example-concurrency" },
   { icon: Search, name: "Embedding", desc: "Perform embedding operations", cmd: "make example-embedding" },
   { icon: FileJson, name: "Grammar", desc: "Constrain output with GBNF grammars", cmd: "make example-grammar" },
   { icon: Layers, name: "Pool", desc: "Manage multiple models with TTL eviction", cmd: "make example-pool" },
