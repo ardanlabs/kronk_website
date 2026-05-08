@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/utils";
 import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers, Workflow } from "lucide-react";
@@ -14,62 +14,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { GoCode } from "./GoCode";
 
 const GITHUB_RAW = "https://raw.githubusercontent.com/ardanlabs/kronk/main/examples";
-
-const code = `package main
-
-import (
-    "context"
-    "fmt"
-
-    "github.com/ardanlabs/kronk/sdk/kronk"
-    "github.com/ardanlabs/kronk/sdk/kronk/model"
-    "github.com/ardanlabs/kronk/sdk/tools/defaults"
-    "github.com/ardanlabs/kronk/sdk/tools/libs"
-    "github.com/ardanlabs/kronk/sdk/tools/models"
-)
-
-const modelSource = "unsloth/Qwen3-0.6B-Q8_0"
-
-func main() {
-    ctx := context.Background()
-
-    // Download libraries and model
-    l, _ := libs.New(libs.WithVersion(defaults.LibVersion("")))
-    l.Download(ctx, kronk.FmtLogger)
-
-    mdls, _ := models.New()
-    mp, _ := mdls.Download(ctx, kronk.FmtLogger, modelSource)
-
-    // Initialize Kronk
-    kronk.Init()
-    krn, _ := kronk.New(model.WithModelFiles(mp.ModelFiles))
-    defer krn.Unload(ctx)
-
-    // Ask a question
-    d := model.D{
-        "messages": model.DocumentArray(
-            model.TextMessage(model.RoleUser, "What is Go?"),
-        ),
-        "temperature": 0.7,
-        "top_p":       0.9,
-        "top_k":       40,
-        "max_tokens":  2048,
-    }
-
-    ch, _ := krn.ChatStreaming(ctx, d)
-    for resp := range ch {
-        switch resp.Choices[0].FinishReason() {
-        case model.FinishReasonError:
-            return
-        case model.FinishReasonStop:
-            return
-        default:
-            fmt.Print(resp.Choices[0].Delta.Content)
-        }
-    }
-}`;
 
 const examples = [
   { icon: Mic, name: "Audio", desc: "Prompt against an audio model", cmd: "make example-audio" },
@@ -90,6 +37,22 @@ export const ExamplesList = () => {
   const [modalCode, setModalCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [questionCode, setQuestionCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${GITHUB_RAW}/question/main.go`)
+      .then((res) => (res.ok ? res.text() : Promise.reject()))
+      .then((text) => {
+        if (!cancelled) setQuestionCode(text);
+      })
+      .catch(() => {
+        if (!cancelled) setQuestionCode("Failed to load code.");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleCopy = () => {
     if (!modalCode) return;
@@ -220,7 +183,7 @@ export const ExamplesList = () => {
                   <div className="code-header">{selected?.name.toLowerCase()}/main.go</div>
                   <div className="overflow-x-auto p-4">
                     <pre className="text-[13px] leading-relaxed">
-                      <code>{modalCode}</code>
+                      <code><GoCode code={modalCode} /></code>
                     </pre>
                   </div>
                 </div>
@@ -245,9 +208,15 @@ export const ExamplesList = () => {
           <div className="code-block glow-primary overflow-hidden">
             <div className="code-header">question/main.go</div>
             <div className="overflow-x-auto p-4">
-              <pre className="text-[13px] leading-relaxed">
-                <code>{code}</code>
-              </pre>
+              {questionCode === null ? (
+                <div className="flex items-center justify-center py-16">
+                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <pre className="text-[13px] leading-relaxed">
+                  <code><GoCode code={questionCode} /></code>
+                </pre>
+              )}
             </div>
           </div>
         </motion.div>

@@ -18,7 +18,7 @@ const features = [
     icon: Server,
     title: "Model Server",
     description:
-      "Built-in model server compatible with OpenWebUI, Cline, and Claude Code. Serve models locally with a single command.",
+      "Built-in model server compatible with OpenWebUI and agents like OpenCode and Kilo. Serve models locally with a single command.",
   },
   {
     icon: Globe,

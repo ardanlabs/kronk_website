@@ -1,21 +1,11 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Copy, Check, BookOpen } from "lucide-react";
+import { BookOpen, Github } from "lucide-react";
 import { KronkBanner } from "@/components/KronkBanner";
-import { useState } from "react";
 
 export const Hero = () => {
-  const [copied, setCopied] = useState(false);
-  const installCmds = ["brew tap ardanlabs/kronk", "brew install kronk"];
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(installCmds.join("\n"));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <section className="relative flex min-h-[85vh] items-center justify-center pt-16">
+    <section className="relative flex items-center justify-center pt-16 pb-12">
       {/* Animated blurred blobs - color cycling effect */}
       <div className="hero-blobs absolute inset-0 scale-50 lg:scale-100 opacity-50">
         <div className="hero-blob hero-blob-1" />
@@ -45,42 +35,6 @@ export const Hero = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mx-auto max-w-xl"
-        >
-          <div className="code-block glow-primary">
-            <div className="code-header flex items-center justify-between">
-              <span>Install</span>
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-primary"
-              >
-                {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                <span>{copied ? "Copied" : "Copy"}</span>
-              </button>
-            </div>
-            <div className="px-4 py-3">
-              <code className="text-sm text-foreground text-left">
-                {installCmds.map((cmd, i) => (
-                  <p key={i}><span className="text-primary">$</span> {cmd}</p>
-                ))}
-              </code>
-            </div>
-          </div>
-          <div className="mt-4 text-center text-muted-foreground">
-            <p className="text-base">Prefer Go?</p>
-            <a
-              href="#install"
-              className="block mt-1 font-mono text-base text-primary underline hover:no-underline"
-            >
-              go install github.com/ardanlabs/kronk/cmd/kronk@latest
-            </a>
-          </div>
-        </motion.div>
-
-        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
@@ -90,9 +44,10 @@ export const Hero = () => {
             href="https://github.com/ardanlabs/kronk"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:brightness-110"
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
           >
-            Get Started
+            <Github className="h-4 w-4" />
+            Project
           </a>
           <Link
             to="/manual"
