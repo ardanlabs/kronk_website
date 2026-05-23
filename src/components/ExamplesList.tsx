@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/utils";
-import { MessageSquare, Image, Mic, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers, Workflow } from "lucide-react";
+import { MessageSquare, Image, Mic, AudioLines, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers, Workflow } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +20,7 @@ const GITHUB_RAW = "https://raw.githubusercontent.com/ardanlabs/kronk/main/examp
 
 const examples = [
   { icon: Mic, name: "Audio", desc: "Prompt against an audio model", cmd: "make example-audio" },
+  { icon: AudioLines, name: "Bucky", desc: "Transcribe audio with whisper.cpp", cmd: "make example-bucky" },
   { icon: MessageSquare, name: "Chat", desc: "Interactive chat with chat-completion API", cmd: "make example-chat" },
   { icon: Workflow, name: "Concurrency", desc: "Batch process concurrent inference requests", cmd: "make example-concurrency" },
   { icon: Search, name: "Embedding", desc: "Perform embedding operations", cmd: "make example-embedding" },

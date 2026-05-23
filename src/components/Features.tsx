@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Cpu, Zap, Server, Globe, Wrench, Brain } from "lucide-react";
+import { Cpu, Zap, Server, Globe, Wrench, Brain, AudioLines } from "lucide-react";
 
 const features = [
   {
@@ -38,6 +38,12 @@ const features = [
     description:
       "Native function calling support. Let models invoke your Go functions with structured input and output.",
   },
+  {
+    icon: AudioLines,
+    title: "Speech-to-Text (Bucky)",
+    description:
+      "OpenAI-compatible /v1/audio/transcriptions powered by Bucky (whisper.cpp). Models from tiny to large-v3-turbo with Metal, CUDA, and Vulkan acceleration.",
+  },
 ];
 
 const containerVariants = {
@@ -65,10 +71,10 @@ export const Features = () => {
           </p>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 text-left w-full lg:w-[90%] mx-auto">
             <p className="mx-auto text-muted-foreground leading-relaxed">
-              This project lets you use Go for hardware accelerated local inference with llama.cpp directly integrated into your applications via the <a href="https://github.com/hybridgroup/yzma" target="_blank" rel="noopener noreferrer" className="text-primary underline">yzma</a> module. Kronk provides a high-level API that feels similar to using an OpenAI compatible API.
+              This project lets you use Go for hardware accelerated local inference with llama.cpp and whisper.cpp directly integrated into your Go applications. Kronk provides a high-level API that feels similar to using an OpenAI compatible API.
             </p>
             <p className="mx-auto text-muted-foreground leading-relaxed">
-              This project also provides a model server for chat completions, responses, messages, embeddings, and reranking. The server is compatible with the OpenWebUI, Cline, and Claude Code projects.
+              This project also provides a model server for chat completions, responses, messages, embeddings, reranking, and audio transcriptions. The server is compatible with the OpenWebUI and OpenCode projects.
             </p>
           </div>
         </div>

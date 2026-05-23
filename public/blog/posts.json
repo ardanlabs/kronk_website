@@ -38,5 +38,13 @@
     "date": "2026-04-15",
     "excerpt": "In this post, we are going to discuss what these Jinja templates are and how Kronk uses them to interact with your model of choice.",
     "author": "bill-kennedy"
+  },
+  {
+    "slug": "bucky-bringing-whisper-to-kronk",
+    "file": "post6",
+    "title": "Bucky: Bringing Whisper to Kronk",
+    "date": "2026-05-23",
+    "excerpt": "Kronk now ships with Bucky — a peer backend that puts whisper.cpp behind the same SDK, pool, CLI, and BUI surfaces you already use for llama.cpp. In this post we'll walk through how it's wired up and the design decisions that fell out of it.",
+    "author": "bill-kennedy"
   }
 ]

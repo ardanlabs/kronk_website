@@ -147,9 +147,15 @@ const Manual = () => {
             {/* Left: Sticky TOC (desktop) */}
             <aside className="w-64 shrink-0 hidden lg:block border-r border-border pr-6">
               <nav className="sticky top-24">
-                <h2 className="text-sm font-semibold text-foreground mb-4">
-                  On this page
-                </h2>
+                <button
+                  type="button"
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }
+                  className="block text-left text-sm font-semibold text-foreground hover:text-primary transition-colors mb-4"
+                >
+                  Index
+                </button>
                 <ScrollArea className="h-[calc(100vh-8rem)]">
                   <div className="space-y-4 pr-4">
                     {chapters.map((chapter) => (
@@ -171,6 +177,29 @@ const Manual = () => {
 
             {/* Right: Content */}
             <article className="min-w-0 flex-1 order-last lg:order-none prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-32 lg:prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-img:rounded-lg">
+              {chapters.length > 0 && (
+                <div className="not-prose mb-10 rounded-lg border border-border bg-card p-6">
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-4">
+                    Chapters
+                  </h2>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {[chapters.slice(0, 10), chapters.slice(10)].map((col, colIdx) => (
+                      <ul key={colIdx} className="list-none p-0 m-0 space-y-1">
+                        {col.map((chapter) => (
+                          <li key={chapter.heading.id} className="m-0 p-0">
+                            <a
+                              href={`#${chapter.heading.id}`}
+                              className="block rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted hover:text-primary transition-colors no-underline"
+                            >
+                              {chapter.heading.text}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    ))}
+                  </div>
+                </div>
+              )}
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeSlug]}

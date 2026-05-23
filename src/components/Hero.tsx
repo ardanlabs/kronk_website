@@ -30,7 +30,7 @@ export const Hero = () => {
             Your personal engine for running open source models locally. 
           </p>
           <p className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          Use Go for hardware accelerated local inference with llama.cpp directly integrated into your Go applications via the yzma module. Kronk provides a high-level API that feels similar to using an OpenAI compatible API.
+          Your personal engine for running open source models locally. Use Go for hardware accelerated local inference with llama.cpp and whisper.cpp directly integrated into your Go applications. Kronk provides a high-level API and a model server.
           </p>
         </motion.div>
 

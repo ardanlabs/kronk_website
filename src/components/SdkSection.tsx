@@ -16,16 +16,16 @@ export const SdkSection = () => {
             <span className="text-gradient-primary">SDK</span>
           </h2>
           <p className="mb-10 text-lg leading-relaxed text-muted-foreground">
-            The Kronk SDK allows you to write applications that can directly interact with local open source GGUF models (supported by llama.cpp) that provide inference for text and media (vision and audio).
+            The Kronk SDK allows you to write applications that can directly interact with local open source GGUF models (supported by llama.cpp and whisper.cpp) that provide inference for text and media (vision and audio), plus audio transcriptions.
           </p>
           <div className="rounded-xl overflow-hidden border border-border bg-card relative">
             <img
-              src={assetPath("blog/images/sdk-diagram-light-mode.svg")}
+              src={assetPath("blog/images/sdk-light.png")}
               alt="Kronk SDK architecture diagram"
               className="w-3/4 mx-auto h-auto block dark:hidden"
             />
             <img
-              src={assetPath("blog/images/sdk-diagram-dark-mode.svg")}
+              src={assetPath("blog/images/sdk-dark.png")}
               alt="Kronk SDK architecture diagram"
               className="w-3/4 mx-auto h-auto hidden dark:block"
             />
