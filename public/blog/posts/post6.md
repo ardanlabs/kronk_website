@@ -10,9 +10,9 @@ ogImage: "/blog/images/post6_twitter.jpg"
 
 ## Introduction
 
-Up until now, Kronk has been a llama.cpp story. Text generation, vision, embeddings, reranking — every endpoint, every CLI verb, every BUI screen has assumed there is one inference engine living behind it. With this release that changes. Kronk now ships with **Bucky**, a peer backend that wraps [whisper.cpp](https://github.com/ggerganov/whisper.cpp) and exposes speech-to-text through the same surfaces you already use for the LLM stack.
+Up until now, Kronk has been a llama.cpp only story. Text generation, vision, embeddings, reranking — every endpoint, every CLI verb, every BUI screen has assumed there is one inference engine living behind it. With this release that changes. Kronk now ships with **Bucky**, a peer backend that wraps [whisper.cpp](https://github.com/ggerganov/whisper.cpp) and exposes speech-to-text through the same surfaces you already use for the LLM stack.
 
-If you have been reading the earlier posts, you already know the shapes Kronk likes to work in — a SDK handle that owns a model, a pool that caches handles with TTL eviction, an OpenAI-compatible HTTP surface, and a CLI tree that mirrors all of it. Bucky drops into every one of those slots. There is a `bucky.New(...)` handle, a `sdk/bucky/pool` cache, a `/v1/audio/transcriptions` endpoint, a `kronk bucky ...` sub-command tree, and a Translator app in the Browser UI.
+If you have been reading the earlier posts, you already know the shapes Kronk likes to work in — a SDK handle that owns a model, a pool that caches handles with TTL eviction, an OpenAI-compatible HTTP surface, and a CLI and BUI that mirrors all of it. Bucky drops into every one of those slots. There is a `bucky.New(...)` handle, a `sdk/bucky/pool` cache, a `/v1/audio/transcriptions` endpoint, a `kronk bucky ...` sub-command tree, and a Translator app in the Browser UI.
 
 In this post I'm going to walk through how Bucky is wired up and the design decisions that fell out of it.
 
