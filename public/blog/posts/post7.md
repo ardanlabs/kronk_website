@@ -157,9 +157,7 @@ The first request takes a few seconds — Kronk has to load the model into memor
 
 **Chat from the BUI**
 
-Open the BUI at `http://localhost:11435` and click **Apps → Chat**. Select `Qwen3.6-35B-A3B-UD-Q4_K_M` from the model dropdown, drop in a system prompt if you like, and start a conversation.
-
-[IMAGE3: BUI Chat app with Qwen3.6 selected]
+Open the BUI at `http://localhost:11435` and click **Apps → Chat**. Select `Qwen3.6-35B-A3B-UD-Q4_K_M` or `Qwen3.6-35B-A3B-UD-Q8_K_XL` from the model dropdown, drop in a system prompt if you like, and start a conversation.
 
 This is the fastest way to sanity-check that the model behaves the way you expect before you let an autonomous agent loose on your filesystem. Push it on some real questions — Go idioms, SQL queries, whatever your day looks like. If you're not happy with the responses, tweak the sampling parameters in `~/.kronk/model_config.yaml` and restart the server.
 
