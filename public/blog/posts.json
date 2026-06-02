@@ -1,50 +1,58 @@
 [
-  {
-    "slug": "navigating-hugging-face-kronk",
-    "file": "post1",
-    "title": "Navigating Hugging Face For Kronk",
-    "date": "2026-02-27",
-    "excerpt": "Learn how to find the right GGUF models on Hugging Face and decipher the acronyms—from Q8_K to UD-Q6_K_XL—so you can run the best models for your hardware.",
-    "author": "bill-kennedy"
-  },
-  {
-    "slug": "understanding-the-kronk-vram-calculator",
-    "file": "post2",
-    "title": "Understanding the Kronk VRAM Calculator",
-    "date": "2026-03-12",
-    "excerpt": "Learn how to use the VRAM calculator to know exactly how much memory you need to run a model in Kronk.",
-    "author": "bill-kennedy"
-  },
-  {
-    "slug": "concurrent-model-inference-request-processing-in-kronk",
-    "file": "post3",
-    "title": "Concurrent Model Inference Request Processing In Kronk",
-    "date": "2026-03-30",
-    "excerpt": "Learn how concurrent model inference works in Kronk.",
-    "author": "bill-kennedy"
-  },
-  {
-    "slug": "understanding-the-kronk-caching-systems",
-    "file": "post4",
-    "title": "Understanding the Kronk Caching Systems",
-    "date": "2026-04-06",
-    "excerpt": "Learn how the different caching systems in Kronk work and when to use one over the other.",
-    "author": "bill-kennedy"
-  },
-  {
-    "slug": "understanding-the-kronk-template-systems",
-    "file": "post5",
-    "title": "Understanding the Kronk Template Systems",
-    "date": "2026-04-15",
-    "excerpt": "In this post, we are going to discuss what these Jinja templates are and how Kronk uses them to interact with your model of choice.",
-    "author": "bill-kennedy"
-  },
-  {
-    "slug": "bucky-bringing-whisper-to-kronk",
-    "file": "post6",
-    "title": "Bucky: Bringing Whisper to Kronk",
-    "date": "2026-05-23",
-    "excerpt": "Kronk now ships with Bucky — a peer backend that puts whisper.cpp behind the same SDK, pool, CLI, and BUI surfaces you already use for llama.cpp. In this post we'll walk through how it's wired up and the design decisions that fell out of it.",
-    "author": "bill-kennedy"
-  }
+    {
+        "slug": "navigating-hugging-face-kronk",
+        "file": "post1",
+        "title": "Navigating Hugging Face For Kronk",
+        "date": "2026-02-27",
+        "excerpt": "Learn how to find the right GGUF models on Hugging Face and decipher the acronyms—from Q8_K to UD-Q6_K_XL—so you can run the best models for your hardware.",
+        "author": "bill-kennedy"
+    },
+    {
+        "slug": "understanding-the-kronk-vram-calculator",
+        "file": "post2",
+        "title": "Understanding the Kronk VRAM Calculator",
+        "date": "2026-03-12",
+        "excerpt": "Learn how to use the VRAM calculator to know exactly how much memory you need to run a model in Kronk.",
+        "author": "bill-kennedy"
+    },
+    {
+        "slug": "concurrent-model-inference-request-processing-in-kronk",
+        "file": "post3",
+        "title": "Concurrent Model Inference Request Processing In Kronk",
+        "date": "2026-03-30",
+        "excerpt": "Learn how concurrent model inference works in Kronk.",
+        "author": "bill-kennedy"
+    },
+    {
+        "slug": "understanding-the-kronk-caching-systems",
+        "file": "post4",
+        "title": "Understanding the Kronk Caching Systems",
+        "date": "2026-04-06",
+        "excerpt": "Learn how the different caching systems in Kronk work and when to use one over the other.",
+        "author": "bill-kennedy"
+    },
+    {
+        "slug": "understanding-the-kronk-template-systems",
+        "file": "post5",
+        "title": "Understanding the Kronk Template Systems",
+        "date": "2026-04-15",
+        "excerpt": "In this post, we are going to discuss what these Jinja templates are and how Kronk uses them to interact with your model of choice.",
+        "author": "bill-kennedy"
+    },
+    {
+        "slug": "bucky-bringing-whisper-to-kronk",
+        "file": "post6",
+        "title": "Bucky: Bringing Whisper to Kronk",
+        "date": "2026-05-23",
+        "excerpt": "Kronk now ships with Bucky — a peer backend that puts whisper.cpp behind the same SDK, pool, CLI, and BUI surfaces you already use for llama.cpp. In this post we'll walk through how it's wired up and the design decisions that fell out of it.",
+        "author": "bill-kennedy"
+    },
+    {
+        "slug": "free-yourself-from-the-copilot-tax",
+        "file": "post7",
+        "title": "Free Yourself From The Copilot Tax",
+        "date": "2026-06-02",
+        "excerpt": "GitHub Copilot's switch to token-based billing is turning $29 subscriptions into $750 bills overnight, and developers are right to be furious. This post shows you how to walk away from the meter entirely — install Kronk and OpenCode, run a 30B coding model on your own hardware, and get back to writing code without watching a usage counter tick.",
+        "author": "bill-kennedy"
+    }
 ]
