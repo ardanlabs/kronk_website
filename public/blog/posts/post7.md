@@ -2,7 +2,7 @@
 title: "Free Yourself From The Copilot Tax"
 date: "2026-06-02"
 slug: "free-yourself-from-the-copilot-tax"
-excerpt: "GitHub Copilot's switch to token-based billing is turning $29 subscriptions into $750 bills overnight, and developers are right to be furious. This post shows you how to walk away from the meter entirely — install Kronk and OpenCode, run a 30B coding model on your own hardware, and get back to writing code without watching a usage counter tick."
+excerpt: "GitHub Copilot's switch to token-based billing is turning $29 subscriptions into $750 bills overnight, and developers are right to be furious. This post shows you how to walk away from the meter entirely — install Kronk, point VS Code Chat at it, run a 30B coding model on your own hardware, and get back to writing code without watching a usage counter tick."
 author: "bill-kennedy"
 banner: "/blog/images/post7_banner.jpg"
 ogImage: "/blog/images/post7_twitter.jpg"
@@ -18,21 +18,17 @@ The reactions on Reddit and X have been brutal. One developer reported their bil
 
 If you're an enterprise with a procurement department, you'll absorb the change. If you're an individual developer, a small team, or a contractor paying out of your own pocket, you're now staring at a usage curve that can swing by 10x or 100x from one busy day to the next. That is not a tool — that is a liability.
 
-The good news is that you no longer need a hyperscaler subscription to get a capable coding assistant. The open-source models released in the last twelve months are genuinely good at writing and editing code, and the tooling to run them locally has caught up. With **Kronk** as your local model server and **OpenCode** as your terminal-based coding agent, you can run a 30B-parameter MoE coding model on a single workstation, pay zero per-token fees, and keep your source code on your own machine.
+The good news is that you no longer need a hyperscaler subscription to get a capable coding assistant. The open-source models released in the last twelve months are genuinely good at writing and editing code, and the tooling to run them locally has caught up. With **Kronk** as your local model server, you can run a 30B-parameter MoE coding model on a single workstation, pay zero per-token fees, and keep your source code on your own machine.
 
-This post walks you end-to-end. Once Kronk is running locally, you have two ways to drive it:
+This post walks you end-to-end. Once Kronk is running locally, the lowest-friction way to put it to work is to leave VS Code Chat exactly where it is and re-point it at your local server. As of **VS Code 1.122**, the chat panel can be pointed at any OpenAI-compatible endpoint via the new Custom Endpoint BYOK provider. You keep the UI you already know — the model behind it just stops costing you per-token money. (If you'd rather drive Kronk from a terminal-native coding agent, the follow-up post [Drive Kronk From The Terminal With OpenCode](/blog/drive-kronk-from-the-terminal-with-opencode) picks up from this same Kronk server.)
 
-- **Stay in VS Code Chat.** As of VS Code 1.122, the chat panel can be pointed at any OpenAI-compatible endpoint via the new Custom Endpoint BYOK provider. You keep the UI you already know — the model behind it just stops costing you per-token money.
-- **Move to a terminal-native agent.** Install OpenCode (or any similar tool) and let it drive Kronk directly.
-
-Either way, the setup is the same up to the model. Here's the running order:
+Here's the running order:
 
 1. Install Kronk and download a coding-grade model.
 2. Verify everything works through the Kronk Browser UI.
 3. Configure the model profile in `~/.kronk/model_config.yaml`.
-4. Point VS Code Chat at Kronk (the low-friction path), **and/or**
-5. Install OpenCode for a fully terminal-native workflow.
-6. Write some real code with it.
+4. Point VS Code Chat at Kronk.
+5. Write some real code with it.
 
 Plan on about thirty minutes, plus however long your internet connection needs to pull the model file (roughly 18 GB for the recommended model).
 
@@ -159,7 +155,7 @@ You can also peek at the **Models → Running** page in the BUI to see what's lo
 
 ## Configure the Model Profile in Kronk
 
-Before you point any client at Kronk, take a minute to look at `~/.kronk/model_config.yaml`. Every model name Kronk serves carries a **profile suffix** — for example, `Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT`. That `/AGENT` part selects a per-model configuration block in this file where you set the context window, sampling parameters, and KV cache slot count. Both the VS Code Chat path below and the OpenCode path further down use these `/AGENT` model names, so the entry has to exist or your request will be rejected with an unknown-model error.
+Before you point any client at Kronk, take a minute to look at `~/.kronk/model_config.yaml`. Every model name Kronk serves carries a **profile suffix** — for example, `Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT`. That `/AGENT` part selects a per-model configuration block in this file where you set the context window, sampling parameters, and KV cache slot count. The VS Code Chat path below uses these `/AGENT` model names, so the entry has to exist or your request will be rejected with an unknown-model error.
 
 Open the file. If you pulled the Q8 quantization, you'll already find an entry pre-populated by Kronk on first run:
 
@@ -194,8 +190,7 @@ Most coding agents — Cursor, Claude Code, Cline, OpenCode's defaults — fire 
 What you set it to depends on which client you're going to use:
 
 - **VS Code Chat.** Observed to issue one request at a time on session start (no parallel title sub-call), so `nseq-max: 1` is fine and frees up roughly half the KV cache memory.
-- **OpenCode with the Kronk bundle (covered later).** The bundle disables the title sub-agent, so `nseq-max: 1` is also enough.
-- **Anything else** (Cursor, Cline, OpenCode without the bundle, any host that fires parallel sub-agent calls): leave `nseq-max: 2`.
+- **Anything else** (Cursor, Cline, or any host that fires parallel sub-agent calls): leave `nseq-max: 2`. The follow-up [OpenCode walkthrough](/blog/drive-kronk-from-the-terminal-with-opencode) ships a bundle that disables the parallel title sub-agent, so `nseq-max: 1` is enough there too.
 
 If you change anything in this file, restart the server so the new config is picked up:
 
@@ -269,7 +264,7 @@ If you see a real summary tied to your code, you're done — VS Code Chat is now
 
 One wrinkle Microsoft doesn't advertise. Even though the BYOK Custom Endpoint setting suggests you can use VS Code Chat fully signed out, in practice the first reload of VS Code after enabling Chat will force you to sign in with a GitHub account. The Chat UI is gated behind a GitHub identity, even when none of your model traffic goes through Microsoft.
 
-In practical terms this costs you nothing. A free GitHub account is all you need — no Copilot subscription, no usage meter — and once you're signed in your chat turns still flow to your local Kronk server. The only thing Microsoft sees is the identity handshake at sign-in time; your prompts, your code, and the model responses never leave your machine. If you don't want a GitHub account on the machine at all, skip the rest of this section and use OpenCode below.
+In practical terms this costs you nothing. A free GitHub account is all you need — no Copilot subscription, no usage meter — and once you're signed in your chat turns still flow to your local Kronk server. If you don't want a GitHub account on the machine at all, skip this path entirely and use the terminal-native [OpenCode walkthrough](/blog/drive-kronk-from-the-terminal-with-opencode) instead.
 
 **Leave `chat.utilityModel` and `chat.utilitySmallModel` alone**
 
@@ -290,7 +285,7 @@ Be careful here. On every chat turn VS Code will fire up to **four concurrent re
 
 You have two options:
 
-- **Leave the utility settings unset.** Easiest path. You lose the title and commit-message niceties in the chat panel, but every chat turn stays fast and your KV cache survives. You're going to get the full agent workflow from OpenCode in a minute anyway.
+- **Leave the utility settings unset.** Easiest path. You lose the title and commit-message niceties in the chat panel, but every chat turn stays fast and your KV cache survives.
 - **Bump `nseq-max` to `4` and turn the utility models on.** Kronk supports up to four parallel KV cache slots on the same model — one per concurrent request — so titles, summaries, and commit messages all run locally without evicting each other. The cost is VRAM: each extra slot reserves another full context window worth of KV cache, so plan on roughly 4x the cache budget you'd use at `nseq-max: 1`. On a 48 GB+ GPU this is comfortable; on a 24 GB card it usually means dropping the context window or the Q-level.
 
 If you take the `nseq-max: 4` route, update the model entry in `~/.kronk/model_config.yaml`:
@@ -313,146 +308,7 @@ A couple other gotchas worth knowing:
 - If you pulled the Q4_K_M quantization instead of Q8_K_XL, change the `id` and `name` strings to `Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT` to match what's in your `~/.kronk/model_config.yaml`.
 - The configuration file can be re-opened any time from **Chat: Manage Language Models** → pencil icon next to the Kronk group.
 
-That's the entire VS Code path — you can stop here and use Kronk through the chat panel you already know. If you want the full terminal-native agent workflow, keep going; nothing stops you from running both side by side against the same Kronk server.
-
-## Installing OpenCode
-
-[OpenCode](https://opencode.ai) is an open-source, terminal-native coding agent. Think Cursor or Claude Code, but it runs in your terminal and talks to any OpenAI-compatible endpoint — which includes Kronk.
-
-**Install OpenCode**
-
-```shell
-curl -fsSL https://opencode.ai/install | bash
-```
-
-There are also Homebrew and npm installers — see [https://opencode.ai/download](https://opencode.ai/download) for the full list.
-
-Verify it's on your `PATH`:
-
-```shell
-opencode --version
-```
-
-## Configuring OpenCode
-
-The Kronk repo ships a ready-made OpenCode configuration bundle — provider config, MCP wiring, agent skills, and house rules — that installs in one command.
-
-**Clone the Kronk repo (if you haven't already)**
-
-```shell
-git clone https://github.com/ardanlabs/kronk.git
-cd kronk
-```
-
-**Install the OpenCode bundle**
-
-```shell
-make agents-default-opencode
-```
-
-This target copies four pieces into `~/.config/opencode/`:
-
-1. `opencode.jsonc` — registers Kronk as a custom provider at `http://127.0.0.1:11435/v1` and pre-loads the Qwen3.6 model entry.
-2. `auth.json` — a placeholder API key for local use (Kronk auth is off by default).
-3. `AGENTS.md` — house rules for the agent: which skills to load, editing policy, the "don't curl the MCP port directly" rule.
-4. `skills/` — at minimum the `kronk-mcp` skill (how to use Kronk's MCP tools) and `writing-go` (Go toolchain workflow with the post-edit `gofmt`/`vet`/`staticcheck` chain).
-
-If you want different settings on a per-project basis — a different default model, an extra MCP server, project-specific agent rules — drop an `opencode.jsonc` in the root of that project. OpenCode merges the project-level file on top of the user-level one in `~/.config/opencode/`, so the project file wins for anything it defines and the user-level config fills in everything else. That keeps the global defaults sane and lets each repo override just what it needs.
-
-The bundle wires Kronk's MCP server (auto-started by `kronk server start` on `http://localhost:9000/mcp`) directly into OpenCode. That gives the agent two extra tools out of the box:
-
-- **`web_search`** — Brave-powered web search, useful for looking up library docs, errors, or version info without leaving the terminal.
-- **`fuzzy_edit`** — a tolerant fallback file editor for when OpenCode's exact-match edit tool misses on whitespace or line-ending drift.
-
-`web_search` is wired to the [Brave Search API](https://brave.com/search/api/) on purpose — going through an official API keeps us inside Brave's terms of use rather than scraping a search engine that forbids it. To turn it on, grab an API key from the Brave dashboard and export it in the shell that launches Kronk:
-
-```shell
-export KRONK_MCP_BRAVE_API_KEY="your-brave-api-key"
-```
-
-Brave's pay-as-you-go pricing is roughly **$5 per 1,000 requests**, with a free tier for light use. For a single developer doing day-to-day coding lookups, that's effectively rounding error compared to a Copilot token bill — but it is metered, so put the key in your shell profile and forget about it.
-
-**Why `nseq-max: 1` works with the OpenCode bundle**
-
-The bundle's `opencode.jsonc` turns the title sub-agent **off**:
-
-```jsonc
-"agent": {
-    "title": {
-        "disable": true
-    }
-}
-```
-
-With the title request gone there is only ever one in-flight request against the model, so the single KV cache slot you set in the previous section is enough. If you later swap to a host that does fire parallel sub-agent calls (Cursor, Cline, OpenCode with the title agent re-enabled), bump `nseq-max` back to `2` in `~/.kronk/model_config.yaml`.
-
-**Point OpenCode at the right model**
-
-The bundle ships pointed at `Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT`. If you stayed on the Q8 quantization, you can skip the rest of this section and jump straight to using OpenCode. If you pulled Q4_K_M instead, two places in `~/.config/opencode/opencode.jsonc` need updating: the top-level `model` field (the active default) and the `provider.kronk.models` map (the registered list OpenCode can switch between with the `/models` command).
-
-Change the `model` field:
-
-```jsonc
-"model": "kronk/Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT",
-```
-
-And add a matching entry inside `provider.kronk.models` so the model shows up in the `/models` picker:
-
-```jsonc
-"models": {
-    "Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT": {
-        "name": "Qwen3.6 35B-A3B UD-Q4_K_M",
-        "limit": {
-            "context": 131072,
-            "output": 65536
-        }
-    },
-    "Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT": {
-        "name": "Qwen3.6 35B-A3B UD-Q8_K_XL",
-        "limit": {
-            "context": 131072,
-            "output": 65536
-        }
-    },
-    "gemma-4-26B-A4B-it-UD-Q8_K_XL/AGENT": {
-        "name": "Gemma4 26B-A4B UD-Q8_K_XL",
-        "limit": {
-            "context": 131072,
-            "output": 65536
-        }
-    }
-}
-```
-
-You can keep all three (or more) registered at the same time — Q4 as your default, Q8 for when you want extra quality, and Gemma4 as a second opinion. Inside OpenCode, the `/models` command pops up a picker so you can swap mid-session without restarting the agent.
-
-## Testing OpenCode Against KMS
-
-Launch OpenCode from the root of any project. You want to make sure OpenCode is running from the root of any project so it can gather context for itself.
-
-```shell
-opencode
-```
-
-OpenCode connects to Kronk, loads the configured agent skills, and drops you at a prompt. Try a real task — something that exercises file reading, editing, and running a command:
-
-```
-Read the README.md in this repo. Then add a new top-level section called
-"Local Setup" that documents the three commands needed to clone, build, and
-run the project. After editing, run `gofmt -s -w` on any Go files you
-touched.
-```
-
-You'll watch the agent loop through:
-
-1. Read the file.
-2. Write the edit (using OpenCode's exact-match edit tool, or falling back to `kronk_fuzzy_edit` if whitespace drifts).
-3. Run the shell command.
-4. Summarize what changed.
-
-While it works, glance at the Kronk BUI's **Models → Running** page and you'll see your prompt and KV cache state updating in real time. The first turn does a full prefill; every subsequent turn only ingests the new message thanks to Kronk's incremental message cache (IMC). That's what keeps an agent conversation usable when it grows to tens of thousands of tokens.
-
-When you're done with a session, you can `kronk server stop` or just leave the server running — it idles cheap when nothing is hitting it.
+That's the entire VS Code path. Kronk is running locally, the chat panel is talking to it, and every turn is going through your own GPU instead of Microsoft's meter.
 
 **Cost so far: $0.**
 
@@ -460,14 +316,15 @@ When you're done with a session, you can `kronk server stop` or just leave the s
 
 The Copilot pricing change is forcing a question every developer should already have been asking: _do I actually need to rent a model from a hyperscaler to do my job?_
 
-For a lot of real-world coding work, the answer is no. A capable open-source MoE model on a workstation-class GPU, served by Kronk, and driven by OpenCode, will handle the same iterative refactors, test-writing, and code-reading loops you were doing in Copilot Chat — without a per-token meter, without a procurement conversation, and without your source code leaving your laptop.
+For a lot of real-world coding work, the answer is no. A capable open-source MoE model on a workstation-class GPU, served by Kronk and driven from VS Code Chat, will handle the same iterative refactors, test-writing, and code-reading loops you were doing in Copilot Chat — without a per-token meter, without a procurement conversation, and without your source code leaving your laptop.
 
 You don't have to throw away cloud models forever. There are problems where Claude or GPT-5 is still the right tool. But you no longer have to pay the Copilot tax just to get a competent assistant for day-to-day work. The local stack is genuinely good now, and it's free.
 
 A few next steps if you want to keep going:
 
+- **Drive Kronk from the terminal.** If the IDE isn't where you want to live, the follow-up post [Drive Kronk From The Terminal With OpenCode](/blog/drive-kronk-from-the-terminal-with-opencode) wires the same Kronk server to a terminal-native coding agent, complete with the Kronk MCP tools and ready-made agent skills.
 - **Tune the model for your hardware.** Open `~/.kronk/model_config.yaml` and adjust `context-window`, `nseq-max`, and the KV cache quantization (`cache-type-k`, `cache-type-v`). Chapter 3 of the [Kronk manual](https://github.com/ardanlabs/kronk/blob/main/.manual/chapter-03-model-configuration.md) walks through the trade-offs.
-- **Try other coding models.** The catalog includes Gemma, GPT-OSS, and several other open MoE and dense models. Add an `/AGENT` variant in `model_config.yaml`, register it in `opencode.jsonc`, and swap with `/models` inside OpenCode.
+- **Try other coding models.** The catalog includes Gemma, GPT-OSS, and several other open MoE and dense models. Add an `/AGENT` variant in `model_config.yaml` and swap the model `id` and `name` in your VS Code Custom Endpoint config to point at it.
 - **Wire up speech-to-text.** Kronk's Bucky subsystem runs whisper.cpp models from the same server for dictating prompts. See Chapter 18.
 - **Embed it in your own apps.** The Kronk Go SDK is the same code the model server is built on. Load models, run inference, and manage caching directly from your Go programs — no server required.
 - **Check out [yzma](https://github.com/hybridgroup/yzma).** Kronk reaches `llama.cpp` through `yzma`, Ron Evans' Go-native binding from the Hybrid Group (the TinyGo and Gobot folks). If you want a thinner wrapper for writing Go apps that talk to `llama.cpp` directly — especially on edge hardware like an Arduino UNO Q — yzma is well worth a look, and a tip of the hat for blazing the trail.

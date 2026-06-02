@@ -52,7 +52,15 @@
         "file": "post7",
         "title": "Free Yourself From The Copilot Tax",
         "date": "2026-06-02",
-        "excerpt": "GitHub Copilot's switch to token-based billing is turning $29 subscriptions into $750 bills overnight, and developers are right to be furious. This post shows you how to walk away from the meter entirely — install Kronk and OpenCode, run a 30B coding model on your own hardware, and get back to writing code without watching a usage counter tick.",
+        "excerpt": "GitHub Copilot's switch to token-based billing is turning $29 subscriptions into $750 bills overnight, and developers are right to be furious. This post shows you how to walk away from the meter entirely — install Kronk, point VS Code Chat at it, run a 30B coding model on your own hardware, and get back to writing code without watching a usage counter tick.",
+        "author": "bill-kennedy"
+    },
+    {
+        "slug": "drive-kronk-from-the-terminal-with-opencode",
+        "file": "post8",
+        "title": "Drive Kronk From The Terminal With OpenCode",
+        "date": "2026-06-02",
+        "excerpt": "If you'd rather skip the IDE entirely, OpenCode is a terminal-native coding agent that talks to any OpenAI-compatible endpoint — including the Kronk server you set up in the previous post. This walkthrough installs OpenCode, drops in the Kronk configuration bundle, wires up the MCP tools, and puts the whole loop to work on a real task.",
         "author": "bill-kennedy"
     }
 ]
