@@ -147,7 +147,7 @@ Or
 curl http://localhost:11435/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "Qwen3.6-35B-A3B-UD-Q8_K_XML",
+    "model": "Qwen3.6-35B-A3B-UD-Q8_K_XL",
     "messages": [{"role": "user", "content": "Write a Go function that reverses a string."}],
     "max_tokens": 256
   }'
