@@ -36,7 +36,7 @@ To remove or disable the Copilot Chat window and AI features in Visual Studio Co
 
 1. Open the Command Palette using Ctrl + Shift + P (or Cmd + Shift + P on macOS).
 
-2. Type `Chat: Hide AI Features` and press Enter.
+2. Type `Chat: How To Hide AI Features` and press Enter.
 
 VS Code will hide the Chat view, the inline completion suggestions, and the AI feature affordances in the sidebar. If you want to bring them back later, run `Chat: Show AI Features` from the same palette. To uninstall Copilot entirely, open the Extensions view (`Cmd/Ctrl + Shift + X`), search for "GitHub Copilot" and "GitHub Copilot Chat", and click Uninstall on both.
 

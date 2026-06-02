@@ -153,7 +153,7 @@ const BlogPost = () => {
             </div>
           </header>
 
-          <article className="prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-code:before:content-none prose-code:after:content-none prose-img:rounded-lg prose-img:shadow-md prose-img:border prose-img:border-border">
+          <article className="prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-code:before:content-none prose-code:after:content-none prose-code:rounded prose-code:border prose-code:border-code-border prose-code:bg-code-bg prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:text-foreground prose-img:rounded-lg prose-img:shadow-md prose-img:border prose-img:border-border">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeSlug]}
