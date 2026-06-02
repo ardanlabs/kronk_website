@@ -38,7 +38,7 @@ To remove or disable the Copilot Chat window and AI features in Visual Studio Co
 
 2. Type `Chat: How To Hide AI Features` and press Enter.
 
-VS Code will hide the Chat view, the inline completion suggestions, and the AI feature affordances in the sidebar. If you want to bring them back later, run `Chat: Show AI Features` from the same palette. To uninstall Copilot entirely, open the Extensions view (`Cmd/Ctrl + Shift + X`), search for "GitHub Copilot" and "GitHub Copilot Chat", and click Uninstall on both.
+VS Code will hide the Chat view, the inline completion suggestions, and the AI feature affordances in the sidebar. If you want to bring them back later, run `Chat: Use AI Features with Copilot for free` from the same palette. To uninstall Copilot entirely, open the Extensions view (`Cmd/Ctrl + Shift + X`), search for "GitHub Copilot" and "GitHub Copilot Chat", and click Uninstall on both.
 
 With Copilot out of the way, you have a clean editor to wire up against Kronk.
 
