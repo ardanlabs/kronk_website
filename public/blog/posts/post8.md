@@ -1,6 +1,6 @@
 ---
 title: "Drive Kronk From The Terminal With OpenCode"
-date: "2026-06-02"
+date: "2026-06-03"
 slug: "drive-kronk-from-the-terminal-with-opencode"
 excerpt: "If you'd rather skip the IDE entirely, OpenCode is a terminal-native coding agent that talks to any OpenAI-compatible endpoint — including the Kronk server you set up in the previous post. This walkthrough installs OpenCode, drops in the Kronk configuration bundle, wires up the MCP tools, and puts the whole loop to work on a real task."
 author: "bill-kennedy"
