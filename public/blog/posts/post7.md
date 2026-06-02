@@ -205,10 +205,20 @@ This target copies four pieces into `~/.config/opencode/`:
 3. `AGENTS.md` — house rules for the agent: which skills to load, editing policy, the "don't curl the MCP port directly" rule.
 4. `skills/` — at minimum the `kronk-mcp` skill (how to use Kronk's MCP tools) and `writing-go` (Go toolchain workflow with the post-edit `gofmt`/`vet`/`staticcheck` chain).
 
+If you want different settings on a per-project basis — a different default model, an extra MCP server, project-specific agent rules — drop an `opencode.jsonc` in the root of that project. OpenCode merges the project-level file on top of the user-level one in `~/.config/opencode/`, so the project file wins for anything it defines and the user-level config fills in everything else. That keeps the global defaults sane and lets each repo override just what it needs.
+
 The bundle wires Kronk's MCP server (auto-started by `kronk server start` on `http://localhost:9000/mcp`) directly into OpenCode. That gives the agent two extra tools out of the box:
 
 - **`web_search`** — Brave-powered web search, useful for looking up library docs, errors, or version info without leaving the terminal.
 - **`fuzzy_edit`** — a tolerant fallback file editor for when OpenCode's exact-match edit tool misses on whitespace or line-ending drift.
+
+`web_search` is wired to the [Brave Search API](https://brave.com/search/api/) on purpose — going through an official API keeps us inside Brave's terms of use rather than scraping a search engine that forbids it. To turn it on, grab an API key from the Brave dashboard and export it in the shell that launches Kronk:
+
+```shell
+export KRONK_MCP_BRAVE_API_KEY="your-brave-api-key"
+```
+
+Brave's pay-as-you-go pricing is roughly **$5 per 1,000 requests**, with a free tier for light use. For a single developer doing day-to-day coding lookups, that's effectively rounding error compared to a Copilot token bill — but it is metered, so put the key in your shell profile and forget about it.
 
 **Update The Config**
 
@@ -274,7 +284,9 @@ With the title request gone, there is only ever one in-flight request against th
 
 **2. Point OpenCode at the Q4 model in `~/.config/opencode/opencode.jsonc`**
 
-Two places in `~/.config/opencode/opencode.jsonc` need updating: the top-level `model` field (the active default) and the `provider.kronk.models` map (the registered list OpenCode can switch between with the `/models` command).
+If you're staying on the Q8 model, you can skip this step entirely — the bundle already ships pointed at `Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT`, so there's nothing to change in `opencode.jsonc`. Jump ahead to the next section and start using OpenCode.
+
+If you switched to the Q4 quantization, two places in `~/.config/opencode/opencode.jsonc` need updating: the top-level `model` field (the active default) and the `provider.kronk.models` map (the registered list OpenCode can switch between with the `/models` command).
 
 Change the `model` field:
 
