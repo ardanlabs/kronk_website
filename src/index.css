@@ -133,9 +133,31 @@
   }
 
   .prose pre,
-  .prose pre code,
-  .prose code {
+  .prose pre code {
     color: hsl(var(--code-text));
+  }
+
+  /* Inline code only (not inside fenced <pre> blocks) */
+  .prose :not(pre) > code {
+    background: hsl(var(--code-bg));
+    border: 1px solid hsl(var(--code-border));
+    color: hsl(var(--code-text));
+    @apply rounded px-1.5 py-0.5 font-normal text-[0.9em];
+  }
+
+  /* Strip the default leading/trailing backticks the typography plugin
+     injects via ::before / ::after on inline <code>. */
+  .prose :not(pre) > code::before,
+  .prose :not(pre) > code::after {
+    content: none;
+  }
+
+  /* Dark mode needs a brighter inline-code background than --code-bg,
+     which is darker than --background and would otherwise disappear. */
+  .dark .prose :not(pre) > code {
+    background: hsl(var(--muted));
+    border-color: hsl(var(--border));
+    color: hsl(var(--foreground));
   }
 
   .code-header {

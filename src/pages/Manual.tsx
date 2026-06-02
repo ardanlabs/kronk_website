@@ -176,7 +176,7 @@ const Manual = () => {
             </aside>
 
             {/* Right: Content */}
-            <article className="min-w-0 flex-1 order-last lg:order-none prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-32 lg:prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-code:before:content-none prose-code:after:content-none prose-code:rounded prose-code:border prose-code:border-code-border prose-code:bg-code-bg prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:text-foreground prose-img:rounded-lg">
+            <article className="min-w-0 flex-1 order-last lg:order-none prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-32 lg:prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-img:rounded-lg">
               {chapters.length > 0 && (
                 <div className="not-prose mb-10 rounded-lg border border-border bg-card p-6">
                   <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-4">
