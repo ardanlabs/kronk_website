@@ -26,7 +26,7 @@ Here's the running order:
 
 1. Install Kronk and download a coding-grade model.
 2. Verify everything works through the Kronk Browser UI.
-3. Configure the model profile in `~/.kronk/model_config.yaml`.
+3. Configure the model profile in `~/.kronk/models/model_config.yaml`.
 4. Point VS Code Chat at Kronk.
 5. Write some real code with it.
 
@@ -73,7 +73,7 @@ You should see the command list — `server`, `model`, `catalog`, `libs`, `secur
 kronk server start
 ```
 
-On first run, Kronk auto-detects your hardware (Metal, CUDA, Vulkan, or CPU) and downloads the matching llama.cpp shared libraries to `~/.kronk/libraries/`. It also seeds `~/.kronk/model_config.yaml` with a default per-model configuration that you can edit later. When it's done, you'll see:
+On first run, Kronk auto-detects your hardware (Metal, CUDA, Vulkan, or CPU) and downloads the matching llama.cpp shared libraries to `~/.kronk/libraries/`. It also seeds `~/.kronk/models/model_config.yaml` with a default per-model configuration that you can edit later. When it's done, you'll see:
 
 ```
 Kronk Model Server started
@@ -149,13 +149,13 @@ The first request takes a few seconds — Kronk has to load the model into memor
 
 Open the BUI at `http://localhost:11435` and click **Apps → Chat**. Select `Qwen3.6-35B-A3B-UD-Q4_K_M` or `Qwen3.6-35B-A3B-UD-Q8_K_XL` from the model dropdown, drop in a system prompt if you like, and start a conversation.
 
-This is the fastest way to sanity-check that the model behaves the way you expect before you let an autonomous agent loose on your filesystem. Push it on some real questions — Go idioms, SQL queries, whatever your day looks like. If you're not happy with the responses, tweak the sampling parameters in `~/.kronk/model_config.yaml` and restart the server.
+This is the fastest way to sanity-check that the model behaves the way you expect before you let an autonomous agent loose on your filesystem. Push it on some real questions — Go idioms, SQL queries, whatever your day looks like. If you're not happy with the responses, tweak the sampling parameters in `~/.kronk/models/model_config.yaml` and restart the server.
 
 You can also peek at the **Models → Running** page in the BUI to see what's loaded, how much VRAM it's using, and the current KV cache state. This is where you'll spend time if you start tuning context windows or running multiple models concurrently.
 
 ## Configure the Model Profile in Kronk
 
-Before you point any client at Kronk, take a minute to look at `~/.kronk/model_config.yaml`. Every model name Kronk serves carries a **profile suffix** — for example, `Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT`. That `/AGENT` part selects a per-model configuration block in this file where you set the context window, sampling parameters, and KV cache slot count. The VS Code Chat path below uses these `/AGENT` model names, so the entry has to exist or your request will be rejected with an unknown-model error.
+Before you point any client at Kronk, take a minute to look at `~/.kronk/models/model_config.yaml`. Every model name Kronk serves carries a **profile suffix** — for example, `Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT`. That `/AGENT` part selects a per-model configuration block in this file where you set the context window, sampling parameters, and KV cache slot count. The VS Code Chat path below uses these `/AGENT` model names, so the entry has to exist or your request will be rejected with an unknown-model error.
 
 Open the file. If you pulled the Q8 quantization, you'll already find an entry pre-populated by Kronk on first run:
 
@@ -288,7 +288,7 @@ You have two options:
 - **Leave the utility settings unset.** Easiest path. You lose the title and commit-message niceties in the chat panel, but every chat turn stays fast and your KV cache survives.
 - **Bump `nseq-max` to `4` and turn the utility models on.** Kronk supports up to four parallel KV cache slots on the same model — one per concurrent request — so titles, summaries, and commit messages all run locally without evicting each other. The cost is VRAM: each extra slot reserves another full context window worth of KV cache, so plan on roughly 4x the cache budget you'd use at `nseq-max: 1`. On a 48 GB+ GPU this is comfortable; on a 24 GB card it usually means dropping the context window or the Q-level.
 
-If you take the `nseq-max: 4` route, update the model entry in `~/.kronk/model_config.yaml`:
+If you take the `nseq-max: 4` route, update the model entry in `~/.kronk/models/model_config.yaml`:
 
 ```yaml
 Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT:
@@ -305,7 +305,7 @@ Restart the server, then point the utility settings at Kronk. Watch the **Models
 A couple other gotchas worth knowing:
 
 - The `url` field must be the OpenAI-compatible **base** URL — `http://127.0.0.1:11435/v1`, not `/v1/chat/completions`. VS Code appends the path itself.
-- If you pulled the Q4_K_M quantization instead of Q8_K_XL, change the `id` and `name` strings to `Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT` to match what's in your `~/.kronk/model_config.yaml`.
+- If you pulled the Q4_K_M quantization instead of Q8_K_XL, change the `id` and `name` strings to `Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT` to match what's in your `~/.kronk/models/model_config.yaml`.
 - The configuration file can be re-opened any time from **Chat: Manage Language Models** → pencil icon next to the Kronk group.
 
 That's the entire VS Code path. Kronk is running locally, the chat panel is talking to it, and every turn is going through your own GPU instead of Microsoft's meter.
@@ -323,7 +323,7 @@ You don't have to throw away cloud models forever. There are problems where Clau
 A few next steps if you want to keep going:
 
 - **Drive Kronk from the terminal.** If the IDE isn't where you want to live, the follow-up post [Drive Kronk From The Terminal With OpenCode](/blog/drive-kronk-from-the-terminal-with-opencode) wires the same Kronk server to a terminal-native coding agent, complete with the Kronk MCP tools and ready-made agent skills.
-- **Tune the model for your hardware.** Open `~/.kronk/model_config.yaml` and adjust `context-window`, `nseq-max`, and the KV cache quantization (`cache-type-k`, `cache-type-v`). Chapter 3 of the [Kronk manual](https://github.com/ardanlabs/kronk/blob/main/.manual/chapter-03-model-configuration.md) walks through the trade-offs.
+- **Tune the model for your hardware.** Open `~/.kronk/models/model_config.yaml` and adjust `context-window`, `nseq-max`, and the KV cache quantization (`cache-type-k`, `cache-type-v`). Chapter 3 of the [Kronk manual](https://github.com/ardanlabs/kronk/blob/main/.manual/chapter-03-model-configuration.md) walks through the trade-offs.
 - **Try other coding models.** The catalog includes Gemma, GPT-OSS, and several other open MoE and dense models. Add an `/AGENT` variant in `model_config.yaml` and swap the model `id` and `name` in your VS Code Custom Endpoint config to point at it.
 - **Wire up speech-to-text.** Kronk's Bucky subsystem runs whisper.cpp models from the same server for dictating prompts. See Chapter 18.
 - **Embed it in your own apps.** The Kronk Go SDK is the same code the model server is built on. Load models, run inference, and manage caching directly from your Go programs — no server required.

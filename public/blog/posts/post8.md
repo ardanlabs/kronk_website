@@ -12,11 +12,11 @@ ogImage: "/blog/images/post8_twitter.jpg"
 
 In the previous post, [Free Yourself From The Copilot Tax](/blog/free-yourself-from-the-copilot-tax), we got Kronk running locally and pointed VS Code Chat at it. That covers the lowest-friction path off the Copilot meter — keep the UI you already use, swap the model behind it. This post picks up from the same Kronk server and shows you the other path: a fully terminal-native coding agent driven by [OpenCode](https://opencode.ai).
 
-If you have not yet installed Kronk, downloaded a coding model, and configured a `/AGENT` profile in `~/.kronk/model_config.yaml`, start with the previous post. Everything below assumes:
+If you have not yet installed Kronk, downloaded a coding model, and configured a `/AGENT` profile in `~/.kronk/models/model_config.yaml`, start with the previous post. Everything below assumes:
 
 - Kronk is running on `http://localhost:11435`.
 - You have pulled one of `Qwen3.6-35B-A3B-UD-Q4_K_M` or `Qwen3.6-35B-A3B-UD-Q8_K_XL`.
-- The matching `/AGENT` entry exists in `~/.kronk/model_config.yaml`.
+- The matching `/AGENT` entry exists in `~/.kronk/models/model_config.yaml`.
 
 With that out of the way, the running order for this post is:
 
@@ -96,7 +96,7 @@ The bundle's `opencode.jsonc` turns the title sub-agent **off**:
 }
 ```
 
-With the title request gone there is only ever one in-flight request against the model, so a single KV cache slot in `~/.kronk/model_config.yaml` is enough. If you later swap to a host that does fire parallel sub-agent calls (Cursor, Cline, OpenCode with the title agent re-enabled), bump `nseq-max` back to `2`.
+With the title request gone there is only ever one in-flight request against the model, so a single KV cache slot in `~/.kronk/models/model_config.yaml` is enough. If you later swap to a host that does fire parallel sub-agent calls (Cursor, Cline, OpenCode with the title agent re-enabled), bump `nseq-max` back to `2`.
 
 **Point OpenCode at the right model**
 
