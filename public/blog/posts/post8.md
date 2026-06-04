@@ -15,7 +15,7 @@ In the previous post, [Free Yourself From The Copilot Tax](/blog/free-yourself-f
 If you have not yet installed Kronk, downloaded a coding model, and configured a `/AGENT` profile in `~/.kronk/models/model_config.yaml`, start with the previous post. Everything below assumes:
 
 - Kronk is running on `http://localhost:11435`.
-- You have pulled one of `Qwen3.6-35B-A3B-UD-Q4_K_M` or `Qwen3.6-35B-A3B-UD-Q8_K_XL`.
+- You have pulled one of `unsloth/Qwen3.6-35B-A3B-UD-Q4_K_M` or `unsloth/Qwen3.6-35B-A3B-UD-Q8_K_XL`.
 - The matching `/AGENT` entry exists in `~/.kronk/models/model_config.yaml`.
 
 With that out of the way, the running order for this post is:
@@ -100,33 +100,33 @@ With the title request gone there is only ever one in-flight request against the
 
 **Point OpenCode at the right model**
 
-The bundle ships pointed at `Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT`. If you stayed on the Q8 quantization, you can skip the rest of this section and jump straight to using OpenCode. If you pulled Q4_K_M instead, two places in `~/.config/opencode/opencode.jsonc` need updating: the top-level `model` field (the active default) and the `provider.kronk.models` map (the registered list OpenCode can switch between with the `/models` command).
+The bundle ships pointed at `unsloth/Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT`. If you stayed on the Q8 quantization, you can skip the rest of this section and jump straight to using OpenCode. If you pulled Q4_K_M instead, two places in `~/.config/opencode/opencode.jsonc` need updating: the top-level `model` field (the active default) and the `provider.kronk.models` map (the registered list OpenCode can switch between with the `/models` command).
 
 Change the `model` field:
 
 ```jsonc
-"model": "kronk/Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT",
+"model": "kronk/unsloth/Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT",
 ```
 
 And add a matching entry inside `provider.kronk.models` so the model shows up in the `/models` picker:
 
 ```jsonc
 "models": {
-    "Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT": {
+    "unsloth/Qwen3.6-35B-A3B-UD-Q4_K_M/AGENT": {
         "name": "Qwen3.6 35B-A3B UD-Q4_K_M",
         "limit": {
             "context": 131072,
             "output": 65536
         }
     },
-    "Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT": {
+    "unsloth/Qwen3.6-35B-A3B-UD-Q8_K_XL/AGENT": {
         "name": "Qwen3.6 35B-A3B UD-Q8_K_XL",
         "limit": {
             "context": 131072,
             "output": 65536
         }
     },
-    "gemma-4-26B-A4B-it-UD-Q8_K_XL/AGENT": {
+    "unsloth/gemma-4-26B-A4B-it-UD-Q8_K_XL/AGENT": {
         "name": "Gemma4 26B-A4B UD-Q8_K_XL",
         "limit": {
             "context": 131072,
