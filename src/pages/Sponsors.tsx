@@ -13,13 +13,6 @@ const sponsors = [
       "Ardan Labs is a software engineering firm delivering expert training, consulting, staff augmentation, and AI implementation services. With deep technical roots in Go, Rust, and Kubernetes, Ardan Labs has helped over 1,800 companies worldwide and trained more than 50,000 engineers to build performant, production-grade systems.",
   },
   {
-    name: "Prediction Guard",
-    logo: "/images/prediction-guard-logo.svg",
-    url: "https://predictionguard.com/",
-    description:
-      "Prediction Guard is a security-first AI control plane that enables organizations to deploy advanced AI solutions engineered for real-world risk. By embedding standards-aligned governance directly into the operational fabric of AI systems, Prediction Guard helps enterprises unify fragmented AI assets into a single, secure, and governed environment.",
-  },
-  {
     name: "The Hybrid Group",
     logo: "/images/hybrid-group-logo.png",
     url: "https://hybridgroup.com/",

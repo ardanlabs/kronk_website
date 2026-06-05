@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BookOpen, Github } from "lucide-react";
 import { KronkBanner } from "@/components/KronkBanner";
+import { assetPath } from "@/lib/utils";
 
 export const Hero = () => {
   return (
@@ -21,7 +22,20 @@ export const Hero = () => {
           transition={{ duration: 0.6 }}
         >
           
-          <h1 className="mb-2 text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="mb-6 flex items-center justify-center gap-4 text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl">
+            <a
+              href="https://www.ardanlabs.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0"
+              aria-label="Ardan Labs"
+            >
+              <img
+                src={assetPath("images/ardan-labs-badge.svg")}
+                alt="Ardan Labs"
+                className="h-16 w-auto sm:h-20 lg:h-24"
+              />
+            </a>
             <span className="text-gradient-primary">Kronk</span>
           </h1>
           

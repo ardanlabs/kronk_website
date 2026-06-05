@@ -3,6 +3,7 @@ import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users } from "lu
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
+import { assetPath } from "@/lib/utils";
 
 const useKronkVersion = () => {
   const [version, setVersion] = useState<string | null>(null);
@@ -63,21 +64,36 @@ export const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
-        <Link
-          to="/"
-          className="flex items-center gap-2 font-mono text-xl font-bold text-primary"
-          onClick={(e) => {
-            if (location.pathname === "/") {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-          }}
-        >
-          kronk
-          {version && (
-            <span className="text-sm font-normal text-muted-foreground">v{version}</span>
-          )}
-        </Link>
+        <div className="flex items-center gap-2">
+          <a
+            href="https://www.ardanlabs.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0"
+            aria-label="Ardan Labs"
+          >
+            <img
+              src={assetPath("images/ardan-labs-badge.svg")}
+              alt="Ardan Labs"
+              className="h-12 w-auto"
+            />
+          </a>
+          <Link
+            to="/"
+            className="flex items-center gap-2 font-mono text-xl font-bold text-primary"
+            onClick={(e) => {
+              if (location.pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+          >
+            kronk
+            {version && (
+              <span className="text-sm font-normal text-muted-foreground">v{version}</span>
+            )}
+          </Link>
+        </div>
 
         <TooltipProvider>
           <div className="hidden items-center gap-8 md:flex">
