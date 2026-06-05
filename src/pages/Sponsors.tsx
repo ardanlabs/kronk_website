@@ -1,5 +1,6 @@
 import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { ExternalLink } from "lucide-react";
 
 const sponsors = [
@@ -82,6 +83,7 @@ const Sponsors = () => {
           ))}
         </div>
       </main>
+      <Footer showBadge={false} />
     </div>
   );
 };

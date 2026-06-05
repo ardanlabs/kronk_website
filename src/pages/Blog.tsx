@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { getAllPosts, formatDate, getAuthor } from "@/lib/blog";
 import { Calendar, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -89,6 +90,7 @@ const Blog = () => {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
