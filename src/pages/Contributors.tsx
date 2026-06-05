@@ -1,5 +1,6 @@
 import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { Github } from "lucide-react";
 
 const contributors = [
@@ -77,6 +78,7 @@ const Contributors = () => {
           ))}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

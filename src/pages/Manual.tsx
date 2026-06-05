@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { Loader2 } from "lucide-react";
 import { extractToc, stripTocFromContent, groupTocByChapter, type TocEntry } from "@/lib/manual";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -230,6 +231,7 @@ const Manual = () => {
           </div>
         )}
       </main>
+      <Footer />
     </div>
   );
 };
