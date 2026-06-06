@@ -21,6 +21,7 @@ const GITHUB_RAW = "https://raw.githubusercontent.com/ardanlabs/kronk/main/examp
 const examples = [
   { icon: Mic, name: "Audio", desc: "Prompt against an audio model", cmd: "make example-audio" },
   { icon: AudioLines, name: "Bucky", desc: "Transcribe audio with whisper.cpp", cmd: "make example-bucky" },
+  { icon: AudioLines, name: "Bucky Stream", dir: "bucky-stream", desc: "Live microphone transcription with streaming", cmd: "make example-bucky-stream" },
   { icon: MessageSquare, name: "Chat", desc: "Interactive chat with chat-completion API", cmd: "make example-chat" },
   { icon: Workflow, name: "Concurrency", desc: "Batch process concurrent inference requests", cmd: "make example-concurrency" },
   { icon: Search, name: "Embedding", desc: "Perform embedding operations", cmd: "make example-embedding" },
@@ -68,7 +69,7 @@ export const ExamplesList = () => {
     setModalCode(null);
     setLoading(true);
     try {
-      const res = await fetch(`${GITHUB_RAW}/${ex.name.toLowerCase()}/main.go`);
+      const res = await fetch(`${GITHUB_RAW}/${ex.dir ?? ex.name.toLowerCase()}/main.go`);
       const text = await res.text();
       setModalCode(res.ok ? text : "Failed to load code.");
     } catch {
@@ -143,7 +144,7 @@ export const ExamplesList = () => {
                         <Tooltip disableHoverableContent>
                           <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
                             <a
-                              href={`https://github.com/ardanlabs/kronk/blob/main/examples/${selected.name.toLowerCase()}/main.go`}
+                              href={`https://github.com/ardanlabs/kronk/blob/main/examples/${selected.dir ?? selected.name.toLowerCase()}/main.go`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-muted-foreground hover:text-primary transition-colors"
