@@ -74,6 +74,7 @@ export const InstallSection = () => {
 
           <div className="mb-8">
             <CodeBlock>{`brew tap ardanlabs/kronk
+brew trust ardanlabs/kronk
 brew install kronk`}</CodeBlock>
           </div>
 

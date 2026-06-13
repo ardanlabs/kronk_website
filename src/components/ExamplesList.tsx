@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/utils";
-import { MessageSquare, Image, Mic, AudioLines, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers, Workflow } from "lucide-react";
+import { MessageSquare, Image, Mic, AudioLines, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers, Workflow, Users } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +22,7 @@ const examples = [
   { icon: Mic, name: "Audio", desc: "Prompt against an audio model", cmd: "make example-audio" },
   { icon: AudioLines, name: "Bucky", desc: "Transcribe audio with whisper.cpp", cmd: "make example-bucky" },
   { icon: AudioLines, name: "Bucky Stream", dir: "bucky-stream", desc: "Live microphone transcription with streaming", cmd: "make example-bucky-stream" },
+  { icon: Users, name: "Bucky Diarization", dir: "bucky-diar", desc: "Channel-separated speaker diarization", cmd: "make example-bucky-diar" },
   { icon: MessageSquare, name: "Chat", desc: "Interactive chat with chat-completion API", cmd: "make example-chat" },
   { icon: Workflow, name: "Concurrency", desc: "Batch process concurrent inference requests", cmd: "make example-concurrency" },
   { icon: Search, name: "Embedding", desc: "Perform embedding operations", cmd: "make example-embedding" },
