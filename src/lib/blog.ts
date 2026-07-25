@@ -12,6 +12,11 @@ export const AUTHORS: Record<string, Author> = {
     name: "Bill Kennedy",
     avatar: "/blog/images/bill-kennedy.png",
   },
+  "jesus-espino": {
+    id: "jesus-espino",
+    name: "Jesús Espino",
+    avatar: "/blog/images/jesus-espino.png",
+  },
 };
 
 export interface BlogPostMeta {
