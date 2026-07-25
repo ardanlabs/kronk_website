@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -39,23 +39,6 @@ export const Navbar = () => {
   const isDark = resolvedTheme === "dark";
   const version = useKronkVersion();
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const handleSectionClick = (e: React.MouseEvent, href: string) => {
-    const [path, hash] = href.split("#");
-    const targetId = hash;
-    if (targetId && location.pathname === "/") {
-      e.preventDefault();
-      const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
-        window.history.pushState(null, "", window.location.pathname + "#" + targetId);
-      }
-    } else if (targetId && location.pathname !== "/") {
-      e.preventDefault();
-      navigate(href);
-    }
-  };
 
   const toggleTheme = () => {
     setTheme(isDark ? "light" : "dark");
@@ -100,13 +83,12 @@ export const Navbar = () => {
             {navLinks.map((link) => (
               <Tooltip key={link.href}>
                 <TooltipTrigger asChild>
-                  <Link
-                    to={link.href}
-                    onClick={(e) => handleSectionClick(e, link.href)}
+                  <a
+                    href={link.href}
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 </TooltipTrigger>
                 <TooltipContent>{link.tip}</TooltipContent>
               </Tooltip>
@@ -205,17 +187,14 @@ export const Navbar = () => {
           >
             <div className="flex flex-col gap-4 px-6 py-4">
               {navLinks.map((link) => (
-                <Link
+                <a
                   key={link.href}
-                  to={link.href}
+                  href={link.href}
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  onClick={(e) => {
-                    handleSectionClick(e, link.href);
-                    setMobileOpen(false);
-                  }}
+                  onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
-                </Link>
+                </a>
               ))}
               <Link
                 to="/blog"
