@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
@@ -86,6 +87,13 @@ const Manual = () => {
   const toc = data ? extractToc(data) : [];
   const chapters = data ? groupTocByChapter(toc) : [];
   const content = data ? stripTocFromContent(data) : "";
+
+  useEffect(() => {
+    if (!data || !window.location.hash) return;
+
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    document.getElementById(id)?.scrollIntoView({ block: "start" });
+  }, [data]);
 
   return (
     <div className="min-h-screen bg-background">
