@@ -46,6 +46,12 @@ export const Footer = ({ showBadge = true }: { showBadge?: boolean }) => {
         </div>
         <div className="flex items-center gap-6">
           <Link
+            to="/showcase"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Showcase
+          </Link>
+          <Link
             to="/privacy"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >

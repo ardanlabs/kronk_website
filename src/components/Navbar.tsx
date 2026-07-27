@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users } from "lucide-react";
+import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users, Rocket } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -93,6 +93,18 @@ export const Navbar = () => {
                 <TooltipContent>{link.tip}</TooltipContent>
               </Tooltip>
             ))}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/showcase"
+                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Rocket className="h-5 w-5" />
+                  Showcase
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Explore projects built with Kronk</TooltipContent>
+            </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
@@ -196,6 +208,13 @@ export const Navbar = () => {
                   {link.label}
                 </a>
               ))}
+              <Link
+                to="/showcase"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                <Rocket className="h-4 w-4" /> Showcase
+              </Link>
               <Link
                 to="/blog"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
