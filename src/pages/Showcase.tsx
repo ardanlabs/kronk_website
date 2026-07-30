@@ -10,6 +10,7 @@ type ShowcaseProject = {
   description: string;
   kronkUse: string;
   tags: string[];
+  wideMedia?: boolean;
   media:
     | { type: "image"; src: string; alt: string }
     | { type: "youtube"; videoId: string; title: string };
@@ -69,6 +70,28 @@ const projects: ShowcaseProject[] = [
       },
     ],
   },
+  {
+    name: "Local RAG Agent",
+    creator: "Aryan Mehrotra",
+    description:
+      "A fully local retrieval-augmented generation service that ingests documents and returns grounded answers with source citations, while keeping prompts, documents, and embeddings on-device.",
+    kronkUse:
+      "Kronk runs both the GGUF chat and embedding models in-process on llama.cpp. A custom adapter connects Kronk to GoFr for HTTP APIs, tracing, token metrics, logging, and health checks, with SurrealDB providing vector storage and similarity search.",
+    tags: ["RAG", "Embeddings", "GoFr", "SurrealDB", "Open Source"],
+    wideMedia: true,
+    media: {
+      type: "image",
+      src: "/images/local-rag-agent-architecture.png",
+      alt: "Local RAG Agent ingestion and question-answering architecture",
+    },
+    links: [
+      {
+        label: "View on GitHub",
+        url: "https://github.com/aryanmehrotra/agents/tree/main/agents/retrieval/local-rag-agent",
+        type: "github",
+      },
+    ],
+  },
 ];
 
 function ProjectMedia({ project }: { project: ShowcaseProject }) {
@@ -79,7 +102,11 @@ function ProjectMedia({ project }: { project: ShowcaseProject }) {
       <img
         src={project.media.src}
         alt={project.media.alt}
-        className="aspect-video h-full w-full object-cover"
+        className={
+          project.wideMedia
+            ? "block h-auto w-full bg-background"
+            : "aspect-video h-full w-full object-cover"
+        }
         loading="lazy"
       />
     );
@@ -159,12 +186,20 @@ const Showcase = () => {
           {projects.map((project, index) => (
             <article
               key={project.name}
-              className="grid overflow-hidden rounded-xl border border-border bg-card shadow-sm lg:grid-cols-2"
+              className={`grid overflow-hidden rounded-xl border border-border bg-card shadow-sm ${
+                project.wideMedia ? "" : "lg:grid-cols-2"
+              }`}
             >
-              <div className={index % 2 === 1 ? "lg:order-2" : undefined}>
+              <div
+                className={!project.wideMedia && index % 2 === 1 ? "lg:order-2" : undefined}
+              >
                 <ProjectMedia project={project} />
               </div>
-              <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+              <div
+                className={`flex flex-col justify-center p-6 sm:p-8 lg:p-10 ${
+                  project.wideMedia ? "mx-auto w-full max-w-5xl" : ""
+                }`}
+              >
                 <p className="mb-2 font-mono text-sm text-primary">By {project.creator}</p>
                 <h2 className="mb-4 text-3xl font-bold text-foreground">{project.name}</h2>
                 <p className="mb-4 leading-relaxed text-muted-foreground">
