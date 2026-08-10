@@ -28,9 +28,19 @@ If you use local models but have ever wondered what actually happens between loa
 
 **[Read “Understanding Go AI Inference: What Is Inference?” on Internals for Interns →](https://internals-for-interns.com/posts/go-ai-inference-what-is-inference/)**
 
+### 2. Yzma
+
+The second article moves up the stack to Yzma, the Go bindings that call llama.cpp directly without cgo or a C toolchain. I explain how Yzma combines purego with libffi to load prebuilt llama.cpp libraries at runtime, find their functions, and call them using the correct platform ABI—even when the API passes C structs by value.
+
+I also trace how Yzma selects and downloads the right llama.cpp build for the operating system, CPU architecture, and available accelerator, then fetches GGUF models ready for local inference. Along the way, the article shows both the flexibility of runtime bindings and the care required to keep Go and C data layouts compatible.
+
+If you want to understand how an ordinary Go binary built with `CGO_ENABLED=0` can still drive llama.cpp with Metal, CUDA, Vulkan, or ROCm acceleration, this installment opens up the machinery that makes it possible.
+
+**[Read “Understanding Go AI Inference: Yzma” on Internals for Interns →](https://internals-for-interns.com/posts/yzma/)**
+
 ## What Comes Next
 
-The first article establishes the inference engine at the bottom of the stack. The next installment moves into Go with Yzma, showing how it uses llama.cpp to run inference directly from a Go application. Later articles will climb to Kronk and explore how that foundation becomes an SDK and model server designed for real applications.
+The first two articles establish the inference engine and show how Yzma makes it available directly from Go. The next installment will climb to Kronk and explore how that foundation becomes a high-level SDK and model server designed for real applications, with roles, streaming, tool calls, and an OpenAI-compatible API.
 
 I am excited to tell this story because understanding the layers below an API makes us better at choosing models, sizing hardware, diagnosing performance, and designing systems around local inference. These are not just implementation details. They explain why the tools behave the way they do.
 
