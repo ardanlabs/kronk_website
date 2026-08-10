@@ -156,6 +156,6 @@ curl -X POST http://localhost:11435/v1/audio/transcriptions \
   -F response_format=json
 ```
 
-For the full reference — install, model catalog, server / pool configuration, CLI, BUI, API, SDK, languages, troubleshooting — see [Chapter 18: Bucky (Audio Transcription)](https://github.com/ardanlabs/kronk/blob/main/.manual/chapter-18-bucky.md) in the manual. The developer-level internals (package layout, the per-handle semaphore, the `whisper.State` pool, the audioapp HTTP handler, tests) live in [Chapter 19 §19.13](https://github.com/ardanlabs/kronk/blob/main/.manual/chapter-19-developer-guide.md).
+For the full reference — install, model catalog, server / pool configuration, CLI, BUI, API, SDK, languages, troubleshooting — see [Chapter 18: Bucky (Audio Transcription)](https://github.com/ardanlabs/kronk/blob/main/.manual/chapter-18-bucky.md) in the manual. The developer-level internals (package layout, the per-handle semaphore, the `whisper.State` pool, the audioapp HTTP handler, tests) live in [Chapter 20 §20.8](https://github.com/ardanlabs/kronk/blob/main/.manual/chapter-20-developer-guide.md#208-bucky-implementation-map).
 
 As always, give it a spin, kick the tires, and let us know what you think.
