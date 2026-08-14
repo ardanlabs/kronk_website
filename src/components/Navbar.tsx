@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users, Rocket } from "lucide-react";
+import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users, Rocket, AudioLines } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -93,6 +93,18 @@ export const Navbar = () => {
                 <TooltipContent>{link.tip}</TooltipContent>
               </Tooltip>
             ))}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/bucky"
+                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <AudioLines className="h-5 w-5" />
+                  Bucky
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Local speech-to-text for Go</TooltipContent>
+            </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
@@ -208,6 +220,13 @@ export const Navbar = () => {
                   {link.label}
                 </a>
               ))}
+              <Link
+                to="/bucky"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                <AudioLines className="h-4 w-4" /> Bucky
+              </Link>
               <Link
                 to="/showcase"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
