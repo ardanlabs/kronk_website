@@ -47,9 +47,11 @@ Kronk is a Go-based local LLM runtime. It bundles a model server, a browser UI, 
 The easiest install on macOS and Linux is through Homebrew:
 
 ```shell
-brew tap ardanlabs/kronk
-brew install kronk
+brew install ardanlabs/kronk/kronk
 ```
+
+The fully qualified name adds the tap and trusts only the Kronk formula rather
+than every current and future item in the tap.
 
 If you prefer Go, this works on every supported platform:
 

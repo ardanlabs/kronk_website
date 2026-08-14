@@ -73,17 +73,20 @@ export const InstallSection = () => {
           </p>
 
           <div className="mb-8">
-            <CodeBlock>{`brew tap ardanlabs/kronk
-brew trust ardanlabs/kronk
-brew install kronk`}</CodeBlock>
+            <CodeBlock>brew install ardanlabs/kronk/kronk</CodeBlock>
           </div>
+
+          <p className="mb-8 text-muted-foreground leading-relaxed">
+            The fully qualified formula name adds the tap and trusts only the Kronk formula,
+            not every current and future item published by the tap.
+          </p>
 
           <p className="mb-4 text-muted-foreground leading-relaxed">
             To upgrade later:
           </p>
 
           <div className="mb-8">
-            <CodeBlock>brew upgrade kronk</CodeBlock>
+            <CodeBlock>brew upgrade ardanlabs/kronk/kronk</CodeBlock>
           </div>
 
           <p className="mb-4 text-muted-foreground leading-relaxed">
