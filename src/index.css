@@ -243,3 +243,37 @@
   background: hsl(199 75% 62% / 0.25);
   animation-delay: -9s;
 }
+
+/* Bucky landing page — forest/gold palette, independent of site theme */
+.bucky-page {
+  font-family: "Sora", ui-sans-serif, sans-serif;
+  color: #ece7d8;
+  background-color: #0b0c0a;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(63, 107, 79, 0.22), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(201, 166, 107, 0.08), transparent),
+    linear-gradient(180deg, #0b0c0a 0%, #0e110d 40%, #0b0c0a 100%);
+  background-attachment: fixed;
+}
+
+.bucky-page ::selection {
+  background: color-mix(in oklab, #c9a66b 35%, transparent);
+  color: #ece7d8;
+}
+
+/* Malina landing page — raspberry red / gold / cream, independent of site theme */
+.malina-page {
+  font-family: "Sora", ui-sans-serif, sans-serif;
+  color: #f4efe4;
+  background-color: #14090b;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(216, 44, 45, 0.22), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(232, 176, 26, 0.12), transparent),
+    linear-gradient(180deg, #14090b 0%, #1a0c0e 40%, #14090b 100%);
+  background-attachment: fixed;
+}
+
+.malina-page ::selection {
+  background: color-mix(in oklab, #d82c2d 40%, transparent);
+  color: #f4efe4;
+}

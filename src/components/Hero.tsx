@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BookOpen, Github, Rocket } from "lucide-react";
+import { AudioLines, BookOpen, Github, Image, Rocket } from "lucide-react";
 import { KronkBanner } from "@/components/KronkBanner";
 import { assetPath } from "@/lib/utils";
 
 export const Hero = () => {
   return (
-    <section className="relative flex items-center justify-center pt-16 pb-12">
+    <section className="relative flex items-center justify-center overflow-hidden pt-16 pb-12">
       {/* Animated blurred blobs - color cycling effect */}
       <div className="hero-blobs absolute inset-0 scale-50 lg:scale-100 opacity-50">
         <div className="hero-blob hero-blob-1" />
@@ -69,6 +69,20 @@ export const Hero = () => {
           >
             <BookOpen className="h-4 w-4" />
             Manual
+          </Link>
+          <Link
+            to="/bucky"
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+          >
+            <AudioLines className="h-4 w-4" />
+            Bucky
+          </Link>
+          <Link
+            to="/malina"
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+          >
+            <Image className="h-4 w-4" />
+            Malina
           </Link>
           <Link
             to="/showcase"

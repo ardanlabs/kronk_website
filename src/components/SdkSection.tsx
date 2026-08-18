@@ -3,7 +3,7 @@ import { assetPath } from "@/lib/utils";
 
 export const SdkSection = () => {
   return (
-    <section id="sdk" className="py-24 scroll-mt-24">
+    <section id="sdk" className="scroll-mt-32 py-24">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

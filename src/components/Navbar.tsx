@@ -1,9 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
-import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users, Rocket } from "lucide-react";
+import { Github, Menu, X, Sun, Moon, BookOpen, FileText, Heart, Users, Rocket, AudioLines, Image } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import { assetPath } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const useKronkVersion = () => {
   const [version, setVersion] = useState<string | null>(null);
@@ -18,20 +24,6 @@ const useKronkVersion = () => {
   }, []);
   return version;
 };
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-const navLinks = [
-  { label: "Features", href: "/#features", tip: "See what makes Kronk powerful" },
-  { label: "SDK", href: "/#sdk", tip: "Explore the Go SDK for local inference" },
-  { label: "Install", href: "/#install", tip: "Get Kronk up and running" },
-  { label: "Platform", href: "/#platform", tip: "Supported hardware and operating systems" },
-  { label: "Examples", href: "/#examples", tip: "Ready-to-run code examples" },
-];
 
 export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -80,19 +72,30 @@ export const Navbar = () => {
 
         <TooltipProvider>
           <div className="hidden items-center gap-8 md:flex">
-            {navLinks.map((link) => (
-              <Tooltip key={link.href}>
-                <TooltipTrigger asChild>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </a>
-                </TooltipTrigger>
-                <TooltipContent>{link.tip}</TooltipContent>
-              </Tooltip>
-            ))}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/bucky"
+                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <AudioLines className="h-5 w-5" />
+                  Bucky
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Local speech-to-text for Go</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/malina"
+                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Image className="h-5 w-5" />
+                  Malina
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Local image generation for Go</TooltipContent>
+            </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
@@ -198,16 +201,20 @@ export const Navbar = () => {
             className="overflow-hidden border-b border-border bg-background md:hidden"
           >
             <div className="flex flex-col gap-4 px-6 py-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
+              <Link
+                to="/bucky"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                <AudioLines className="h-4 w-4" /> Bucky
+              </Link>
+              <Link
+                to="/malina"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                <Image className="h-4 w-4" /> Malina
+              </Link>
               <Link
                 to="/showcase"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"

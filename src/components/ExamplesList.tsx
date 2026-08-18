@@ -81,7 +81,7 @@ export const ExamplesList = () => {
   };
 
   return (
-    <section id="examples" className="py-12 scroll-mt-24">
+    <section id="examples" className="scroll-mt-32 py-12">
       <div className="container mx-auto px-6">
         <div className="mb-16 text-center">
         <img
