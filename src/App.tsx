@@ -17,6 +17,7 @@ const Contributors = lazy(() => import("./pages/Contributors"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Bucky = lazy(() => import("./pages/Bucky"));
+const Malina = lazy(() => import("./pages/Malina"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/manual" element={<Manual />} />
           <Route path="/bucky" element={<Bucky />} />
+          <Route path="/malina" element={<Malina />} />
           <Route path="/showcase" element={<Showcase />} />
           <Route path="/sponsors" element={<Sponsors />} />
           <Route path="/contributors" element={<Contributors />} />

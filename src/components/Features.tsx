@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Cpu, Zap, Server, Globe, Wrench, Brain, AudioLines } from "lucide-react";
+import { Cpu, Zap, Server, Globe, Wrench, Brain, AudioLines, Image } from "lucide-react";
 
 const features = [
   {
@@ -44,6 +44,12 @@ const features = [
     description:
       "OpenAI-compatible /v1/audio/transcriptions powered by Bucky (whisper.cpp). Models from tiny to large-v3-turbo with Metal, CUDA, and Vulkan acceleration.",
   },
+  {
+    icon: Image,
+    title: "Image Generation (Malina)",
+    description:
+      "Native stable-diffusion.cpp bindings for local image generation. The path to Kronk’s OpenAI-compatible /v1/images/generations endpoint — no CGo required.",
+  },
 ];
 
 const containerVariants = {
@@ -60,7 +66,7 @@ const itemVariants = {
 
 export const Features = () => {
   return (
-    <section id="features" className="pb-12 pt-24 scroll-mt-24">
+    <section id="features" className="scroll-mt-32 pb-12 pt-24">
       <div className="container mx-auto px-6">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">

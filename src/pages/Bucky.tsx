@@ -323,7 +323,7 @@ function FinalCta() {
         <img
           src={assetPath("images/bucky-footer.png")}
           alt=""
-          className="mx-auto w-64 -mb-8"
+          className="mx-auto w-full max-w-[450px]"
         />
         <h2 className="text-3xl font-semibold tracking-tight text-bucky-paper sm:text-4xl">
           Start transcribing locally.

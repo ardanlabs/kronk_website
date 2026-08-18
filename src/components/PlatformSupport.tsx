@@ -24,7 +24,7 @@ const platforms = [
 
 export const PlatformSupport = () => {
   return (
-    <section id="platform" className="border-y border-border bg-card py-24 scroll-mt-24">
+    <section id="platform" className="scroll-mt-32 border-y border-border bg-card py-24">
       <div className="container mx-auto px-6">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">

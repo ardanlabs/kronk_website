@@ -52,6 +52,12 @@ export const Footer = ({ showBadge = true }: { showBadge?: boolean }) => {
             Bucky
           </Link>
           <Link
+            to="/malina"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Malina
+          </Link>
+          <Link
             to="/showcase"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
