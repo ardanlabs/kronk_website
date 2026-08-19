@@ -5,19 +5,19 @@ import { Navbar } from "@/components/Navbar";
 import { PageMeta } from "@/components/PageMeta";
 import { assetPath } from "@/lib/utils";
 
-const GO_INSTALL = "go install github.com/ardanlabs/malina@latest";
-const GITHUB_URL = "https://github.com/ardanlabs/malina";
-const DOCS_URL = "https://pkg.go.dev/github.com/ardanlabs/malina";
+const INSTALL_COMMAND = "git clone https://github.com/ardanlabs/kronk.git";
+const GITHUB_URL = "https://github.com/ardanlabs/kronk";
+const DOCS_URL = "https://www.kronkai.com/manual#chapter-19-malina-image-generation";
 const ARDAN_URL = "https://www.ardanlabs.com/";
 
 const features = [
   {
-    title: "Go SDK",
-    body: "Embed Stable Diffusion directly in Go apps with a stable-diffusion.h-mirrored API.",
+    title: "Kronk SDK",
+    body: "Embed Stable Diffusion in Go apps with Kronk’s sdk/malina packages.",
   },
   {
-    title: "CLI",
-    body: "Install libs, pull models, and generate images from the terminal.",
+    title: "Kronk tooling",
+    body: "Install libraries and curated model bundles with Kronk’s Go tooling APIs.",
   },
   {
     title: "No CGo",
@@ -48,18 +48,18 @@ const features = [
 const steps = [
   {
     n: "01",
-    title: "Install Malina + libs",
-    body: "go install Malina, then pull stable-diffusion.cpp libraries for your platform.",
+    title: "Clone Kronk",
+    body: "Get the Kronk project and its complete Malina example.",
   },
   {
     n: "02",
-    title: "Pull a model",
-    body: "From sd-1.5 for a first image to SDXL or FLUX.2 for higher fidelity.",
+    title: "Run the example",
+    body: "Kronk installs compatible libraries and the sd-1.5 starter bundle for you.",
   },
   {
     n: "03",
     title: "Generate",
-    body: "Call it from the CLI or embed the Go SDK in your app.",
+    body: "Use the example as a starting point for your app with Kronk’s Malina SDK.",
   },
 ];
 
@@ -68,7 +68,7 @@ function CopyInstallButton({ className = "" }: { className?: string }) {
 
   async function copy() {
     try {
-      await navigator.clipboard.writeText(GO_INSTALL);
+      await navigator.clipboard.writeText(INSTALL_COMMAND);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
@@ -82,7 +82,7 @@ function CopyInstallButton({ className = "" }: { className?: string }) {
       onClick={copy}
       className={`inline-flex items-center justify-center gap-2 rounded-md bg-malina-gold px-4 py-2.5 text-sm font-semibold text-malina-ink transition hover:bg-malina-gold-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-malina-gold ${className}`}
     >
-      <span className="font-mono text-[13px]">{copied ? "Copied" : "go install"}</span>
+      <span className="font-mono text-[13px]">{copied ? "Copied" : "git clone"}</span>
     </button>
   );
 }
@@ -159,7 +159,7 @@ function Hero() {
           <CopyInstallButton />
           <GitHubButton />
         </div>
-        <p className="mt-4 font-mono text-xs text-malina-fog/80">{GO_INSTALL}</p>
+        <p className="mt-4 font-mono text-xs text-malina-fog/80">{INSTALL_COMMAND}</p>
       </div>
 
       <div className="animate-bucky-terminal-in relative pt-14">
@@ -174,17 +174,19 @@ function Hero() {
             <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
             <span className="ml-3 font-mono text-xs text-malina-fog">
-              malina — generate image
+              kronk — malina example
             </span>
           </div>
           <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-6 text-malina-paper/90 sm:text-sm">
             <code>
-              {`$ malina model pull sd-1.5
-✓ downloaded v1-5-pruned-emaonly.safetensors
+              {`$ git clone https://github.com/ardanlabs/kronk.git
+$ cd kronk
+$ make example-malina
 
-$ go run ./examples/hello "a lovely cat"
-
-wrote hello.png (512x512) in 6.8s`}
+✓ installed stable-diffusion.cpp libraries
+✓ downloaded sd-1.5 model bundle
+- dimensions       : 512x512
+- output           : malina.png`}
               <span className="animate-bucky-caret ml-0.5 inline-block text-malina-gold">
                 ▍
               </span>
@@ -205,7 +207,7 @@ function CodeProof() {
             See it in action
           </h2>
           <p className="mt-3 text-malina-fog">
-            The smallest useful path: install, pull a model, generate.
+            The smallest useful path: clone Kronk and run its Malina example.
           </p>
         </div>
 
@@ -214,11 +216,10 @@ function CodeProof() {
             terminal
           </div>
           <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-7 text-malina-paper/90 sm:p-6 sm:text-sm">
-            <code>{`go install github.com/ardanlabs/malina@latest
-malina install -lib ./lib
-export MALINA_LIB=$(pwd)/lib
-malina model pull sd-1.5
-go run ./examples/hello "a lovely cat"`}</code>
+            <code>{`git clone https://github.com/ardanlabs/kronk.git
+cd kronk
+make example-malina
+# Output: malina.png`}</code>
           </pre>
         </div>
 
@@ -240,7 +241,7 @@ function Features() {
           Everything you need for local image gen
         </h2>
         <p className="mt-3 text-malina-fog">
-          Turn a prompt into a PNG from a Go program or the Malina CLI — with img2img,
+          Turn a prompt into a PNG with Kronk’s Malina SDK — with img2img,
           video muxing, and GPU acceleration.
         </p>
       </div>
@@ -287,7 +288,7 @@ function KronkSection() {
     <section id="kronk" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
       <div className="max-w-3xl">
         <h2 className="text-2xl font-semibold tracking-tight text-malina-paper sm:text-3xl">
-          Built for Go apps. Powering Kronk.
+          Built for Go apps. Part of Kronk.
         </h2>
         <p className="mt-4 text-base leading-relaxed text-malina-fog">
           Malina is the image-generation sibling of{" "}
@@ -306,11 +307,9 @@ function KronkSection() {
           >
             yzma
           </a>
-          , and the path to Kronk’s OpenAI-compatible{" "}
-          <code className="font-mono text-sm text-malina-paper">
-            POST /v1/images/generations
-          </code>
-          . Use Malina alone as a library, or through Kronk as a full local AI stack.
+          . It is available today through Kronk’s experimental{" "}
+          <code className="font-mono text-sm text-malina-paper">sdk/malina</code>{" "}
+          packages and complete example. Server and CLI integration are still in development.
         </p>
         <Link
           to="/"
@@ -336,7 +335,7 @@ function FinalCta() {
           Start generating locally.
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-malina-fog">
-          Install Malina, pull a model, and ship image generation in your Go app —
+          Clone Kronk, run the Malina example, and ship image generation in your Go app —
           on your machine.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
