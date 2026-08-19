@@ -80,7 +80,7 @@ function CopyInstallButton({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={copy}
-      className={`inline-flex items-center justify-center gap-2 rounded-md bg-malina-gold px-4 py-2.5 text-sm font-semibold text-malina-ink transition hover:bg-malina-gold-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-malina-gold ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-md bg-malina-action px-4 py-2.5 text-sm font-semibold text-malina-action-ink transition hover:bg-malina-action-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-malina-gold ${className}`}
     >
       <span className="font-mono text-[13px]">{copied ? "Copied" : "git clone"}</span>
     </button>
@@ -168,7 +168,7 @@ function Hero() {
           alt="Malina"
           className="absolute -right-2 lg:right-0 -top-[75px] z-10 w-[170px]"
         />
-        <div className="overflow-hidden rounded-xl border border-malina-line bg-malina-panel shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+        <div className="overflow-hidden rounded-xl border border-malina-line bg-malina-panel shadow-[0_24px_80px_rgba(184,35,37,0.12)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
           <div className="flex items-center gap-2 border-b border-malina-line px-4 py-3">
             <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />

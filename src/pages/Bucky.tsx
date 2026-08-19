@@ -80,7 +80,7 @@ function CopyInstallButton({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={copy}
-      className={`inline-flex items-center justify-center gap-2 rounded-md bg-bucky-gold px-4 py-2.5 text-sm font-semibold text-bucky-ink transition hover:bg-bucky-gold-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bucky-gold ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-md bg-bucky-action px-4 py-2.5 text-sm font-semibold text-bucky-action-ink transition hover:bg-bucky-action-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bucky-gold ${className}`}
     >
       <span className="font-mono text-[13px]">{copied ? "Copied" : "git clone"}</span>
     </button>
@@ -168,7 +168,7 @@ function Hero() {
           alt="Bucky"
           className="absolute right-0 -top-[74px] z-10 w-[155px]"
         />
-        <div className="overflow-hidden rounded-xl border border-bucky-line bg-bucky-panel shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+        <div className="overflow-hidden rounded-xl border border-bucky-line bg-bucky-panel shadow-[0_24px_80px_rgba(63,107,79,0.14)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
           <div className="flex items-center gap-2 border-b border-bucky-line px-4 py-3">
             <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />

@@ -244,36 +244,106 @@
   animation-delay: -9s;
 }
 
-/* Bucky landing page — forest/gold palette, independent of site theme */
+/* Bucky landing page — forest/gold palette */
 .bucky-page {
+  --bucky-ink: 248 246 239;
+  --bucky-raised: 241 238 227;
+  --bucky-panel: 255 253 247;
+  --bucky-line: 205 196 174;
+  --bucky-fog: 92 87 72;
+  --bucky-paper: 28 31 25;
+  --bucky-gold: 150 107 37;
+  --bucky-gold-bright: 114 80 26;
+  --bucky-forest: 63 107 79;
+  --bucky-forest-dim: 169 192 174;
+  --bucky-action-ink: 11 12 10;
+  --bucky-action: 215 185 121;
+  --bucky-action-hover: 232 207 154;
+  --bucky-page-mid: 241 238 227;
+  --bucky-forest-glow: 0.16;
+  --bucky-gold-glow: 0.1;
+  --bucky-selection: 0.3;
   font-family: "Sora", ui-sans-serif, sans-serif;
-  color: #ece7d8;
-  background-color: #0b0c0a;
+  color: rgb(var(--bucky-paper));
+  background-color: rgb(var(--bucky-ink));
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(63, 107, 79, 0.22), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(201, 166, 107, 0.08), transparent),
-    linear-gradient(180deg, #0b0c0a 0%, #0e110d 40%, #0b0c0a 100%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgb(var(--bucky-forest) / var(--bucky-forest-glow)), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgb(var(--bucky-gold) / var(--bucky-gold-glow)), transparent),
+    linear-gradient(180deg, rgb(var(--bucky-ink)) 0%, rgb(var(--bucky-page-mid)) 40%, rgb(var(--bucky-ink)) 100%);
   background-attachment: fixed;
 }
 
 .bucky-page ::selection {
-  background: color-mix(in oklab, #c9a66b 35%, transparent);
-  color: #ece7d8;
+  background: rgb(var(--bucky-gold) / var(--bucky-selection));
+  color: rgb(var(--bucky-paper));
 }
 
-/* Malina landing page — raspberry red / gold / cream, independent of site theme */
+.dark .bucky-page {
+  --bucky-ink: 11 12 10;
+  --bucky-raised: 18 20 16;
+  --bucky-panel: 23 26 20;
+  --bucky-line: 42 47 36;
+  --bucky-fog: 168 164 146;
+  --bucky-paper: 236 231 216;
+  --bucky-gold: 201 166 107;
+  --bucky-gold-bright: 223 192 138;
+  --bucky-forest: 63 107 79;
+  --bucky-forest-dim: 42 70 52;
+  --bucky-page-mid: 14 17 13;
+  --bucky-forest-glow: 0.22;
+  --bucky-gold-glow: 0.08;
+  --bucky-selection: 0.35;
+}
+
+/* Malina landing page — raspberry red / gold / cream */
 .malina-page {
+  --malina-ink: 255 248 246;
+  --malina-raised: 249 238 235;
+  --malina-panel: 255 253 249;
+  --malina-line: 221 186 184;
+  --malina-fog: 112 89 86;
+  --malina-paper: 46 23 25;
+  --malina-gold: 139 101 0;
+  --malina-gold-bright: 113 79 0;
+  --malina-red: 184 35 37;
+  --malina-red-dim: 232 162 164;
+  --malina-pink: 122 28 34;
+  --malina-action-ink: 20 9 11;
+  --malina-action: 232 176 26;
+  --malina-action-hover: 244 200 74;
+  --malina-page-mid: 249 238 235;
+  --malina-red-glow: 0.13;
+  --malina-gold-glow: 0.1;
+  --malina-selection: 0.25;
   font-family: "Sora", ui-sans-serif, sans-serif;
-  color: #f4efe4;
-  background-color: #14090b;
+  color: rgb(var(--malina-paper));
+  background-color: rgb(var(--malina-ink));
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(216, 44, 45, 0.22), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(232, 176, 26, 0.12), transparent),
-    linear-gradient(180deg, #14090b 0%, #1a0c0e 40%, #14090b 100%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgb(var(--malina-red) / var(--malina-red-glow)), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgb(var(--malina-gold) / var(--malina-gold-glow)), transparent),
+    linear-gradient(180deg, rgb(var(--malina-ink)) 0%, rgb(var(--malina-page-mid)) 40%, rgb(var(--malina-ink)) 100%);
   background-attachment: fixed;
 }
 
 .malina-page ::selection {
-  background: color-mix(in oklab, #d82c2d 40%, transparent);
-  color: #f4efe4;
+  background: rgb(var(--malina-red) / var(--malina-selection));
+  color: rgb(var(--malina-paper));
+}
+
+.dark .malina-page {
+  --malina-ink: 20 9 11;
+  --malina-raised: 28 14 17;
+  --malina-panel: 36 18 20;
+  --malina-line: 74 38 40;
+  --malina-fog: 201 180 174;
+  --malina-paper: 244 239 228;
+  --malina-gold: 232 176 26;
+  --malina-gold-bright: 244 200 74;
+  --malina-red: 216 44 45;
+  --malina-red-dim: 138 28 30;
+  --malina-pink: 247 193 193;
+  --malina-page-mid: 26 12 14;
+  --malina-red-glow: 0.22;
+  --malina-gold-glow: 0.12;
+  --malina-selection: 0.4;
 }
