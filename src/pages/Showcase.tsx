@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { ExternalLink, Github, Play, Rocket } from "lucide-react";
+import { ExternalLink, Github, Play, Rocket, Terminal } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { PageMeta } from "@/components/PageMeta";
 
 type ShowcaseProject = {
+  id: string;
   name: string;
   creator: string;
   description: string;
@@ -13,12 +14,45 @@ type ShowcaseProject = {
   wideMedia?: boolean;
   media:
     | { type: "image"; src: string; alt: string }
+    | {
+        type: "summary";
+        eyebrow: string;
+        title: string;
+        description: string;
+        features: string[];
+      }
     | { type: "youtube"; videoId: string; title: string };
   links: { label: string; url: string; type: "github" | "website" | "video" }[];
 };
 
 const projects: ShowcaseProject[] = [
   {
+    id: "kronk-cli",
+    name: "kronk-cli",
+    creator: "Bardia Navvabian",
+    description:
+      "A zero-dependency terminal coding agent for local models, with streaming chat, tool execution, MCP support, sandboxing, and automatic context management.",
+    kronkUse:
+      "kronk-cli connects to models served by Kronk through its OpenAI-compatible API, keeping coding assistance private and local while still supporting multi-step tasks across an entire project.",
+    tags: ["Coding Agent", "CLI", "MCP", "Local AI", "Open Source"],
+    media: {
+      type: "summary",
+      eyebrow: "Local AI developer tool",
+      title: "A coding agent that works where you do.",
+      description:
+        "Explore codebases, edit files, and run development tools from the terminal—all through models served privately by Kronk.",
+      features: ["Understands your project", "Edits files and runs commands", "Connects to MCP tools"],
+    },
+    links: [
+      {
+        label: "View on GitHub",
+        url: "https://github.com/BardiaN/kronk-cli",
+        type: "github",
+      },
+    ],
+  },
+  {
+    id: "local-lens",
     name: "LocalLens",
     creator: "Ramon Reichert",
     description:
@@ -40,6 +74,7 @@ const projects: ShowcaseProject[] = [
     ],
   },
   {
+    id: "fyshos",
     name: "FyshOS",
     creator: "Andy Williams and the FyshOS community",
     description:
@@ -71,6 +106,7 @@ const projects: ShowcaseProject[] = [
     ],
   },
   {
+    id: "local-rag-agent",
     name: "Local RAG Agent",
     creator: "Aryan Mehrotra",
     description:
@@ -96,6 +132,37 @@ const projects: ShowcaseProject[] = [
 
 function ProjectMedia({ project }: { project: ShowcaseProject }) {
   const [playing, setPlaying] = useState(false);
+
+  if (project.media.type === "summary") {
+    return (
+      <div className="relative flex h-full min-h-[24rem] overflow-hidden bg-background p-8 sm:p-10">
+        <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+        <div className="absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
+        <div className="relative my-auto">
+          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg">
+            <Terminal className="h-6 w-6" />
+          </div>
+          <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-primary">
+            {project.media.eyebrow}
+          </p>
+          <p className="mb-4 max-w-lg text-3xl font-bold leading-tight text-foreground sm:text-4xl">
+            {project.media.title}
+          </p>
+          <p className="mb-7 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {project.media.description}
+          </p>
+          <ul className="grid gap-2 text-sm font-medium text-foreground sm:grid-cols-2">
+            {project.media.features.map((feature) => (
+              <li key={feature} className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
 
   if (project.media.type === "image") {
     return (
@@ -168,7 +235,7 @@ const Showcase = () => {
       <Navbar />
 
       <main className="container mx-auto px-6 pb-20 pt-28">
-        <header className="mx-auto mb-14 max-w-3xl text-center">
+        <header className="mx-auto mb-8 max-w-3xl text-center">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 font-mono text-sm text-primary">
             <Rocket className="h-4 w-4" />
             Community showcase
@@ -182,11 +249,36 @@ const Showcase = () => {
           </p>
         </header>
 
+        <nav
+          aria-label="Showcase projects"
+          className="mx-auto mb-10 max-w-6xl rounded-xl border border-border bg-card px-5 py-4 shadow-sm sm:px-6"
+        >
+          <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Explore all projects
+          </p>
+          <ol className="flex flex-wrap gap-2">
+            {projects.map((project, index) => (
+              <li key={project.id}>
+                <a
+                  href={`#${project.id}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <span className="font-mono text-xs text-primary">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {project.name}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
         <div className="mx-auto max-w-6xl space-y-10">
           {projects.map((project, index) => (
             <article
-              key={project.name}
-              className={`grid overflow-hidden rounded-xl border border-border bg-card shadow-sm ${
+              id={project.id}
+              key={project.id}
+              className={`grid scroll-mt-28 overflow-hidden rounded-xl border border-border bg-card shadow-sm ${
                 project.wideMedia ? "" : "lg:grid-cols-2"
               }`}
             >
