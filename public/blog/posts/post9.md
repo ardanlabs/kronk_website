@@ -38,9 +38,19 @@ If you want to understand how an ordinary Go binary built with `CGO_ENABLED=0` c
 
 **[Read “Understanding Go AI Inference: Yzma” on Internals for Interns →](https://internals-for-interns.com/posts/yzma/)**
 
+### 3. The Kronk SDK
+
+The third article climbs one level above Yzma into Kronk's SDK, the Go layer that turns llama.cpp's low-level API into a small surface designed for application development. I walk through how `Init` loads the native backend, how `New` loads a model and builds the machinery around it, and how a chat request is copied, validated, templated, tokenized, and queued for execution.
+
+The article then explores the systems behind that simple API: incremental message caching that reuses a conversation's KV cache, continuous batching that lets multiple requests share one model, and execution slots that keep each conversation's state separate. It also covers protections for practical edge cases such as duplicate beginning-of-sequence tokens, UTF-8 characters split across tokens, and stop sequences split across streamed output.
+
+If you want to understand what Kronk handles between a GGUF model on disk and a well-formed response in your Go application, this installment traces the complete text-generation path.
+
+**[Read “Understanding Go AI Inference: The Kronk SDK” on Internals for Interns →](https://internals-for-interns.com/posts/kronk-sdk/)**
+
 ## What Comes Next
 
-The first two articles establish the inference engine and show how Yzma makes it available directly from Go. The next installment will climb to Kronk and explore how that foundation becomes a high-level SDK and model server designed for real applications, with roles, streaming, tool calls, and an OpenAI-compatible API.
+The first three articles establish the inference engine, show how Yzma makes it available directly from Go, and explore how Kronk turns that foundation into a high-level SDK. The next installment will examine model management: how a model ID becomes files on disk, how Kronk chooses a configuration that fits the available hardware, and what happens when there is not enough memory for another model.
 
 I am excited to tell this story because understanding the layers below an API makes us better at choosing models, sizing hardware, diagnosing performance, and designing systems around local inference. These are not just implementation details. They explain why the tools behave the way they do.
 
