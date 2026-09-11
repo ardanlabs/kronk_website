@@ -41,10 +41,10 @@ export const Hero = () => {
           
           <KronkBanner />
           <p className="mx-auto mb-3 font-bold text-xl leading-relaxed text-foreground sm:text-2xl">
-            Your personal engine for running open source models locally. 
+            Go With Your Own Intelligence!
           </p>
           <p className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          Your personal engine for running open source models locally. Use Go for hardware accelerated local inference with llama.cpp and whisper.cpp directly integrated into your Go applications. Kronk provides a high-level API and a model server.
+            Use Go for hardware accelerated local inference with llama.cpp, whisper.cpp, and stable-diffusion.cpp directly integrated into your Go applications. Kronk provides a high-level API and production ready model server.
           </p>
         </motion.div>
 
