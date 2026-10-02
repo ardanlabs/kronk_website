@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Cpu, Zap, Server, Globe, Wrench, Brain, AudioLines, Image } from "lucide-react";
+import { Cpu, Zap, Server, Globe, Wrench, Brain, AudioLines, Image, ListChecks } from "lucide-react";
 
 const features = [
   {
@@ -37,6 +37,12 @@ const features = [
     title: "Tool Calling",
     description:
       "Native function calling support. Let models invoke your Go functions with structured input and output.",
+  },
+  {
+    icon: ListChecks,
+    title: "Decision Models",
+    description:
+      "Evaluate shared state with typed choice, score, and calibrated yes/no questions. Get structured answers, probabilities, and confidence in one request.",
   },
   {
     icon: AudioLines,

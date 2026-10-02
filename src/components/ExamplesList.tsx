@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/utils";
-import { MessageSquare, Image, Mic, AudioLines, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers, Workflow, Users } from "lucide-react";
+import { MessageSquare, Image, Mic, AudioLines, HelpCircle, Search, ArrowUpRight, FileJson, Reply, Loader2, Github, Copy, Check, Layers, Workflow, Users, ListChecks } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +25,7 @@ const examples = [
   { icon: Users, name: "Bucky Diarization", dir: "bucky-diar", desc: "Channel-separated speaker diarization", cmd: "make example-bucky-diar" },
   { icon: MessageSquare, name: "Chat", desc: "Interactive chat with chat-completion API", cmd: "make example-chat" },
   { icon: Workflow, name: "Concurrency", desc: "Batch process concurrent inference requests", cmd: "make example-concurrency" },
+  { icon: ListChecks, name: "Decision", desc: "Evaluate typed questions with a decision model", cmd: "make example-decision" },
   { icon: Search, name: "Embedding", desc: "Perform embedding operations", cmd: "make example-embedding" },
   { icon: FileJson, name: "Grammar", desc: "Constrain output with GBNF grammars", cmd: "make example-grammar" },
   { icon: Layers, name: "Pool", desc: "Manage multiple models with TTL eviction", cmd: "make example-pool" },
