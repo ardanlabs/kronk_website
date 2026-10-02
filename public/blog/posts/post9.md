@@ -48,10 +48,30 @@ If you want to understand what Kronk handles between a GGUF model on disk and a 
 
 **[Read “Understanding Go AI Inference: The Kronk SDK” on Internals for Interns →](https://internals-for-interns.com/posts/kronk-sdk/)**
 
-## What Comes Next
+### 4. Model Management
 
-The first three articles establish the inference engine, show how Yzma makes it available directly from Go, and explore how Kronk turns that foundation into a high-level SDK. The next installment will examine model management: how a model ID becomes files on disk, how Kronk chooses a configuration that fits the available hardware, and what happens when there is not enough memory for another model.
+The fourth article follows a model through Kronk's management layer, from a provider and model ID to files on disk and a configuration that fits the available hardware. I explain how the catalog discovers files on Hugging Face, how Kronk reads GGUF metadata without downloading an entire model, and how AutoTune balances context length and KV cache precision against the machine's available memory.
+
+The article then traces model loading and resource management: concurrent requests share a single load, memory is reserved before use, and idle models are evicted only when necessary. It also shows how Kronk handles discrete GPUs and unified memory differently while ensuring that a model serving active requests is never unloaded.
+
+If you want to understand how Kronk gets models onto disk, sizes them for your machine, and safely shares finite RAM and VRAM among them, this installment covers the complete lifecycle.
+
+**[Read “Understanding Go AI Inference: Model Management” on Internals for Interns →](https://internals-for-interns.com/posts/kronk-model-management/)**
+
+### 5. The Model Server
+
+The final article follows a streaming `POST /v1/chat/completions` request through Kronk's OpenAI-compatible model server. I show how the server validates and prepares a request before committing the HTTP response, then streams generated tokens as Server-Sent Events with keep-alive comments that prevent proxies from closing quiet connections.
+
+The article also explains what changes after the server sends `200 OK`: errors can no longer change the status code, so model failures travel inside the stream while connection failures are preserved for logging and metrics without writing a second response. It closes by tracing the middleware stack and highlighting protocol-specific details in the OpenAI- and Anthropic-compatible endpoints.
+
+If you want to understand how Kronk turns local inference into a resilient streaming HTTP API, this installment follows the request from the first middleware to the final token.
+
+**[Read “Understanding Go AI Inference: The Model Server” on Internals for Interns →](https://internals-for-interns.com/posts/kronk-model-server/)**
+
+## The Complete Stack
+
+These five articles establish the inference engine, show how Yzma makes it available directly from Go, and trace how Kronk turns that foundation into an SDK, a model-management system, and a streaming HTTP server.
 
 I am excited to tell this story because understanding the layers below an API makes us better at choosing models, sizing hardware, diagnosing performance, and designing systems around local inference. These are not just implementation details. They explain why the tools behave the way they do.
 
-Bookmark the [Understanding Go AI Inference series page](https://internals-for-interns.com/series/understanding-go-ai-inference/) to follow along, and check back here as the reading list grows.
+Visit the [Understanding Go AI Inference series page](https://internals-for-interns.com/series/understanding-go-ai-inference/) on Internals for Interns to read the complete series.
