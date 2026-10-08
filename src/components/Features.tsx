@@ -78,9 +78,6 @@ export const Features = () => {
           <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
             Why <span className="text-gradient-primary">Kronk</span>?
           </h2>
-          <p className="mx-auto mb-4 font-bold text-lg leading-relaxed text-foreground sm:text-2xl">
-            Everything you need to run LLMs locally in Go with production-grade performance.
-          </p>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 text-left w-full lg:w-[90%] mx-auto">
             <p className="mx-auto text-muted-foreground leading-relaxed">
               This project lets you use Go for hardware accelerated local inference with llama.cpp and whisper.cpp directly integrated into your Go applications. Kronk provides a high-level API that feels similar to using an OpenAI compatible API.
