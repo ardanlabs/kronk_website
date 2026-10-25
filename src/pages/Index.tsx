@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 import { PageMeta } from "@/components/PageMeta";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
@@ -60,6 +61,28 @@ const Index = () => {
       />
       <Navbar />
       <Hero />
+      <section aria-labelledby="cloud-demo-title" className="container mx-auto px-6 py-8">
+        <div className="mx-auto flex max-w-5xl flex-col items-start gap-6 rounded-xl border border-primary/20 bg-primary/5 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h2 id="cloud-demo-title" className="mb-2 text-2xl font-bold">
+              See Kronk in action on Google Cloud Run
+            </h2>
+            <p className="max-w-2xl leading-relaxed text-muted-foreground">
+              Explore Ardan Labs AI, a demo site showing how to build apps with
+              Kronk that run on Google Cloud Run with NVIDIA GPUs.
+            </p>
+          </div>
+          <a
+            href="https://ardanlabs.ai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            Try the demo
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        </div>
+      </section>
       <HomeSubnav />
       <Features />
       <SdkSection />
